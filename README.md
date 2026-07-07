@@ -24,8 +24,7 @@
 
 Github 仓库：[https://github.com/nemo2011/bilibili-api](https://github.com/nemo2011/bilibili-api) (*现已被删除)
 
-> 模块最早由 @MoyuScript 于 2020 年创建，于 2022 年宣布停止维护。nemo2011的仓库是原仓库 fork，遵循 `GNU General Public License Version 3`。本仓库是nemo2011的仓库的fork，用于修改一处bug，但是在本人向nemo2011的仓库pull request的后一天其因收到律师函被删除，因此该 fork 随时可能被删除。
-> 见 `MoyuScript/bilibili-api` 的 [第一条 commit (2020.01.27)](https://github.com/Nemo2011/bilibili-api/commit/8dc3f9a05fa28ed9b060cafa6d5c23131a28a113)与 [最后一条 commit (2022.01.17)](https://github.com/Nemo2011/bilibili-api/commit/dc518016c7649be2a135ccb8badb091712754a3d)。
+> 模块最早由 @MoyuScript 于 2020 年创建，于 2022 年宣布停止维护(见 `MoyuScript/bilibili-api` 的 [第一条 commit (2020.01.27)](https://github.com/Nemo2011/bilibili-api/commit/8dc3f9a05fa28ed9b060cafa6d5c23131a28a113)与 [最后一条 commit (2022.01.17)](https://github.com/Nemo2011/bilibili-api/commit/dc518016c7649be2a135ccb8badb091712754a3d))。nemo2011的仓库是原仓库 fork，遵循 `GNU General Public License Version 3`，已经与 2026 年 7 月 6 日停止维护并删库。本仓库是nemo2011的仓库的fork，用于修改一处bug，但是在本人向nemo2011的仓库pull request的后一天其因收到律师函被删除，因此该 fork 随时可能被删除。
 
 # 简介
 
