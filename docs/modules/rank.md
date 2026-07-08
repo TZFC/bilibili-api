@@ -10,6 +10,28 @@ bilibili_api.rank
 from bilibili_api import rank
 ```
 
+- [class LiveEnergyRankType()](#class-LiveEnergyRankType)
+- [class LiveRankType()](#class-LiveRankType)
+- [class MangeRankType()](#class-MangeRankType)
+- [class RankAPIType()](#class-RankAPIType)
+- [class RankDayType()](#class-RankDayType)
+- [class RankType()](#class-RankType)
+- [class VIPRankType()](#class-VIPRankType)
+- [async def get\_live\_energy\_user\_rank()](#async-def-get\_live\_energy\_user\_rank)
+- [async def get\_live\_hot\_rank()](#async-def-get\_live\_hot\_rank)
+- [async def get\_live\_rank()](#async-def-get\_live\_rank)
+- [async def get\_live\_sailing\_rank()](#async-def-get\_live\_sailing\_rank)
+- [async def get\_live\_user\_medal\_rank()](#async-def-get\_live\_user\_medal\_rank)
+- [async def get\_manga\_rank()](#async-def-get\_manga\_rank)
+- [async def get\_music\_rank\_list()](#async-def-get\_music\_rank\_list)
+- [async def get\_music\_rank\_weekly\_detail()](#async-def-get\_music\_rank\_weekly\_detail)
+- [async def get\_music\_rank\_weekly\_musics()](#async-def-get\_music\_rank\_weekly\_musics)
+- [async def get\_playlet\_rank\_info()](#async-def-get\_playlet\_rank\_info)
+- [async def get\_playlet\_rank\_phases()](#async-def-get\_playlet\_rank\_phases)
+- [async def get\_rank()](#async-def-get\_rank)
+- [async def get\_vip\_rank()](#async-def-get\_vip\_rank)
+- [async def subscribe\_music\_rank()](#async-def-subscribe\_music\_rank)
+
 ---
 
 ## class LiveEnergyRankType()
@@ -107,14 +129,14 @@ RankAPIType.PGC 排行榜时间类型
 - Dance: 舞蹈
 - Game: 游戏
 - Knowledge: 知识
-- Technology: 科技
+- Technology: 科技数码
 - Sports: 运动
 - Car: 汽车
 - Life: 生活
 - Food: 美食
 - Animal: 动物圈
 - Kitchen: 鬼畜
-- Fashion: 时尚
+- Fashion: 时尚美妆
 - Ent: 娱乐
 - Cinephile: 影视
 - Movie: 电影
@@ -154,11 +176,11 @@ RankAPIType.PGC 排行榜时间类型
 
 | name | type | description |
 | - | - | - |
-| date | LiveEnergyRankType | 月份. Defaults to LiveEnergyRankType.MONTH |
-| pn | int | 页码. Defaults to 1 |
-| ps | int | 每页数量. Defaults to 20 |
+| `date` | `LiveEnergyRankType` | 月份. Defaults to LiveEnergyRankType.MONTH |
+| `pn` | `int` | 页码. Defaults to 1 |
+| `ps` | `int` | 每页数量. Defaults to 20 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -171,7 +193,7 @@ RankAPIType.PGC 排行榜时间类型
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -185,11 +207,11 @@ RankAPIType.PGC 排行榜时间类型
 
 | name | type | description |
 | - | - | - |
-| _type | LiveRankType | 榜单类型. Defaults to LiveRankType.VALUE |
-| pn | int | 页码. Defaults to 1 |
-| ps | int | 每页数量. Defaults to 20 |
+| `_type` | `LiveRankType` | 榜单类型. Defaults to LiveRankType.VALUE |
+| `pn` | `int` | 页码. Defaults to 1 |
+| `ps` | `int` | 每页数量. Defaults to 20 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -202,7 +224,7 @@ RankAPIType.PGC 排行榜时间类型
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -216,10 +238,10 @@ RankAPIType.PGC 排行榜时间类型
 
 | name | type | description |
 | - | - | - |
-| pn | int | 页码. Defaults to 1 |
-| ps | int | 每页数量. Defaults to 20 |
+| `pn` | `int` | 页码. Defaults to 1 |
+| `ps` | `int` | 每页数量. Defaults to 20 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -233,9 +255,9 @@ RankAPIType.PGC 排行榜时间类型
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -248,7 +270,7 @@ RankAPIType.PGC 排行榜时间类型
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -262,9 +284,9 @@ RankAPIType.PGC 排行榜时间类型
 
 | name | type | description |
 | - | - | - |
-| week | int | 第几周. Defaults to 1. |
+| `week` | `int` | 第几周. Defaults to 1. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -278,9 +300,9 @@ RankAPIType.PGC 排行榜时间类型
 
 | name | type | description |
 | - | - | - |
-| week | int | 第几周. Defaults to 1. |
+| `week` | `int` | 第几周. Defaults to 1. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -296,9 +318,9 @@ https://www.bilibili.com/v/popular/drama/
 
 | name | type | description |
 | - | - | - |
-| phase_id | int | 期数，从 get_playlet_rank_phase 获取 |
+| `phase_id` | `int` | 期数，从 get_playlet_rank_phase 获取 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -311,7 +333,7 @@ https://www.bilibili.com/v/popular/drama/
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -325,10 +347,10 @@ https://www.bilibili.com/v/popular/drama/
 
 | name | type | description |
 | - | - | - |
-| type_ | RankType | 排行榜类型. Defaults to RankType.All |
-| day | RankDayType | 排行榜时间. Defaults to RankDayType.THREE_DAY. 仅对 api_type 为 RankAPIType.PGC 有效 |
+| `type_` | `RankType` | 排行榜类型. Defaults to RankType.All |
+| `day` | `RankDayType` | 排行榜时间. Defaults to RankDayType.THREE_DAY. 仅对 api_type 为 RankAPIType.PGC 有效 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -342,9 +364,9 @@ https://www.bilibili.com/v/popular/drama/
 
 | name | type | description |
 | - | - | - |
-| type_ | VIPRankType | 排行榜类型. Defaults to VIPRankType.VIP |
+| `type_` | `VIPRankType` | 排行榜类型. Defaults to VIPRankType.VIP |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -358,10 +380,9 @@ https://www.bilibili.com/v/popular/drama/
 
 | name | type | description |
 | - | - | - |
-| status | bool | 关注状态. Defaults to True. |
-| credential | Credential | 凭据类. Defaults to None. |
+| `status` | `bool` | 关注状态. Defaults to True. |
+| `credential` | `Credential` | 凭据类. Defaults to None. |
 
-**Returns:** None
 
 
 

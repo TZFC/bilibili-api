@@ -8,8 +8,7 @@ from enum import Enum
 from typing import List, Union, Optional
 
 from .utils.utils import get_api
-from .utils.credential import Credential
-from .utils.network import Api
+from .utils.network import Api, Credential
 
 
 class BlackReasonType(Enum):
@@ -222,7 +221,7 @@ class BlackRoom:
         """
         return BlackReasonType((await self.get_details())["reasonType"])
 
-    async def get_id(self) -> int:
+    def get_id(self) -> int:
         """
         获取小黑屋 id
 
@@ -231,7 +230,7 @@ class BlackRoom:
         """
         return self.__id
 
-    async def set_id(self, id_: int) -> None:
+    def set_id(self, id_: int) -> None:
         """
         设置小黑屋 id
 
@@ -245,6 +244,7 @@ class JuryCase:
     """
     案件仲裁
     """
+
     def __init__(self, case_id: str, credential: Credential):
         """
         Args:
@@ -338,6 +338,27 @@ async def get_next_jury_case(credential: Credential) -> JuryCase:
     )
 
 
+async def get_jury_case_raw(
+    credential: Credential, pn: int = 1, ps: int = 20
+) -> dict:
+    """
+    获取仲裁案件列表
+
+    Args:
+        credential (Credential): 凭据类
+
+        pn (int, optional): 页数. Defaults to 1.
+
+        ps (int, optional): 每页数量. Defaults to 20.
+
+    Returns:
+        dict: 调用 API 返回的结果
+    """
+    api = API["jury"]["case_list"]
+    params = {"pn": pn, "ps": ps}
+    return await Api(**api, credential=credential).update_params(**params).result
+
+
 async def get_jury_case_list(
     credential: Credential, pn: int = 1, ps: int = 20
 ) -> List[JuryCase]:
@@ -357,4 +378,6 @@ async def get_jury_case_list(
     api = API["jury"]["case_list"]
     params = {"pn": pn, "ps": ps}
     info = await Api(**api, credential=credential).update_params(**params).result
+    if info["list"] is None:
+        return []
     return [JuryCase(case["case_id"], credential) for case in info["list"]]

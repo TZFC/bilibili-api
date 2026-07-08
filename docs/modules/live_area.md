@@ -10,16 +10,24 @@ bilibili_api.live_area
 from bilibili_api import live_area
 ```
 
+- [async def fetch\_live\_area\_data()](#async-def-fetch\_live\_area\_data)
+- [def get\_area\_info\_by\_id()](#def-get\_area\_info\_by\_id)
+- [def get\_area\_info\_by\_name()](#def-get\_area\_info\_by\_name)
+- [def get\_area\_list()](#def-get\_area\_list)
+- [def get\_area\_list\_sub()](#def-get\_area\_list\_sub)
+- [async def get\_list\_by\_area()](#async-def-get\_list\_by\_area)
+
 ---
 
-## class LiveRoomOrder()
+## async def fetch_live_area_data()
 
-**Extend: enum.Enum**
+抓取直播分区数据
 
-直播间排序方式
+因为直播分区容易出现变动，故不像视频分区一样直接使用文件保存，而是每次查询时先抓取一遍。
 
-- RECOMMEND: 综合
-- NEW: 最新
+一次运行整个程序仅需执行一次此函数即可，无需多次调用。
+
+
 
 
 
@@ -33,9 +41,9 @@ from bilibili_api import live_area
 
 | name | type | description |
 | - | - | - |
-| id | int | 分区的 id。 |
+| `id` | `int` | 分区的 id。 |
 
-**Returns:** `Tuple[dict | None, dict | None]`: 第一个是主分区，第二个是子分区，没有时返回 None。
+**Returns:** `Tuple[dict | None, dict | None]`:  第一个是主分区，第二个是子分区，没有时返回 None。
 
 
 
@@ -49,9 +57,9 @@ from bilibili_api import live_area
 
 | name | type | description |
 | - | - | - |
-| name | str | 分区的名称。 |
+| `name` | `str` | 分区的名称。 |
 
-**Returns:** Tuple[dict | None, dict | None]: 第一个是主分区，第二个是子分区，没有时返回 None。
+**Returns:** `Tuple[dict | None, dict | None]`:  第一个是主分区，第二个是子分区，没有时返回 None。
 
 
 
@@ -64,7 +72,7 @@ from bilibili_api import live_area
 
 
 
-**Returns:** List[dict]: 所有分区的数据
+**Returns:** `List[dict]`:  所有分区的数据
 
 
 
@@ -78,7 +86,7 @@ from bilibili_api import live_area
 
 
 
-**Returns:** dict: 所有分区的数据
+**Returns:** `dict`:  所有分区的数据
 
 
 
@@ -92,11 +100,12 @@ from bilibili_api import live_area
 
 | name | type | description |
 | - | - | - |
-| area_id | int | 分区 id |
-| page | int | 第几页. Defaults to 1. |
-| order | LiveRoomOrder | 直播间排序方式. Defaults to LiveRoomOrder.RECOMMEND. |
+| `area_id` | `int` | 分区 id |
+| `page` | `int` | 第几页. Defaults to 1. |
+| `order` | `LiveRoomOrder` | 直播间排序方式. 访问接口后查询 `new_tags` 字段对应 `sort_type`。Defaults to "" (综合). |
+| `credential` | `Credential, optional` | 凭据类. Defaults to None. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 

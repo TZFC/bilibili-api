@@ -5,7 +5,8 @@ bilibili_api.utils.AsyncEvent
 """
 
 import asyncio
-from typing import Callable, Coroutine
+import logging
+from typing import Callable, Coroutine, Union
 
 
 class AsyncEvent:
@@ -18,14 +19,15 @@ class AsyncEvent:
     def __init__(self):
         self.__handlers = {}
         self.__ignore_events = []
+        self.__tasks = set()
 
-    def add_event_listener(self, name: str, handler: Coroutine) -> None:
+    def add_event_listener(self, name: str, handler: Union[Callable, Coroutine]) -> None:
         """
         注册事件监听器。
 
         Args:
-            name (str):            事件名。
-            handler (Coroutine):   回调异步函数。
+            name    (str)              :            事件名。
+            handler (Union[Callable, Coroutine]):   回调函数。
         """
         name = name.upper()
         if name not in self.__handlers:
@@ -40,7 +42,7 @@ class AsyncEvent:
             event_name (str): 事件名。
         """
 
-        def decorator(func: Coroutine):
+        def decorator(func: Union[Callable, Coroutine]):
             self.add_event_listener(event_name, func)
             return func
 
@@ -52,16 +54,16 @@ class AsyncEvent:
         """
         self.__handlers = {}
 
-    def remove_event_listener(self, name: str, handler: Coroutine) -> bool:
+    def remove_event_listener(self, name: str, handler: Union[Callable, Coroutine]) -> bool:
         """
         移除事件监听函数。
 
         Args:
-            name (str):            事件名。
-            handler (Coroutine):   要移除的函数。
+            name                  (str):            事件名。
+            handler (Union[Callable, Coroutine]):   要移除的函数。
 
         Returns:
-            bool, 是否移除成功。
+            bool: 是否移除成功。
         """
         name = name.upper()
         if name in self.__handlers:
@@ -86,13 +88,38 @@ class AsyncEvent:
         """
         self.__ignore_events = []
 
+    def __on_task_done(self, task: asyncio.Task) -> None:
+        """
+        asyncio.Task完成后的回调函数
+        1、立刻从self.__tasks中移除任务
+        2、如果任务抛出异常，分发特殊异常事件，避免Task exception was never retrieved
+        """
+        self.__tasks.discard(task)
+
+        if task.cancelled(): return
+
+        logger: logging.Logger | None = getattr(self, "logger", None)
+        event_name = getattr(task, "event_name", None)
+
+        try:
+            e = task.exception()
+            if e:
+                if event_name != "__TASK_EXCEPTION__":
+                    # dispatch一个__TASK_EXCEPTION__事件使用户可以订阅
+                    self.dispatch("__TASK_EXCEPTION__", e)
+                if logger and hasattr(logger, "error"):
+                    logger.error(f"dispatched task raised an exception: {e}")
+        except Exception as ee:
+            if logger and hasattr(logger, "error"):
+                logger.error(f"an error occurred while handling task exception: {ee}", exc_info=ee)
+
     def dispatch(self, name: str, *args, **kwargs) -> None:
         """
         异步发布事件。
 
         Args:
             name (str):       事件名。
-            *args, **kwargs:  要传递给函数的参数。
+            *args, **kwargs (Any):  要传递给函数的参数。
         """
         if len(args) == 0 and len(kwargs.keys()) == 0:
             args = [{}]
@@ -101,9 +128,15 @@ class AsyncEvent:
 
         name = name.upper()
         if name in self.__handlers:
-            for coroutine in self.__handlers[name]:
-                asyncio.create_task(coroutine(*args, **kwargs))
+            for callableorcoroutine in self.__handlers[name]:
+                obj = callableorcoroutine(*args, **kwargs)
+                if isinstance(obj, Coroutine):
+                    task = asyncio.create_task(obj)
+                    setattr(task, "event_name", name) # 通过检查event_name避免异常被循环dispatch
+                    task.add_done_callback(self.__on_task_done)
+                    self.__tasks.add(task) # 保持对task的引用状态
 
-        if name != "__ALL__":
+        # __ALL__事件应排除__TASK_EXCEPTION__以保证不破坏旧代码行为
+        if name != "__ALL__" and name != "__TASK_EXCEPTION__":
             kwargs.update({"name": name, "data": args})
             self.dispatch("__ALL__", kwargs)

@@ -10,6 +10,12 @@ bilibili_api.hot
 from bilibili_api import hot
 ```
 
+- [async def get\_history\_popular\_videos()](#async-def-get\_history\_popular\_videos)
+- [async def get\_hot\_buzzwords()](#async-def-get\_hot\_buzzwords)
+- [async def get\_hot\_videos()](#async-def-get\_hot\_videos)
+- [async def get\_weekly\_hot\_videos()](#async-def-get\_weekly\_hot\_videos)
+- [async def get\_weekly\_hot\_videos\_list()](#async-def-get\_weekly\_hot\_videos\_list)
+
 ---
 
 ## async def get_history_popular_videos()
@@ -18,7 +24,7 @@ from bilibili_api import hot
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -32,10 +38,10 @@ from bilibili_api import hot
 
 | name | type | description |
 | - | - | - |
-| page_num | int | 页码. Defaults to 1. |
-| page_size | int | 每一页的数据大小. Defaults to 20. |
+| `page_num` | `int` | 页码. Defaults to 1. |
+| `page_size` | `int` | 每一页的数据大小. Defaults to 20. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -49,10 +55,10 @@ from bilibili_api import hot
 
 | name | type | description |
 | - | - | - |
-| pn | int | 第几页. Default to 1. |
-| ps | int | 每页视频数. Default to 20. |
+| `pn` | `int` | 第几页. Default to 1. |
+| `ps` | `int` | 每页视频数. Default to 20. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -66,9 +72,9 @@ from bilibili_api import hot
 
 | name | type | description |
 | - | - | - |
-| week | int | 第几周. Default to 1. |
+| `week` | `int` | 第几周. Default to 1. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -81,7 +87,7 @@ from bilibili_api import hot
 
 
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 

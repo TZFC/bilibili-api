@@ -4,15 +4,11 @@ bilibili_api.utils.parse_link
 链接资源解析。
 """
 
-import re
-import json
 from enum import Enum
 from typing import Tuple, Union, Literal
 
-import httpx
 from yarl import URL
 
-from .network import Api
 from ..game import Game
 from ..manga import Manga
 from ..topic import Topic
@@ -24,7 +20,7 @@ from ..dynamic import Dynamic
 from .short import get_real_url
 from ..note import Note, NoteType
 from ..black_room import BlackRoom
-from .credential import Credential
+from .network import Credential, Api
 from ..audio import Audio, AudioList
 from ..bangumi import Bangumi, Episode
 from ..article import Article, ArticleList
@@ -32,6 +28,8 @@ from ..cheese import CheeseList, CheeseVideo
 from ..interactive_video import InteractiveVideo
 from ..favorite_list import FavoriteList, FavoriteListType
 from ..user import User, ChannelSeries, ChannelSeriesType, get_self_info
+from ..opus import Opus
+from ..garb import DLC
 
 from .initial_state import get_initial_state
 
@@ -57,6 +55,8 @@ class ResourceType(Enum):
     + TOPIC: 话题
     + MANGA: 漫画
     + NOTE: 笔记
+    + OPUS: 图文
+    + DLC: 收藏集
     + FAILED: 错误
     """
 
@@ -79,12 +79,12 @@ class ResourceType(Enum):
     TOPIC = "topic"
     MANGA = "manga"
     NOTE = "note"
+    OPUS = "opus"
+    DLC = "dlc"
     FAILED = "failed"
 
 
-async def parse_link(
-    url: str, credential: Union[Credential, None] = None
-) -> Union[
+async def parse_link(url: str, credential: Union[Credential, None] = None) -> Union[
     Tuple[Video, Literal[ResourceType.VIDEO]],
     Tuple[InteractiveVideo, Literal[ResourceType.INTERACTIVE_VIDEO]],
     Tuple[Bangumi, Literal[ResourceType.BANGUMI]],
@@ -161,7 +161,7 @@ async def parse_link(
         url = await get_real_url(str(url))  # type: ignore
         url = URL(url)  # type: ignore
 
-        fl_space = parse_space_favorite_list(url, credential)  # type: ignore
+        fl_space = await parse_space_favorite_list(url, credential)  # type: ignore
         if fl_space != -1:
             return fl_space  # type: ignore
         game = parse_game(url, credential)  # type: ignore
@@ -222,7 +222,10 @@ async def parse_link(
             obj = (manga, ResourceType.MANGA)
         opus_dynamic = parse_opus_dynamic(url, credential)  # type: ignore
         if not opus_dynamic == -1:
-            obj = (opus_dynamic, ResourceType.DYNAMIC)
+            obj = (opus_dynamic, ResourceType.OPUS)
+        garb = parse_garb(url, credential)
+        if not garb == -1:
+            obj = (garb, ResourceType.DLC)
 
         if obj == None or obj[0] == None:
             return (-1, ResourceType.FAILED)
@@ -256,9 +259,7 @@ async def auto_convert_video(
     return (video, ResourceType.VIDEO)
 
 
-async def check_short_name(
-    name: str, credential: Credential
-) -> Union[
+async def check_short_name(name: str, credential: Credential) -> Union[
     Tuple[Video, Literal[ResourceType.VIDEO]],
     Tuple[Episode, Literal[ResourceType.EPISODE]],
     Tuple[CheeseVideo, Literal[ResourceType.CHEESE_VIDEO]],
@@ -491,7 +492,7 @@ def parse_season_series(url: URL, credential: Credential) -> Union[ChannelSeries
     return -1
 
 
-def parse_space_favorite_list(
+async def parse_space_favorite_list(
     url: URL, credential: Credential
 ) -> Union[
     Tuple[FavoriteList, ResourceType], Tuple[ChannelSeries, ResourceType], Literal[-1]
@@ -505,10 +506,8 @@ def parse_space_favorite_list(
                 ):  # query 中不存在 fid 则返回默认收藏夹
                     api = get_api("favorite-list")["info"]["list_list"]
                     params = {"up_mid": uid, "type": 2}
-                    favorite_lists = (
-                        Api(**api, credential=credential)
-                        .update_params(**params)
-                        .result_sync
+                    favorite_lists = await (
+                        Api(**api, credential=credential).update_params(**params).result
                     )
 
                     if favorite_lists == None:
@@ -657,5 +656,12 @@ def parse_nianshizhiwang(url: URL) -> None:
 def parse_opus_dynamic(url: URL, credential: Credential) -> Union[Dynamic, int]:
     # https://www.bilibili.com/opus/767674573455884292
     if url.host == "www.bilibili.com" and url.parts[:2] == ("/", "opus"):
-        return Dynamic(dynamic_id=int(url.parts[-1]), credential=credential)
+        return Opus(opus_id=int(url.parts[-1]), credential=credential)
+    return -1
+
+
+def parse_garb(url: URL, credential: Credential) -> Union[DLC, int]:
+    # https://www.bilibili.com/blackboard/activity-Mz9T5bO5Q3.html?id=154&type=dlc&f_source=ogv&from=video.task
+    if url.host == "www.bilibili.com" and url.parts[:3] == ("/", "blackboard", "activity-Mz9T5bO5Q3.html"):
+        return DLC(act_id=int(url.query["id"]), credential=credential)
     return -1

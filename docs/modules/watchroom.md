@@ -12,11 +12,41 @@ bilibili_api.watchroom
 from bilibili_api import watchroom
 ```
 
+- [class Message()](#class-Message)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+- [class MessageSegment()](#class-MessageSegment)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+- [class MessageType()](#class-MessageType)
+- [class SeasonType()](#class-SeasonType)
+- [class WatchRoom()](#class-WatchRoom)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def close()](#async-def-close)
+  - [async def get\_episode\_id()](#async-def-get\_episode\_id)
+  - [async def get\_info()](#async-def-get\_info)
+  - [def get\_room\_id()](#def-get\_room\_id)
+  - [async def get\_season\_id()](#async-def-get\_season\_id)
+  - [async def join()](#async-def-join)
+  - [async def kickout()](#async-def-kickout)
+  - [async def open()](#async-def-open)
+  - [async def progress()](#async-def-progress)
+  - [async def send()](#async-def-send)
+  - [def set\_episode\_id()](#def-set\_episode\_id)
+  - [def set\_season\_id()](#def-set\_season\_id)
+  - [async def share()](#async-def-share)
+- [async def create()](#async-def-create)
+- [async def match()](#async-def-match)
+
 ---
 
 ## class Message()
 
 消息集合
+
+
+
+
+### def \_\_init\_\_()
+
 
 
 
@@ -30,8 +60,14 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| msg | str | 信息 |
-| is_emoji | bool | 是否为表情包 |
+| `msg` | `str` | 信息 |
+| `is_emoji` | `bool` | 是否为表情包 |
+
+
+### def \_\_init\_\_()
+
+
+
 
 
 ---
@@ -75,23 +111,31 @@ from bilibili_api import watchroom
 
 
 
+### def \_\_init\_\_()
+
+
+| name | type | description |
+| - | - | - |
+| `credential` | `Credential` | 凭据类 (大部分用户操作都需要与之匹配的 buvid3 值，务必在 credential 传入) |
+| `room_id` | `int` | 放映室 id |
+
+
 ### async def close()
 
 关闭放映室
 
 
 
-**Returns:** None
 
 
 
-### def get_episode_id()
+### async def get_episode_id()
 
 获取番剧剧集 id
 
 
 
-**Returns:** int: 番剧剧集 id
+**Returns:** `int`:  番剧剧集 id
 
 
 
@@ -102,7 +146,7 @@ from bilibili_api import watchroom
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -113,18 +157,18 @@ from bilibili_api import watchroom
 
 
 
-**Returns:** int: 放映室 id
+**Returns:** `int`:  放映室 id
 
 
 
 
-### def get_season_id()
+### async def get_season_id()
 
 获取番剧季度 id
 
 
 
-**Returns:** int: 番剧季度 id
+**Returns:** `int`:  番剧季度 id
 
 
 
@@ -136,9 +180,9 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| token | str, Optional | 邀请 Token |
+| `token` | `str, Optional` | 邀请 Token |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -150,9 +194,9 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| uid | int | 用户 uid |
+| `uid` | `int` | 用户 uid |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -163,7 +207,6 @@ from bilibili_api import watchroom
 
 
 
-**Returns:** None
 
 
 
@@ -174,10 +217,9 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| progress | int, None | 进度，单位为秒 |
-| status | bool, None | 播放状态 1 播放中 0 暂停中 2 已结束 |
+| `progress` | `int, None` | 进度，单位为秒 |
+| `status` | `bool, None` | 播放状态 1 播放中 0 暂停中 2 已结束 |
 
-**Returns:** None
 
 
 
@@ -188,9 +230,9 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| msg | Message | 消息 |
+| `msg` | `Message` | 消息 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -202,9 +244,8 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| episode_id | int | 番剧剧集 id |
+| `episode_id` | `int` | 番剧剧集 id |
 
-**Returns:** None
 
 
 
@@ -215,9 +256,8 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| season_id | int | 季度 id |
+| `season_id` | `int` | 季度 id |
 
-**Returns:** None
 
 
 
@@ -227,7 +267,7 @@ from bilibili_api import watchroom
 
 
 
-**Returns:** str: 邀请 Token
+**Returns:** `str`:  邀请 Token
 
 
 
@@ -241,12 +281,12 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| season_id | int | 每季度的 ID |
-| ep_id | int | 剧集 ID |
-| is_open | bool | 是否公开 |
-| credential | Credential | 凭据 |
+| `season_id` | `int` | 每季度的 ID |
+| `ep_id` | `int` | 剧集 ID |
+| `is_open` | `bool` | 是否公开 |
+| `credential` | `Credential` | 凭据 |
 
-**Returns:** Watchroom：放映室
+**Returns:** `Watchroom`:  放映室
 
 
 
@@ -260,10 +300,10 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| season_id | int | 季度 ID |
-| season_type | str | 季度类型 |
+| `season_id` | `int` | 季度 ID |
+| `season_type` | `str` | 季度类型 |
 
-**Returns:** Watchroom：放映室
+**Returns:** `Watchroom`:  放映室
 
 
 

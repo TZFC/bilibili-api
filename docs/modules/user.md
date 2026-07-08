@@ -10,6 +10,86 @@ bilibili_api.user
 from bilibili_api import user
 ```
 
+- [class AlbumType()](#class-AlbumType)
+- [class ArticleListOrder()](#class-ArticleListOrder)
+- [class ArticleOrder()](#class-ArticleOrder)
+- [class AudioOrder()](#class-AudioOrder)
+- [class BangumiFollowStatus()](#class-BangumiFollowStatus)
+- [class BangumiType()](#class-BangumiType)
+- [class HistoryBusinessType()](#class-HistoryBusinessType)
+- [class HistoryType()](#class-HistoryType)
+- [class MedialistOrder()](#class-MedialistOrder)
+- [class OpusType()](#class-OpusType)
+- [class OrderType()](#class-OrderType)
+- [class RelationType()](#class-RelationType)
+- [class User()](#class-User)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def get\_access\_id()](#async-def-get\_access\_id)
+  - [async def get\_album()](#async-def-get\_album)
+  - [async def get\_all\_followings()](#async-def-get\_all\_followings)
+  - [async def get\_article\_list()](#async-def-get\_article\_list)
+  - [async def get\_articles()](#async-def-get\_articles)
+  - [async def get\_audios()](#async-def-get\_audios)
+  - [async def get\_channel\_list()](#async-def-get\_channel\_list)
+  - [async def get\_channel\_videos\_season()](#async-def-get\_channel\_videos\_season)
+  - [async def get\_channel\_videos\_series()](#async-def-get\_channel\_videos\_series)
+  - [async def get\_channels()](#async-def-get\_channels)
+  - [async def get\_cheese()](#async-def-get\_cheese)
+  - [async def get\_dynamics()](#async-def-get\_dynamics)
+  - [async def get\_dynamics\_new()](#async-def-get\_dynamics\_new)
+  - [async def get\_elec\_user\_monthly()](#async-def-get\_elec\_user\_monthly)
+  - [async def get\_followers()](#async-def-get\_followers)
+  - [async def get\_followings()](#async-def-get\_followings)
+  - [async def get\_live\_info()](#async-def-get\_live\_info)
+  - [async def get\_masterpiece()](#async-def-get\_masterpiece)
+  - [async def get\_media\_list()](#async-def-get\_media\_list)
+  - [async def get\_opus()](#async-def-get\_opus)
+  - [async def get\_overview\_stat()](#async-def-get\_overview\_stat)
+  - [async def get\_relation()](#async-def-get\_relation)
+  - [async def get\_relation\_info()](#async-def-get\_relation\_info)
+  - [async def get\_reservation()](#async-def-get\_reservation)
+  - [async def get\_self\_same\_followers()](#async-def-get\_self\_same\_followers)
+  - [async def get\_space\_notice()](#async-def-get\_space\_notice)
+  - [async def get\_subscribed\_bangumi()](#async-def-get\_subscribed\_bangumi)
+  - [async def get\_top\_videos()](#async-def-get\_top\_videos)
+  - [def get\_uid()](#def-get\_uid)
+  - [async def get\_up\_stat()](#async-def-get\_up\_stat)
+  - [async def get\_uplikeimg()](#async-def-get\_uplikeimg)
+  - [async def get\_upower\_qa\_detail()](#async-def-get\_upower\_qa\_detail)
+  - [async def get\_upower\_qa\_list()](#async-def-get\_upower\_qa\_list)
+  - [async def get\_user\_fav\_tag()](#async-def-get\_user\_fav\_tag)
+  - [async def get\_user\_info()](#async-def-get\_user\_info)
+  - [async def get\_user\_medal()](#async-def-get\_user\_medal)
+  - [async def get\_videos()](#async-def-get\_videos)
+  - [async def modify\_relation()](#async-def-modify\_relation)
+  - [async def set\_space\_notice()](#async-def-set\_space\_notice)
+  - [async def top\_followers()](#async-def-top\_followers)
+- [class VideoOrder()](#class-VideoOrder)
+- [async def check\_nickname()](#async-def-check\_nickname)
+- [async def clear\_toview\_list()](#async-def-clear\_toview\_list)
+- [async def create\_subscribe\_group()](#async-def-create\_subscribe\_group)
+- [async def delete\_subscribe\_group()](#async-def-delete\_subscribe\_group)
+- [async def delete\_viewed\_videos\_from\_toview()](#async-def-delete\_viewed\_videos\_from\_toview)
+- [async def edit\_self\_info()](#async-def-edit\_self\_info)
+- [async def get\_self\_black\_list()](#async-def-get\_self\_black\_list)
+- [async def get\_self\_coins()](#async-def-get\_self\_coins)
+- [async def get\_self\_experience\_log()](#async-def-get\_self\_experience\_log)
+- [async def get\_self\_friends()](#async-def-get\_self\_friends)
+- [async def get\_self\_history()](#async-def-get\_self\_history)
+- [async def get\_self\_history\_new()](#async-def-get\_self\_history\_new)
+- [async def get\_self\_info()](#async-def-get\_self\_info)
+- [async def get\_self\_jury\_info()](#async-def-get\_self\_jury\_info)
+- [async def get\_self\_login\_log()](#async-def-get\_self\_login\_log)
+- [async def get\_self\_moral\_log()](#async-def-get\_self\_moral\_log)
+- [async def get\_self\_notes\_info()](#async-def-get\_self\_notes\_info)
+- [async def get\_self\_public\_notes\_info()](#async-def-get\_self\_public\_notes\_info)
+- [async def get\_self\_special\_followings()](#async-def-get\_self\_special\_followings)
+- [async def get\_self\_whisper\_followings()](#async-def-get\_self\_whisper\_followings)
+- [async def get\_toview\_list()](#async-def-get\_toview\_list)
+- [async def name2uid()](#async-def-name2uid)
+- [async def rename\_subscribe\_group()](#async-def-rename\_subscribe\_group)
+- [async def set\_subscribe\_group()](#async-def-set\_subscribe\_group)
+
 ---
 
 ## class AlbumType()
@@ -150,6 +230,21 @@ medialist排序顺序。
 
 ---
 
+## class OpusType()
+
+**Extend: enum.Enum**
+
+图文类型
+
++ ALL: 所有
++ ARTICLE: 属于专栏的图文
++ DYNAMIC: 不属于专栏（但为动态）的图文
+
+
+
+
+---
+
 ## class OrderType()
 
 **Extend: enum.Enum**
@@ -189,6 +284,26 @@ medialist排序顺序。
 
 
 
+### def \_\_init\_\_()
+
+
+| name | type | description |
+| - | - | - |
+| `uid` | `int` | 用户 UID |
+| `credential` | `Credential \| None, optional` | 凭据. Defaults to None. |
+
+
+### async def get_access_id()
+
+获取用户 access_id (w_webid) 如未过期直接从本地获取 防止重复请求
+
+
+
+**Returns:** `str`:  access_id
+
+
+
+
 ### async def get_album()
 
 获取用户投稿相簿。
@@ -196,11 +311,11 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| biz | Union[AlbumType, None] | 排序方式. Defaults to AlbumType.ALL. |
-| page_num | Union[int, None] | 页码数，从 1 开始。 Defaults to 1. |
-| page_size | int | 每一页的相簿条目. Defaults to 30. |
+| `biz` | `AlbumType, optional` | 排序方式. Defaults to AlbumType.ALL. |
+| `page_num` | `int, optional` | 页码数，从 1 开始。 Defaults to 1. |
+| `page_size` | `int` | 每一页的相簿条目. Defaults to 30. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -211,7 +326,7 @@ medialist排序顺序。
 
 
 
-**Returns:** list: 关注列表
+**Returns:** `list`:  关注列表
 
 
 
@@ -223,9 +338,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| order | Union[ArticleListOrder, None] | 排序方式. Defaults to ArticleListOrder.LATEST |
+| `order` | `ArticleListOrder, optional` | 排序方式. Defaults to ArticleListOrder.LATEST |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -237,11 +352,11 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| order | Union[ArticleOrder, None] | 排序方式. Defaults to ArticleOrder.PUBDATE. |
-| pn | Union[int, None] | 页码数，从 1 开始。 Defaults to 1. |
-| ps | Union[int, None] | 每一页的视频数. Defaults to 30. |
+| `order` | `ArticleOrder, optional` | 排序方式. Defaults to ArticleOrder.PUBDATE. |
+| `pn` | `int, optional` | 页码数，从 1 开始。 Defaults to 1. |
+| `ps` | `int, optional` | 每一页的视频数. Defaults to 30. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -253,11 +368,11 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| order | Union[AudioOrder, None] | 排序方式. Defaults to AudioOrder.PUBDATE. |
-| pn | Union[int, None] | 页码数，从 1 开始。 Defaults to 1. |
-| ps | Union[int, None] | 每一页的视频数. Defaults to 30. |
+| `order` | `AudioOrder, optional` | 排序方式. Defaults to AudioOrder.PUBDATE. |
+| `pn` | `int, optional` | 页码数，从 1 开始。 Defaults to 1. |
+| `ps` | `int, optional` | 每一页的视频数. Defaults to 30. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -271,8 +386,12 @@ medialist排序顺序。
 未处理数据。不推荐。
 
 
+| name | type | description |
+| - | - | - |
+| `pn` | `int` | 页码. Defaults to 1. |
+| `ps` | `int` | 每页大小. Defaults to 20 (max). |
 
-**Returns:** dict: 调用接口返回的结果
+**Returns:** `dict`:  调用接口返回的结果
 
 
 
@@ -284,12 +403,12 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| sid | int | 频道的 season_id |
-| sort | ChannelOrder | 排序方式 |
-| pn | int | 页数，默认为 1 |
-| ps | int | 每一页显示的视频数量 |
+| `sid` | `int` | 频道的 season_id |
+| `sort` | `ChannelOrder` | 排序方式 |
+| `pn` | `int` | 页数，默认为 1 |
+| `ps` | `int` | 每一页显示的视频数量 |
 
-**Returns:** dict: 调用接口返回的内容
+**Returns:** `dict`:  调用接口返回的内容
 
 
 
@@ -301,11 +420,11 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| sid | int | 频道的 series_id |
-| pn | int | 页数，默认为 1 |
-| ps | int | 每一页显示的视频数量 |
+| `sid` | `int` | 频道的 series_id |
+| `pn` | `int` | 页数，默认为 1 |
+| `ps` | `int` | 每一页显示的视频数量 |
 
-**Returns:** dict: 调用接口返回的内容
+**Returns:** `dict`:  调用接口返回的内容
 
 
 
@@ -316,7 +435,7 @@ medialist排序顺序。
 
 
 
-**Returns:** List[ChannelSeries]: 合集与列表类的列表
+**Returns:** `List[ChannelSeries]`:  合集与列表类的列表
 
 
 
@@ -327,7 +446,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的结果
+**Returns:** `dict`:  调用接口返回的结果
 
 
 
@@ -341,10 +460,10 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| offset | Union[str, None] | 该值为第一次调用本方法时，数据中会有个 next_offset 字段，指向下一动态列表第一条动态（类似单向链表）。根据上一次获取结果中的 next_offset 字段值，循环填充该值即可获取到全部动态。0 为从头开始。Defaults to 0. |
-| need_top | Union[bool, None] | 显示置顶动态. Defaults to False. |
+| `offset` | `int, optional` | 该值为第一次调用本方法时，数据中会有个 next_offset 字段，指向下一动态列表第一条动态（类似单向链表）。根据上一次获取结果中的 next_offset 字段值，循环填充该值即可获取到全部动态。0 为从头开始。Defaults to 0. |
+| `need_top` | `bool, optional` | 显示置顶动态. Defaults to False. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -356,9 +475,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| offset | Union[str, None] | 该值为第一次调用本方法时，数据中会有个 offset 字段，指向下一动态列表第一条动态（类似单向链表）。根据上一次获取结果中的 next_offset 字段值，循环填充该值即可获取到全部动态。空字符串为从头开始。Defaults to "". |
+| `offset` | `str, optional` | 该值为第一次调用本方法时，数据中会有个 offset 字段，指向下一动态列表第一条动态（类似单向链表）。根据上一次获取结果中的 next_offset 字段值，循环填充该值即可获取到全部动态。空字符串为从头开始。Defaults to "". |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -369,7 +488,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的结果
+**Returns:** `dict`:  调用接口返回的结果
 
 
 
@@ -381,11 +500,11 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| pn | Union[int, None] | 页码，从 1 开始. Defaults to 1. |
-| ps | Union[int, None] | 每页的数据量. Defaults to 100. |
-| desc | Union[bool, None] | 倒序排序. Defaults to True. |
+| `pn` | `int, optional` | 页码，从 1 开始. Defaults to 1. |
+| `ps` | `int, optional` | 每页的数据量. Defaults to 100. |
+| `desc` | `bool, optional` | 倒序排序. Defaults to True. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -397,12 +516,12 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| pn | Union[int, None] | 页码，从 1 开始. Defaults to 1. |
-| ps | Union[int, None] | 每页的数据量. Defaults to 100. |
-| attention | Union[bool, None] | 是否采用“最常访问”排序，否则为“关注顺序”排序. Defaults to False. |
-| order | Union[OrderType, None] | 排序方式. Defaults to OrderType.desc. |
+| `pn` | `int, optional` | 页码，从 1 开始. Defaults to 1. |
+| `ps` | `int, optional` | 每页的数据量. Defaults to 100. |
+| `attention` | `bool, optional` | 是否采用“最常访问”排序，否则为“关注顺序”排序. Defaults to False. |
+| `order` | `OrderType, optional` | 排序方式. Defaults to OrderType.desc. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -413,7 +532,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -424,7 +543,7 @@ medialist排序顺序。
 
 
 
-**Returns:** list: 调用接口返回的内容。
+**Returns:** `list`:  调用接口返回的内容。
 
 
 
@@ -436,15 +555,30 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| oid | Union[int, None] | 起始视频 aid， 默认为列表开头 |
-| ps | Union[int, None] | 每一页的视频数. Defaults to 20. Max 100 |
-| direction | Union[bool, None] | 相对于给定oid的查询方向 True 向列表末尾方向 False 向列表开头方向 Defaults to False. |
-| desc | Union[bool, None] | 倒序排序. Defaults to True. |
-| sort_field | Union[int, None] | 用于排序的栏  1 发布时间，2 播放量，3 收藏量 |
-| tid | Union[int, None] | 分区 ID. Defaults to 0（全部）. 1 部分（未知） |
-| with_current | Union[bool, None] | 返回的列表中是否包含给定oid自身 Defaults to False. |
+| `oid` | `int, optional` | 起始视频 aid， 默认为列表开头 |
+| `ps` | `int, optional` | 每一页的视频数. Defaults to 20. Max 100 |
+| `direction` | `bool, optional` | 相对于给定oid的查询方向 True 向列表末尾方向 False 向列表开头方向 Defaults to False. |
+| `desc` | `bool, optional` | 倒序排序. Defaults to True. |
+| `sort_field` | `int, optional` | 用于排序的栏  1 发布时间，2 播放量，3 收藏量 |
+| `tid` | `int, optional` | 分区 ID. Defaults to 0（全部）. 1 部分（未知） |
+| `with_current` | `bool, optional` | 返回的列表中是否包含给定oid自身 Defaults to False. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
+
+
+
+
+### async def get_opus()
+
+获取用户发布过的图文
+
+
+| name | type | description |
+| - | - | - |
+| `type_` | `OpusType, optional` | 获取的图文类型. Defaults to OpusType.ALL. |
+| `offset` | `str, optional` | 偏移量。每次请求可获取下次请求对应的偏移量，类似单向链表。对应返回结果的 `["offset"]` Defaults to "". |
+
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -455,7 +589,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -465,11 +599,8 @@ medialist排序顺序。
 获取与某用户的关系
 
 
-| name | type | description |
-| - | - | - |
-| uid | int | 用户 UID |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -480,7 +611,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -491,7 +622,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的结果
+**Returns:** `dict`:  调用接口返回的结果
 
 
 
@@ -503,10 +634,10 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| pn | int | 页码. Defaults to 1. |
-| ps | int | 单页数据量. Defaults to 50. |
+| `pn` | `int` | 页码. Defaults to 1. |
+| `ps` | `int` | 单页数据量. Defaults to 50. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -517,7 +648,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -529,12 +660,12 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| pn | Union[int, None] | 页码数，从 1 开始。 Defaults to 1. |
-| ps | Union[int, None] | 每一页的番剧数. Defaults to 15. |
-| type_ | Union[BangumiType, None] | 资源类型. Defaults to BangumiType.BANGUMI |
-| follow_status | Union[BangumiFollowStatus, None] | 追番状态. Defaults to BangumiFollowStatus.ALL |
+| `pn` | `int, optional` | 页码数，从 1 开始。 Defaults to 1. |
+| `ps` | `int, optional` | 每一页的番剧数. Defaults to 15. |
+| `type_` | `BangumiType, optional` | 资源类型. Defaults to BangumiType.BANGUMI |
+| `follow_status` | `BangumiFollowStatus, optional` | 追番状态. Defaults to BangumiFollowStatus.ALL |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -545,7 +676,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -556,7 +687,7 @@ medialist排序顺序。
 
 
 
-**Returns:** int: 用户 UID
+**Returns:** `int`:  用户 UID
 
 
 
@@ -567,7 +698,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -578,7 +709,35 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+### async def get_upower_qa_detail()
+
+获取充电问答详情信息。
+
+根据问答 ID 获取单条充电问答的详细内容
+
+
+| name | type | description |
+| - | - | - |
+| `qa_id` | `int` | 充电问答的唯一 ID，可从`get_upower_qa_list` 返回的数据中获取。 |
+
+
+
+
+### async def get_upower_qa_list()
+
+获取用户充电问答列表。
+
+
+| name | type | description |
+| - | - | - |
+| `anchor` | `int, optional` | 该值为第一次调用本方法时，数据中会有个 anchor 字段，指向下一动态列表第一条动态（类似单向链表）。根据上一次获取结果中的 anchor 字段值，循环填充该值即可获取到全部动态 |
+
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -590,10 +749,10 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| pn | Union[int, None] | 页码，从 1 开始. Defaults to 1. |
-| ps | Union[int, None] | 每页的数据量. Defaults to 20. |
+| `pn` | `int, optional` | 页码，从 1 开始. Defaults to 1. |
+| `ps` | `int, optional` | 每页的数据量. Defaults to 20. |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -604,20 +763,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
-
-
-[用户空间详细信息](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/docs/user/info.md#%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
-
-
-
-### def get_user_info_sync()
-
-获取用户信息（昵称，性别，生日，签名，头像 URL，空间横幅 URL 等）
-
-
-
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 [用户空间详细信息](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/docs/user/info.md#%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
@@ -630,7 +776,7 @@ medialist排序顺序。
 
 
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -642,13 +788,13 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| tid | Union[int, None] | 分区 ID. Defaults to 0（全部）. |
-| pn | Union[int, None] | 页码，从 1 开始. Defaults to 1. |
-| ps | Union[int, None] | 每一页的视频数. Defaults to 30. |
-| keyword | Union[str, None] | 搜索关键词. Defaults to "". |
-| order | Union[VideoOrder, None] | 排序方式. Defaults to VideoOrder.PUBDATE |
+| `tid` | `int, optional` | 分区 ID. Defaults to 0（全部）. |
+| `pn` | `int, optional` | 页码，从 1 开始. Defaults to 1. |
+| `ps` | `int, optional` | 每一页的视频数. Defaults to 30. |
+| `keyword` | `str, optional` | 搜索关键词. Defaults to "". |
+| `order` | `VideoOrder, optional` | 排序方式. Defaults to VideoOrder.PUBDATE |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -660,9 +806,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| relation | RelationType | 用户关系。 |
+| `relation` | `RelationType` | 用户关系。 |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -674,9 +820,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| content | str | 需要修改的内容 |
+| `content` | `str` | 需要修改的内容 |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -687,9 +833,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| since | Union[int, None] | 开始时间(msec) |
+| `since` | `int, optional` | 开始时间(msec) |
 
-**Returns:** dict: 调用接口返回的内容。
+**Returns:** `dict`:  调用接口返回的内容。
 
 
 
@@ -718,9 +864,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| nick_name | str | 昵称 |
+| `nick_name` | `str` | 昵称 |
 
-**Returns:** List[bool, str]: 昵称是否可用 + 不可用原因
+**Returns:** `List[bool, str]`:  昵称是否可用 + 不可用原因
 
 
 
@@ -734,9 +880,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -750,10 +896,10 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| name | str | 分组名 |
-| credential | Credential | Credential |
+| `name` | `str` | 分组名 |
+| `credential` | `Credential` | Credential |
 
-**Returns:** API 调用返回结果。
+**Returns:** `dict`:  API 调用返回结果。
 
 
 
@@ -767,10 +913,10 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| group_id | int | 分组 ID |
-| credential | Credential | Credential |
+| `group_id` | `int` | 分组 ID |
+| `credential` | `Credential` | Credential |
 
-**Returns:** 调用 API 返回结果
+**Returns:** `dict`:  调用 API 返回结果
 
 
 
@@ -784,9 +930,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -800,13 +946,12 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| birthday | str | 生日 YYYY-MM-DD |
-| sex | str | 性别 男|女|保密 |
-| uname | str | 用户名 |
-| usersign | str | 个性签名 |
-| credential | Credential | Credential |
+| `birthday` | `str` | 生日 YYYY-MM-DD |
+| `sex` | `str` | 性别 男|女|保密 |
+| `uname` | `str` | 用户名 |
+| `usersign` | `str` | 个性签名 |
+| `credential` | `Credential` | Credential |
 
-**Returns:** None
 
 
 
@@ -819,11 +964,10 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
-| pn | Union[int, None] | 页码. Defaults to 1. |
-| ps | Union[int, None] | 每页数据大小. Defaults to 50. |
+| `credential` | `Credential` | 凭据类 |
+| `pn` | `int, optional` | 页码. Defaults to 1. |
+| `ps` | `int, optional` | 每页数据大小. Defaults to 50. |
 
-**Returns:** None
 
 
 
@@ -835,24 +979,7 @@ medialist排序顺序。
 
 
 
-**Returns:** int: 硬币数量
-
-
-
-
----
-
-## async def get_self_events()
-
-获取自己入站后每一刻的事件
-
-
-| name | type | description |
-| - | - | - |
-| ts | Union[int, None] | 时间戳. Defaults to 0. |
-| credential | Union[Credential, None] | 凭据. Defaults to None. |
-
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `int`:  硬币数量
 
 
 
@@ -866,9 +993,9 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭证。 |
+| `credential` | `Credential` | 凭证。 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -882,9 +1009,8 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** None
 
 
 
@@ -897,11 +1023,11 @@ medialist排序顺序。
 
 | name | type | description |
 | - | - | - |
-| page_num | int | 页码数 |
-| per_page_item | int | 每页多少条历史记录 |
-| credential | Credential | Credential |
+| `page_num` | `int` | 页码数 |
+| `per_page_item` | `int` | 每页多少条历史记录 |
+| `credential` | `Credential` | Credential |
 
-**Returns:** list(dict): 返回当前页的指定历史记录列表
+**Returns:** `list(dict)`:  返回当前页的指定历史记录列表
 
 
 
@@ -919,13 +1045,13 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | Credential |
-| _type | HistroyType | 历史记录分类, 默认为 HistroyType.ALL |
-| ps | int | 每页多少条历史记录, 默认为 20 |
-| view_at | int | 时间戳，获取此时间戳之前的历史记录 |
-| max | int | 历史记录截止目标 oid |
+| `credential` | `Credential` | Credential |
+| `_type` | `HistroyType` | 历史记录分类, 默认为 HistroyType.ALL |
+| `ps` | `int` | 每页多少条历史记录, 默认为 20 |
+| `view_at` | `int` | 时间戳，获取此时间戳之前的历史记录 |
+| `max` | `int` | 历史记录截止目标 oid |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -939,9 +1065,8 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | Credential |
+| `credential` | `Credential` | Credential |
 
-**Returns:** None
 
 
 
@@ -953,7 +1078,6 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 
 
-**Returns:** None
 
 
 
@@ -966,9 +1090,9 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭证。 |
+| `credential` | `Credential` | 凭证。 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -982,9 +1106,9 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭证。 |
+| `credential` | `Credential` | 凭证。 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -998,11 +1122,11 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| page_num: 页码 |  | 页码 |
-| page_size: 每页项数 |  | 每页项数 |
-| credential | Credential | 凭据类 |
+| `page_num` | `int` | 页码 |
+| `page_size` | `int` | 每页项数 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -1016,11 +1140,11 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| page_num: 页码 |  | 页码 |
-| page_size: 每页项数 |  | 每页项数 |
-| credential | Credential | 凭据类 |
+| `page_num` | `int` | 页码 |
+| `page_size` | `int` | 每页项数 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -1034,11 +1158,10 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
-| pn | Union[int, None] | 页码. Defaults to 1. |
-| ps | Union[int, None] | 每页数据大小. Defaults to 50. |
+| `credential` | `Credential` | 凭据类 |
+| `pn` | `int, optional` | 页码. Defaults to 1. |
+| `ps` | `int, optional` | 每页数据大小. Defaults to 50. |
 
-**Returns:** None
 
 
 
@@ -1051,11 +1174,10 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
-| pn | Union[int, None] | 页码. Defaults to 1. |
-| ps | Union[int, None] | 每页数据大小. Defaults to 50. |
+| `credential` | `Credential` | 凭据类 |
+| `pn` | `int, optional` | 页码. Defaults to 1. |
+| `ps` | `int, optional` | 每页数据大小. Defaults to 50. |
 
-**Returns:** None
 
 
 
@@ -1068,9 +1190,9 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -1084,25 +1206,10 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| names | str/List[str] | 用户名 |
+| `names` | `str/List[str]` | 用户名 |
+| `credential` | `Credential, optional` | 凭据类. Defaults to None. |
 
-**Returns:** dict: 调用 API 返回的结果
-
-
-
-
----
-
-## async def name2uid_sync()
-
-将用户名转为 uid
-
-
-| name | type | description |
-| - | - | - |
-| names | str/List[str] | 用户名 |
-
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -1116,11 +1223,11 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| group_id | int | 分组 ID |
-| new_name | str | 新的分组名 |
-| credential | Credential | Credential |
+| `group_id` | `int` | 分组 ID |
+| `new_name` | `str` | 新的分组名 |
+| `credential` | `Credential` | Credential |
 
-**Returns:** 调用 API 返回结果
+**Returns:** `dict`:  调用 API 返回结果
 
 
 
@@ -1134,11 +1241,11 @@ max、business、view_at 参数用于历史记录列表的 IFS (无限滚动)，
 
 | name | type | description |
 | - | - | - |
-| uids | List[int] | 要设置的用户 UID 列表，必须已关注。 |
-| group_ids | List[int] | 要复制到的分组列表 |
-| credential | Credential | Credential |
+| `uids` | `List[int]` | 要设置的用户 UID 列表，必须已关注。 |
+| `group_ids` | `List[int]` | 要复制到的分组列表 |
+| `credential` | `Credential` | Credential |
 
-**Returns:** API 调用结果
+**Returns:** `dict`:  API 调用结果
 
 
 

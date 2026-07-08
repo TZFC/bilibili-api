@@ -14,6 +14,7 @@ from .ResponseCodeException import *
 from .DanmakuClosedException import *
 from .LiveException import *
 from .CredentialNoBuvid3Exception import *
+from .CredentialNoBuvid4Exception import *
 from .CredentialNoBiliJctException import *
 from .CredentialNoSessdataException import *
 from .CredentialNoDedeUserIDException import *
@@ -21,3 +22,7 @@ from .DynamicExceedImagesException import *
 from .CredentialNoAcTimeValueException import *
 from .StatementException import *
 from .ExClimbWuzhiException import *
+from .GeetestException import *
+from .WbiRetryTimesExceedException import *
+from .CookiesRefreshException import *
+from .InitialStateException import *

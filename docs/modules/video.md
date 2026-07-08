@@ -12,6 +12,84 @@ bilibili_api.video
 from bilibili_api import video
 ```
 
+- [class AudioQuality()](#class-AudioQuality)
+- [class AudioStreamDownloadURL()](#class-AudioStreamDownloadURL)
+- [class DanmakuOperatorType()](#class-DanmakuOperatorType)
+- [class FLVStreamDownloadURL()](#class-FLVStreamDownloadURL)
+- [class MP4StreamDownloadURL()](#class-MP4StreamDownloadURL)
+- [class Video()](#class-Video)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def add\_tag()](#async-def-add\_tag)
+  - [async def add\_to\_toview()](#async-def-add\_to\_toview)
+  - [async def appeal()](#async-def-appeal)
+  - [async def delete\_from\_toview()](#async-def-delete\_from\_toview)
+  - [async def delete\_tag()](#async-def-delete\_tag)
+  - [async def get\_ai\_conclusion()](#async-def-get\_ai\_conclusion)
+  - [def get\_aid()](#def-get\_aid)
+  - [def get\_bvid()](#def-get\_bvid)
+  - [async def get\_chargers()](#async-def-get\_chargers)
+  - [async def get\_cid()](#async-def-get\_cid)
+  - [async def get\_danmaku\_snapshot()](#async-def-get\_danmaku\_snapshot)
+  - [async def get\_danmaku\_view()](#async-def-get\_danmaku\_view)
+  - [async def get\_danmaku\_xml()](#async-def-get\_danmaku\_xml)
+  - [async def get\_danmakus()](#async-def-get\_danmakus)
+  - [async def get\_detail()](#async-def-get\_detail)
+  - [async def get\_download\_url()](#async-def-get\_download\_url)
+  - [async def get\_history\_danmaku\_index()](#async-def-get\_history\_danmaku\_index)
+  - [async def get\_info()](#async-def-get\_info)
+  - [async def get\_online()](#async-def-get\_online)
+  - [async def get\_pages()](#async-def-get\_pages)
+  - [async def get\_pay\_coins()](#async-def-get\_pay\_coins)
+  - [async def get\_pbp()](#async-def-get\_pbp)
+  - [async def get\_player\_info()](#async-def-get\_player\_info)
+  - [async def get\_private\_notes\_list()](#async-def-get\_private\_notes\_list)
+  - [async def get\_public\_notes\_list()](#async-def-get\_public\_notes\_list)
+  - [async def get\_related()](#async-def-get\_related)
+  - [async def get\_relation()](#async-def-get\_relation)
+  - [async def get\_special\_dms()](#async-def-get\_special\_dms)
+  - [async def get\_subtitle()](#async-def-get\_subtitle)
+  - [async def get\_tags()](#async-def-get\_tags)
+  - [async def get\_up\_mid()](#async-def-get\_up\_mid)
+  - [async def get\_video\_snapshot()](#async-def-get\_video\_snapshot)
+  - [async def has\_favoured()](#async-def-has\_favoured)
+  - [async def has\_liked()](#async-def-has\_liked)
+  - [async def has\_liked\_danmakus()](#async-def-has\_liked\_danmakus)
+  - [async def is\_episode()](#async-def-is\_episode)
+  - [async def is\_forbid\_note()](#async-def-is\_forbid\_note)
+  - [async def like()](#async-def-like)
+  - [async def like\_danmaku()](#async-def-like\_danmaku)
+  - [async def operate\_danmaku()](#async-def-operate\_danmaku)
+  - [async def pay\_coin()](#async-def-pay\_coin)
+  - [async def recall\_danmaku()](#async-def-recall\_danmaku)
+  - [async def report\_start\_watching()](#async-def-report\_start\_watching)
+  - [async def report\_watch\_history()](#async-def-report\_watch\_history)
+  - [async def send\_danmaku()](#async-def-send\_danmaku)
+  - [def set\_aid()](#def-set\_aid)
+  - [def set\_bvid()](#def-set\_bvid)
+  - [async def set\_favorite()](#async-def-set\_favorite)
+  - [async def share()](#async-def-share)
+  - [async def submit\_subtitle()](#async-def-submit\_subtitle)
+  - [async def triple()](#async-def-triple)
+  - [async def turn\_to\_episode()](#async-def-turn\_to\_episode)
+- [class VideoAppealReasonType()](#class-VideoAppealReasonType)
+  - [def PLAGIARISM()](#def-PLAGIARISM)
+  - [def UNREAL\_COPYRIGHT()](#def-UNREAL\_COPYRIGHT)
+- [class VideoCodecs()](#class-VideoCodecs)
+- [class VideoDownloadURLDataDetecter()](#class-VideoDownloadURLDataDetecter)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [def check\_flv\_mp4\_stream()](#def-check\_flv\_mp4\_stream)
+  - [def check\_video\_and\_audio\_stream()](#def-check\_video\_and\_audio\_stream)
+  - [def detect()](#def-detect)
+  - [def detect\_all()](#def-detect\_all)
+  - [def detect\_best\_streams()](#def-detect\_best\_streams)
+- [class VideoOnlineMonitor()](#class-VideoOnlineMonitor)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def connect()](#async-def-connect)
+  - [async def disconnect()](#async-def-disconnect)
+- [class VideoQuality()](#class-VideoQuality)
+- [class VideoStreamDownloadURL()](#class-VideoStreamDownloadURL)
+- [async def get\_cid\_info()](#async-def-get\_cid\_info)
+
 ---
 
 ## class AudioQuality()
@@ -42,8 +120,14 @@ from bilibili_api import video
 
 | name | type | description |
 | - | - | - |
-| url | str | 音频流 url |
-| audio_quality | AudioQuality | 音频流清晰度 |
+| `url` | `str` | 音频流 url |
+| `audio_quality` | `AudioQuality` | 音频流清晰度 |
+| `backup_url` | `List[str]` | 备用链接 |
+| `bandwidth` | `int` | 码率 |
+| `codecs` | `str` | 视频流详细编码 |
+| `mime_type` | `str` | MIME 类型 |
+| `segment_base_initialization` | `str` | SegmentBase.Initialization |
+| `segment_base_index_range` | `str` | SegmentBase.indexRange |
 
 
 ---
@@ -65,22 +149,6 @@ from bilibili_api import video
 
 **@dataclasses.dataclass** 
 
-## class EpisodeTryMP4DownloadURL()
-
-(@dataclass)
-
-番剧/课程试看的 mp4 播放流
-
-
-| name | type | description |
-| - | - | - |
-| url | str | 番剧试看的 mp4 播放流 |
-
-
----
-
-**@dataclasses.dataclass** 
-
 ## class FLVStreamDownloadURL()
 
 (@dataclass)
@@ -90,23 +158,23 @@ FLV 视频流
 
 | name | type | description |
 | - | - | - |
-| url | str | FLV 流 url |
+| `url` | `str` | FLV 流 url |
 
 
 ---
 
 **@dataclasses.dataclass** 
 
-## class HTML5MP4DownloadURL()
+## class MP4StreamDownloadURL()
 
 (@dataclass)
 
-可供 HTML5 播放的 mp4 视频流
+MP4 视频流
 
 
 | name | type | description |
 | - | - | - |
-| url | str | HTML5 mp4 视频流 |
+| `url` | `str` | HTML5 mp4 视频流 |
 
 
 ---
@@ -118,6 +186,16 @@ FLV 视频流
 
 
 
+### def \_\_init\_\_()
+
+
+| name | type | description |
+| - | - | - |
+| `bvid` | `str \| None, optional` | BV 号. bvid 和 aid 必须提供其中之一。 |
+| `aid` | `int \| None, optional` | AV 号. bvid 和 aid 必须提供其中之一。 |
+| `credential` | `Credential \| None, optional` | Credential 类. Defaults to None. |
+
+
 ### async def add_tag()
 
 添加标签。
@@ -125,9 +203,9 @@ FLV 视频流
 
 | name | type | description |
 | - | - | - |
-| name | str | 标签名字。 |
+| `name` | `str` | 标签名字。 |
 
-**Returns:** dict: 调用 API 返回的结果。会返回标签 ID。
+**Returns:** `dict`:  调用 API 返回的结果。会返回标签 ID。
 
 
 
@@ -138,7 +216,7 @@ FLV 视频流
 
 
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -150,10 +228,10 @@ FLV 视频流
 
 | name | type | description |
 | - | - | - |
-| reason | Any | 投诉类型。传入 VideoAppealReasonType 中的项目即可。 |
-| detail | str | 详情信息。 |
+| `reason` | `Any` | 投诉类型。传入 VideoAppealReasonType 中的项目即可。 |
+| `detail` | `str` | 详情信息。 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -164,7 +242,7 @@ FLV 视频流
 
 
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -176,9 +254,9 @@ FLV 视频流
 
 | name | type | description |
 | - | - | - |
-| tag_id | int | 标签 ID。 |
+| `tag_id` | `int` | 标签 ID。 |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -192,11 +270,11 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| cid | Union[int, None] | 分 P 的 cid。 |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。 |
-| up_mid | Union[int, None] | up 主的 mid。 |
+| `cid` | `Optional, int` | 分 P 的 cid。 |
+| `page_index` | `Optional, int` | 分 P 号，从 0 开始。 |
+| `up_mid` | `Optional, int` | up 主的 mid。 |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -207,7 +285,7 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** int: aid。
+**Returns:** `int`:  aid。
 
 
 
@@ -218,7 +296,7 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** str: BVID。
+**Returns:** `str`:  BVID。
 
 
 
@@ -229,7 +307,7 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -241,9 +319,9 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | int | 分 P |
+| `page_index` | `int` | 分 P |
 
-**Returns:** int: cid
+**Returns:** `int`:  cid
 
 
 
@@ -254,7 +332,7 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -266,10 +344,10 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
+| `page_index` | `int, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `cid` | `int, optional` | 分 P 的 ID。Defaults to None |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -281,10 +359,10 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 序号. Defaults to 0. |
-| cid | Union[int, None] | cid. Defaults to None. |
+| `page_index` | `int, optional` | 分 P 序号. Defaults to 0. |
+| `cid` | `int \| None, optional` | cid. Defaults to None. |
 
-**Returns:** xml 文件源
+**Returns:** `str`:  xml 文件源
 
 
 
@@ -296,13 +374,13 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| date | Union[datetime.Date, None] | 指定日期后为获取历史弹幕，精确到年月日。Defaults to None. |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
-| from_seg | Union[int, None] | 从第几段开始(0 开始编号，None 为从第一段开始，一段 6 分钟). Defaults to None. |
-| to_seg | Union[int, None] | 到第几段结束(0 开始编号，None 为到最后一段，包含编号的段，一段 6 分钟). Defaults to None. |
+| `page_index` | `int, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `date` | `datetime.Date \| None, optional` | 指定日期后为获取历史弹幕，精确到年月日。Defaults to None. |
+| `cid` | `int \| None, optional` | 分 P 的 ID。Defaults to None |
+| `from_seg` | `int, optional` | 从第几段开始(0 开始编号，None 为从第一段开始，一段 6 分钟). Defaults to None. |
+| `to_seg` | `int, optional` | 到第几段结束(0 开始编号，None 为到最后一段，包含编号的段，一段 6 分钟). Defaults to None. |
 
-**Returns:** List[Danmaku]: Danmaku 类的列表。
+**Returns:** `List[Danmaku]`:  Danmaku 类的列表。
 
 
 注意：
@@ -318,7 +396,7 @@ cid 和 page_index 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -334,10 +412,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
+| `page_index` | `int \| None, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `cid` | `int \| None, optional` | 分 P 的 ID。Defaults to None |
+| `html5` | `bool, optional` | 是否选择移动端 HTML5 播放流（仅支持 MP4 格式）此时获得的媒体流访问无需鉴权。 |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -349,11 +428,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| date | datetime.date \| None | 精确到年月. Defaults to None。 |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
+| `page_index` | `int \| None, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `date` | `datetime.date \| None` | 精确到年月. Defaults to None。 |
+| `cid` | `int \| None, optional` | 分 P 的 ID。Defaults to None |
 
-**Returns:** None | List[str]: 调用 API 返回的结果。不存在时为 None。
+**Returns:** `None | List[str]`:  调用 API 返回的结果。不存在时为 None。
 
 
 
@@ -364,7 +443,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -375,7 +454,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -386,7 +465,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -397,7 +476,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** int: 视频已投币数量。
+**Returns:** `int`:  视频已投币数量。
 
 
 
@@ -409,25 +488,25 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | int \| None | 分 P 号 |
-| cid | int \| None | 分 P 编码 |
+| `page_index` | `int \| None` | 分 P 号 |
+| `cid` | `int \| None` | 分 P 编码 |
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
 
 ### async def get_player_info()
 
-获取字幕信息
+获取视频上一次播放的记录，字幕和地区信息。需要分集的 cid, 返回数据中含有json字幕的链接
 
 
 | name | type | description |
 | - | - | - |
-| cid | int \| None | 分 P ID,从视频信息中获取 |
-| epid | int \| None | 番剧分集 ID,从番剧信息中获取 |
+| `cid` | `int \| None` | 分 P ID,从视频信息中获取 |
+| `epid` | `int \| None` | 番剧分集 ID,从番剧信息中获取 |
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -438,7 +517,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** list: note_Ids。
+**Returns:** `list`:  note_Ids。
 
 
 
@@ -450,10 +529,10 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| pn | int | 页码 |
-| ps | int | 每页项数 |
+| `pn` | `int` | 页码 |
+| `ps` | `int` | 每页项数 |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -464,7 +543,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -475,7 +554,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -487,24 +566,24 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号. Defaults to 0. |
-| cid | Union[int, None] | 分 P id. Defaults to None. |
+| `page_index` | `int, optional` | 分 P 号. Defaults to 0. |
+| `cid` | `int \| None, optional` | 分 P id. Defaults to None. |
 
-**Returns:** List[SpecialDanmaku]: 调用接口解析后的结果
+**Returns:** `List[SpecialDanmaku]`:  调用接口解析后的结果
 
 
 
 
 ### async def get_subtitle()
 
-获取视频上一次播放的记录，字幕和地区信息。需要分集的 cid, 返回数据中含有json字幕的链接
+获取字幕信息
 
 
 | name | type | description |
 | - | - | - |
-| cid | int \| None | 分 P ID,从视频信息中获取 |
+| `cid` | `int \| None` | 分 P ID,从视频信息中获取 |
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -516,10 +595,10 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | int \| None | 分 P 序号. Defaults to 0. |
-| cid | int \| None | 分 P 编码. Defaults to None. |
+| `page_index` | `int \| None` | 分 P 序号. Defaults to 0. |
+| `cid` | `int \| None` | 分 P 编码. Defaults to None. |
 
-**Returns:** List[dict]: 调用 API 返回的结果。
+**Returns:** `List[dict]`:  调用 API 返回的结果。
 
 
 
@@ -530,7 +609,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** int: up_mid
+**Returns:** `int`:  up_mid
 
 
 
@@ -542,11 +621,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| cid | int | 分 P CID(可选) |
-| json_index | bool | json 数组截取时间表 True 为需要，False 不需要 |
-| pvideo | bool | 是否只获取预览 |
+| `cid` | `int` | 分 P CID(可选) |
+| `json_index` | `bool` | json 数组截取时间表 True 为需要，False 不需要 |
+| `pvideo` | `bool` | 是否只获取预览 |
 
-**Returns:** dict: 调用 API 返回的结果,数据中 Url 没有 http 头
+**Returns:** `dict`:  调用 API 返回的结果,数据中 Url 没有 http 头
 
 
 
@@ -557,7 +636,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** bool: 视频是否已收藏。
+**Returns:** `bool`:  视频是否已收藏。
 
 
 
@@ -568,7 +647,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** bool: 视频是否点赞过。
+**Returns:** `bool`:  视频是否点赞过。
 
 
 
@@ -580,11 +659,22 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| ids | List[int] \| None | 要查询的弹幕 ID 列表。 |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
+| `page_index` | `int \| None, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `ids` | `List[int] \| None` | 要查询的弹幕 ID 列表。 |
+| `cid` | `int \| None, optional` | 分 P 的 ID。Defaults to None |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
+
+
+
+
+### async def is_episode()
+
+判断视频是否是番剧
+
+
+
+**Returns:** `bool`:  是否是番剧
 
 
 
@@ -595,7 +685,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** bool: 是否禁止笔记。
+**Returns:** `bool`:  是否禁止笔记。
 
 
 
@@ -607,9 +697,9 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| status | Union[bool, None] | 点赞状态。Defaults to True. |
+| `status` | `bool, optional` | 点赞状态。Defaults to True. |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -621,12 +711,12 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| dmid | int \| None | 弹幕 ID。 |
-| status | Union[bool, None] | 点赞状态。Defaults to True |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
+| `page_index` | `int \| None, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `dmid` | `int \| None` | 弹幕 ID。 |
+| `status` | `bool \| None, optional` | 点赞状态。Defaults to True |
+| `cid` | `int \| None, optional` | 分 P 的 ID。Defaults to None |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -638,12 +728,12 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| dmids | List[int] \| None | 弹幕 ID 列表。 |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
-| type_ | DanmakuOperatorType \| None | 操作类型 |
+| `page_index` | `int \| None, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `dmids` | `List[int] \| None` | 弹幕 ID 列表。 |
+| `cid` | `int \| None, optional` | 分 P 的 ID。Defaults to None |
+| `type_` | `DanmakuOperatorType \| None` | 操作类型 |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -655,10 +745,10 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| num | Union[int, None] | 硬币数量，为 1 ~ 2 个。Defaults to 1. |
-| like | Union[bool, None] | 是否同时点赞。Defaults to False. |
+| `num` | `int, optional` | 硬币数量，为 1 ~ 2 个。Defaults to 1. |
+| `like` | `bool, optional` | 是否同时点赞。Defaults to False. |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -670,11 +760,41 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号 |
-| dmid | int | 弹幕 id |
-| cid | Union[int, None] | 分 P 编码 |
+| `page_index` | `int \| None, optional` | 分 P 号 |
+| `dmid` | `int` | 弹幕 id |
+| `cid` | `int \| None, optional` | 分 P 编码 |
 
-**Returns:** 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+### async def report_start_watching()
+
+上报开始观看
+该接口亦被用于计算播放量, 播放量更新不是实时的
+该接口使用似乎存在 200 播放限制, 请勿滥用!
+
+| name | type | description |
+| - | - | - |
+| `page_index` | `int \| None` | 分 P 序号 |
+
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+### async def report_watch_history()
+
+上报观看历史
+
+| name | type | description |
+| - | - | - |
+| `progress` | `int` | 观看进度 (单位 秒) |
+| `page_index` | `int \| None` | 分 P 序号 |
+| `cid` | `int \| None` | 分 P ID,从视频信息中获取 |
+
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -686,11 +806,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| page_index | Union[int, None] | 分 P 号，从 0 开始。Defaults to None |
-| danmaku | Danmaku \| None | Danmaku 类。 |
-| cid | Union[int, None] | 分 P 的 ID。Defaults to None |
+| `page_index` | `int \| None, optional` | 分 P 号，从 0 开始。Defaults to None |
+| `danmaku` | `Danmaku \| None` | Danmaku 类。 |
+| `cid` | `int \| None, optional` | 分 P 的 ID。Defaults to None |
 
-**Returns:** dict: 调用 API 返回的结果。
+**Returns:** `dict`:  调用 API 返回的结果。
 
 
 
@@ -702,9 +822,8 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| aid | int | AV 号。 |
+| `aid` | `int` | AV 号。 |
 
-**Returns:** None
 
 
 
@@ -715,9 +834,8 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| bvid | str | 要设置的 bvid。 |
+| `bvid` | `str` | 要设置的 bvid。 |
 
-**Returns:** None
 
 
 
@@ -725,13 +843,15 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 设置视频收藏状况。
 
+**如果视频是番剧 `await is_bangumi()`，请转为 `Episode` 类收藏**
+
 
 | name | type | description |
 | - | - | - |
-| add_media_ids | Union[List[int], None] | 要添加到的收藏夹 ID. Defaults to []. |
-| del_media_ids | Union[List[int], None] | 要移出的收藏夹 ID. Defaults to []. |
+| `add_media_ids` | `List[int], optional` | 要添加到的收藏夹 ID. Defaults to []. |
+| `del_media_ids` | `List[int], optional` | 要移出的收藏夹 ID. Defaults to []. |
 
-**Returns:** dict: 调用 API 返回结果。
+**Returns:** `dict`:  调用 API 返回结果。
 
 
 
@@ -742,7 +862,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** int: 当前分享数
+**Returns:** `int`:  当前分享数
 
 
 
@@ -774,14 +894,14 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| lan | str | 字幕语言代码，参考 https |
-| data | Dict | 字幕数据 |
-| submit | bool | 是否提交，不提交为草稿 |
-| sign | bool | 是否署名 |
-| page_index | Union[int, None] | 分 P 索引. Defaults to None. |
-| cid | Union[int, None] | 分 P id. Defaults to None. |
+| `lan` | `str` | 字幕语言代码，参考 https |
+| `data` | `Dict` | 字幕数据 |
+| `submit` | `bool` | 是否提交，不提交为草稿 |
+| `sign` | `bool` | 是否署名 |
+| `page_index` | `int \| None, optional` | 分 P 索引. Defaults to None. |
+| `cid` | `int \| None, optional` | 分 P id. Defaults to None. |
 
-**Returns:** dict: API 调用返回结果
+**Returns:** `dict`:  API 调用返回结果
 
 
 
@@ -793,7 +913,18 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+### async def turn_to_episode()
+
+将视频转换为番剧
+
+
+
+**Returns:** `Episode`:  番剧对象
 
 
 
@@ -817,12 +948,20 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 - CLICKBAIT(): 不良封面/标题
 - POLITICAL_RUMORS(): 涉政谣言
 - SOCIAL_RUMORS(): 涉社会事件谣言
-- COVID_RUMORS(): 疫情谣言
 - UNREAL_EVENT(): 虚假不实消息
 - OTHER(): 有其他问题
 - LEAD_WAR(): 引战
 - CANNOT_CHARGE(): 不能参加充电
 - UNREAL_COPYRIGHT(source: str): 转载/自制类型错误
+- ILLEGAL_POPULARIZE(): 违规推广
+- ILLEGAL_OTHER(): 其他不规范行为
+- DANGEROUS(): 危险行为
+- OTHER_NEW(): 其他
+- COOPERATE_INFRINGEMENT(): 企业商誉侵权
+- INFRINGEMENT(): 侵权申诉
+- VIDEO_INFRINGEMENT(): 盗搬稿件-路人举报
+- DISCOMFORT(): 观感不适
+- ILLEGAL_URL(): 违法信息外链
 
 
 
@@ -836,9 +975,8 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| bvid | str | 撞车对象 |
+| `bvid` | `str` | 撞车对象 |
 
-**Returns:** None
 
 
 
@@ -851,9 +989,8 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| source | str | 原创视频出处 |
+| `source` | `str` | 原创视频出处 |
 
-**Returns:** None
 
 
 
@@ -868,6 +1005,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 - HEV: HEVC(H.265)
 - AVC: AVC(H.264)
 - AV1: AV1
+- UNKNOWN: 未知
 
 
 
@@ -890,46 +1028,32 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-### def check_episode_try_mp4_stream()
-
-判断是否为番剧/课程试看的 mp4 视频流
+### def \_\_init\_\_()
 
 
+| name | type | description |
+| - | - | - |
+| `data` | `Dict` | `Video.get_download_url` 返回的结果 |
 
-**Returns:** bool: 是否为番剧试看的 mp4 视频流
 
+### def check_flv_mp4_stream()
 
-
-
-### def check_flv_stream()
-
-判断是否为 FLV 视频流
+判断是否为 FLV / MP4 流
 
 
 
-**Returns:** bool: 是否为 FLV 视频流
-
-
-
-
-### def check_html5_mp4_stream()
-
-判断是否为 HTML5 可播放的 mp4 视频流
-
-
-
-**Returns:** bool: 是否为 HTML5 可播放的 mp4 视频流
+**Returns:** `bool`:  是否为 FLV / MP4 流
 
 
 
 
 ### def check_video_and_audio_stream()
 
-判断是否为音视频分离流
+判断是否为 DASH （音视频分离）
 
 
 
-**Returns:** bool: 是否为音视频分离流
+**Returns:** `bool`:  是否为 DASH
 
 
 
@@ -941,22 +1065,22 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| video_max_quality | Union[VideoQuality, None] | 设置提取的视频流清晰度最大值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._8K. |
-| audio_max_quality | Union[AudioQuality, None] | 设置提取的音频流清晰度最大值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._192K. |
-| video_min_quality | Union[VideoQuality, None] | 设置提取的视频流清晰度最小值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._360P. |
-| audio_min_quality | Union[AudioQuality, None] | 设置提取的音频流清晰度最小值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._64K. |
-| video_accepted_qualities | Union[List[VideoQuality], None] | 设置允许的所有视频流清晰度. Defaults to ALL. |
-| audio_accepted_qualities | Union[List[AudioQuality], None] | 设置允许的所有音频清晰度. Defaults to ALL. |
-| codecs | Union[List[VideoCodecs], None] | 设置所有允许提取出来的视频编码. 此项不会忽略 HDR/杜比. Defaults to ALL codecs. |
-| no_dolby_video | Union[bool, None] | 是否禁止提取杜比视界视频流. Defaults to False. |
-| no_dolby_audio | Union[bool, None] | 是否禁止提取杜比全景声音频流. Defaults to False. |
-| no_hdr | Union[bool, None] | 是否禁止提取 HDR 视频流. Defaults to False. |
-| no_hires | Union[bool, None] | 是否禁止提取 Hi-Res 音频流. Defaults to False. |
+| `video_max_quality` | `VideoQuality, optional` | 设置提取的视频流清晰度最大值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._8K. |
+| `audio_max_quality` | `AudioQuality, optional` | 设置提取的音频流清晰度最大值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._192K. |
+| `video_min_quality` | `VideoQuality, optional` | 设置提取的视频流清晰度最小值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._360P. |
+| `audio_min_quality` | `AudioQuality, optional` | 设置提取的音频流清晰度最小值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._64K. |
+| `video_accepted_qualities` | `List[VideoQuality], optional` | 设置允许的所有视频流清晰度. Defaults to ALL. |
+| `audio_accepted_qualities` | `List[AudioQuality], optional` | 设置允许的所有音频清晰度. Defaults to ALL. |
+| `codecs` | `List[VideoCodecs], optional` | 设置所有允许提取出来的视频编码. 此项不会忽略 HDR/杜比. Defaults to ALL codecs. |
+| `no_dolby_video` | `bool, optional` | 是否禁止提取杜比视界视频流. Defaults to False. |
+| `no_dolby_audio` | `bool, optional` | 是否禁止提取杜比全景声音频流. Defaults to False. |
+| `no_hdr` | `bool, optional` | 是否禁止提取 HDR 视频流. Defaults to False. |
+| `no_hires` | `bool, optional` | 是否禁止提取 Hi-Res 音频流. Defaults to False. |
 
-**Returns:** List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]: 提取出来的视频/音频流
+**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]`:  提取出来的视频/音频流
 
 
-**参数仅能在音视频流分离的情况下产生作用，flv / mp4 试看流 / html5 mp4 流下以下参数均没有作用**
+**参数仅能在音视频流分离的情况下产生作用，flv / mp4 流下以下参数均没有作用**
 
 
 
@@ -966,7 +1090,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-**Returns:** List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]: 所有的视频/音频流
+**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]`:  所有的视频/音频流
 
 
 
@@ -978,19 +1102,19 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 | name | type | description |
 | - | - | - |
-| video_max_quality | VideoQuality | 设置提取的视频流清晰度最大值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._8K. |
-| audio_max_quality | AudioQuality | 设置提取的音频流清晰度最大值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._192K. |
-| video_min_quality | Union[VideoQuality, None] | 设置提取的视频流清晰度最小值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._360P. |
-| audio_min_quality | Union[AudioQuality, None] | 设置提取的音频流清晰度最小值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._64K. |
-| video_accepted_qualities | Union[List[VideoQuality], None] | 设置允许的所有视频流清晰度. Defaults to ALL. |
-| audio_accepted_qualities | Union[List[AudioQuality], None] | 设置允许的所有音频清晰度. Defaults to ALL. |
-| codecs | List[VideoCodecs] | 设置所有允许提取出来的视频编码. 在数组中越靠前的编码选择优先级越高. 此项不会忽略 HDR/杜比. Defaults to [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV]. |
-| no_dolby_video | bool | 是否禁止提取杜比视界视频流. Defaults to False. |
-| no_dolby_audio | bool | 是否禁止提取杜比全景声音频流. Defaults to False. |
-| no_hdr | bool | 是否禁止提取 HDR 视频流. Defaults to False. |
-| no_hires | bool | 是否禁止提取 Hi-Res 音频流. Defaults to False. |
+| `video_max_quality` | `VideoQuality` | 设置提取的视频流清晰度最大值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._8K. |
+| `audio_max_quality` | `AudioQuality` | 设置提取的音频流清晰度最大值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._192K. |
+| `video_min_quality` | `VideoQuality, optional` | 设置提取的视频流清晰度最小值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._360P. |
+| `audio_min_quality` | `AudioQuality, optional` | 设置提取的音频流清晰度最小值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._64K. |
+| `video_accepted_qualities` | `List[VideoQuality], optional` | 设置允许的所有视频流清晰度. Defaults to ALL. |
+| `audio_accepted_qualities` | `List[AudioQuality], optional` | 设置允许的所有音频清晰度. Defaults to ALL. |
+| `codecs` | `List[VideoCodecs]` | 设置所有允许提取出来的视频编码. 在数组中越靠前的编码选择优先级越高. 此项不会忽略 HDR/杜比. Defaults to [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV]. |
+| `no_dolby_video` | `bool` | 是否禁止提取杜比视界视频流. Defaults to False. |
+| `no_dolby_audio` | `bool` | 是否禁止提取杜比全景声音频流. Defaults to False. |
+| `no_hdr` | `bool` | 是否禁止提取 HDR 视频流. Defaults to False. |
+| `no_hires` | `bool` | 是否禁止提取 Hi-Res 音频流. Defaults to False. |
 
-**Returns:** List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | None]: FLV 视频流 / HTML5 MP4 视频流 / 番剧或课程试看 MP4 视频流返回 `[FLVStreamDownloadURL | HTML5MP4StreamDownloadURL | EpisodeTryMP4DownloadURL]`, 否则为 `[VideoStreamDownloadURL, AudioStreamDownloadURL]`, 如果未匹配上任何合适的流则对应的位置位 `None`
+**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | None]`:  FLV 视频流 / HTML5 MP4 视频流 / 番剧或课程试看 MP4 视频流返回 `[FLVStreamDownloadURL | HTML5MP4StreamDownloadURL | EpisodeTryMP4DownloadURL]`, 否则为 `[VideoStreamDownloadURL, AudioStreamDownloadURL]`, 如果未匹配上任何合适的流则对应的位置位 `None`
 
 
 **以上参数仅能在音视频流分离的情况下产生作用，flv / mp4 试看流 / html5 mp4 流下以下参数均没有作用**
@@ -1026,19 +1150,32 @@ print(data)
 r.add_event_listener("ONLINE", handler2)
 
 asyncio.get_event_loop().run_until_complete(r.connect())
-
 ```
 
 Extends: AsyncEvent
+
+Logger: VideoOnlineMonitor().logger
 
 Events:
 ONLINE：在线人数更新。  CallbackData: dict。
 DANMAKU：   收到实时弹幕。  CallbackData: Danmaku。
 DISCONNECTED：  正常断开连接。  CallbackData: None。
-ERROR:  发生错误。 CallbackData: aiohttp.ClientWebSocketResponse。
+ERROR:  发生错误。 CallbackData: None。
 CONNECTED:  成功连接。 CallbackData: None。
 
 
+
+
+### def \_\_init\_\_()
+
+
+| name | type | description |
+| - | - | - |
+| `bvid` | `str \| None, optional` | BVID. Defaults to None. |
+| `aid` | `int \| None, optional` | AID. Defaults to None. |
+| `page_index` | `int, optional` | 分 P 序号. Defaults to 0. |
+| `credential` | `Credential \| None, optional` | Credential 类. Defaults to None. |
+| `debug` | `bool, optional` | 调试模式，将输出更详细信息. Defaults to False. |
 
 
 ### async def connect()
@@ -1047,7 +1184,6 @@ CONNECTED:  成功连接。 CallbackData: None。
 
 
 
-**Returns:** None
 
 
 
@@ -1057,7 +1193,6 @@ CONNECTED:  成功连接。 CallbackData: None。
 
 
 
-**Returns:** None
 
 
 
@@ -1073,6 +1208,7 @@ CONNECTED:  成功连接。 CallbackData: None。
 - _480P: 清晰 480P
 - _720P: 高清 720P60
 - _1080P: 高清 1080P
+- AI_REPAIR: 智能修复（人工智能修复画质）
 - _1080P_PLUS: 高清 1080P 高码率
 - _1080P_60: 高清 1080P 60 帧码率
 - _4K: 超清 4K
@@ -1096,9 +1232,18 @@ CONNECTED:  成功连接。 CallbackData: None。
 
 | name | type | description |
 | - | - | - |
-| url | str | 视频流 url |
-| video_quality | VideoQuality | 视频流清晰度 |
-| video_codecs | VideoCodecs | 视频流编码 |
+| `url` | `str` | 视频流 url |
+| `video_quality` | `VideoQuality` | 视频流清晰度 |
+| `video_codecs` | `VideoCodecs` | 视频流编码 |
+| `backup_url` | `List[str]` | 备用链接 |
+| `bandwidth` | `int` | 码率 |
+| `codecs` | `str` | 视频流详细编码 |
+| `frame_rate` | `float` | 帧率 |
+| `scale` | `Tuple[int, int]` | 画面尺寸 |
+| `sar` | `Tuple[int, int]` | 采样纵横比 |
+| `mime_type` | `str` | MIME 类型 |
+| `segment_base_initialization` | `str` | SegmentBase.Initialization |
+| `segment_base_index_range` | `str` | SegmentBase.indexRange |
 
 
 ---
@@ -1109,20 +1254,7 @@ CONNECTED:  成功连接。 CallbackData: None。
 
 
 
-**Returns:** dict: 调用 https://hd.biliplus.com 的 API 返回的结果
-
-
-
-
----
-
-## def get_cid_info_sync()
-
-获取 cid 信息 (对应的视频，具体分 P 序号，up 等)
-
-
-
-**Returns:** dict: 调用 https://hd.biliplus.com 的 API 返回的结果
+**Returns:** `dict`:  调用 https//hd.biliplus.com 的 API 返回的结果
 
 
 

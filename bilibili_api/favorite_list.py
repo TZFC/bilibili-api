@@ -10,8 +10,7 @@ from typing import List, Union, Optional
 from . import user
 from .video import Video
 from .utils.utils import join, get_api, raise_for_statement
-from .utils.credential import Credential
-from .utils.network import Api
+from .utils.network import Api, Credential
 from .exceptions.ArgsException import ArgsException
 
 API = get_api("favorite-list")
@@ -151,11 +150,19 @@ class FavoriteList:
         Returns:
             dict: 调用 API 返回的结果
         """
-        raise_for_statement(self.__type == FavoriteListType.VIDEO, "此函数仅在收藏夹为视频收藏家时可用")
+        raise_for_statement(
+            self.__type == FavoriteListType.VIDEO, "此函数仅在收藏夹为视频收藏家时可用"
+        )
         raise_for_statement(self.__media_id != None, "视频收藏夹需要 media_id")
 
         return await get_video_favorite_list_content(
-            self.__media_id, page=page, keyword=keyword, order=order, tid=tid, mode=mode, credential=self.credential
+            self.__media_id,
+            page=page,
+            keyword=keyword,
+            order=order,
+            tid=tid,
+            mode=mode,
+            credential=self.credential,
         )
 
     async def get_content(self, page: int = 1) -> dict:
@@ -184,13 +191,18 @@ class FavoriteList:
         """
         获取收藏夹所有内容的 ID。
 
+        **注意：接口针对番剧剧集视频返回的 id / bvid 实际上对应的是其 epid**
+
         Returns:
             dict: 调用 API 返回的结果
         """
         raise_for_statement(self.__media_id != None, "视频收藏夹需要 media_id")
 
         api = API["info"]["list_content_id_list"]
-        params = {"media_id": self.__media_id}
+        params = {
+            "media_id": self.__media_id,
+            "platform": "web",
+        }
 
         return (
             await Api(**api, credential=self.credential).update_params(**params).result
@@ -216,7 +228,7 @@ async def get_video_favorite_list(
         dict: 调用 API 返回的结果
     """
     api = API["info"]["list_list"]
-    params = {"up_mid": uid, "type": 2}
+    params = {"up_mid": uid, "type": 2, "web_location": "333.1387"}
 
     if video is not None:
         params["rid"] = video.get_aid()
@@ -264,6 +276,8 @@ async def get_video_favorite_list_content(
         "order": order.value,
         "tid": tid,
         "type": mode.value,
+        "platform": "web",
+        "web_location": "333.1387",
     }
 
     if keyword is not None:

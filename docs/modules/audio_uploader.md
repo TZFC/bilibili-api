@@ -10,6 +10,33 @@ bilibili_api.audio_uploader
 from bilibili_api import audio_uploader
 ```
 
+- [class AudioUploader()](#class-AudioUploader)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def abort()](#async-def-abort)
+  - [async def start()](#async-def-start)
+- [class AudioUploaderEvents()](#class-AudioUploaderEvents)
+- [class AuthorInfo()](#class-AuthorInfo)
+- [class CompilationCategories()](#class-CompilationCategories)
+  - [class AudioType()](#class-AudioType)
+  - [class ContentType()](#class-ContentType)
+  - [class CreationType()](#class-CreationType)
+  - [class Language()](#class-Language)
+  - [class SongType()](#class-SongType)
+  - [class Style()](#class-Style)
+  - [class Theme()](#class-Theme)
+- [class SongCategories()](#class-SongCategories)
+  - [class AudioType()](#class-AudioType)
+  - [class ContentType()](#class-ContentType)
+  - [class CreationType()](#class-CreationType)
+  - [class Language()](#class-Language)
+  - [class SongType()](#class-SongType)
+  - [class Style()](#class-Style)
+  - [class Theme()](#class-Theme)
+- [class SongMeta()](#class-SongMeta)
+- [async def get\_upinfo()](#async-def-get\_upinfo)
+- [async def upload\_cover()](#async-def-upload\_cover)
+- [async def upload\_lrc()](#async-def-upload\_lrc)
+
 ---
 
 ## class AudioUploader()
@@ -21,13 +48,33 @@ from bilibili_api import audio_uploader
 
 
 
+### def \_\_init\_\_()
+
+初始化
+
+
+| name | type | description |
+| - | - | - |
+| `path` | `str` | 文件路径 |
+| `meta` | `AudioMeta` | 元数据 |
+| `credential` | `Credential` | 账号信息 |
+
+
 ### async def abort()
 
 中断更改
 
 
 
-**Returns:** None
+
+
+
+### async def start()
+
+开始上传
+
+
+
 
 
 
@@ -398,10 +445,9 @@ lrc (Optional[str]): 歌词
 
 | name | type | description |
 | - | - | - |
-| param | Union[int, str] | UP 主 ID 或者用户名 |
-| credential | Credential | 凭据 |
+| `param` | `Union[int, str]` | UP 主 ID 或者用户名 |
+| `credential` | `Credential` | 凭据 |
 
-**Returns:** None
 
 
 
@@ -414,10 +460,10 @@ lrc (Optional[str]): 歌词
 
 | name | type | description |
 | - | - | - |
-| cover | Picture | 封面 |
-| credential | Credential | 凭据类 |
+| `cover` | `Picture` | 封面 |
+| `credential` | `Credential` | 凭据类 |
 
-**Returns:** str: 封面链接
+**Returns:** `str`:  封面链接
 
 
 
@@ -431,10 +477,9 @@ lrc (Optional[str]): 歌词
 
 | name | type | description |
 | - | - | - |
-| lrc | str | 歌词 |
-| credential | Credential | 凭据 |
+| `lrc` | `str` | 歌词 |
+| `credential` | `Credential` | 凭据 |
 
-**Returns:** None
 
 
 

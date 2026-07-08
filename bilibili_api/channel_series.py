@@ -3,15 +3,15 @@ bilibili_api.channel_series
 
 用户合集与列表相关
 """
+
 import json
 from enum import Enum
 from typing import List, Union, Optional
 
-import httpx
-
 from .utils.utils import get_api, raise_for_statement
-from .utils.credential import Credential
-from .utils.network import Api, HEADERS
+from .utils.network import Api, HEADERS, Credential
+
+from . import user
 
 API_USER = get_api("user")
 API = get_api("channel-series")
@@ -49,6 +49,10 @@ class ChannelSeries:
     合集与列表类
 
     Attributes:
+        id (int): 合集与列表的 id, season_id 或 series_id.
+        is_new (int): 是否为新版合集. 1 为是, 0 为否.
+        owner (User): 合集列表对应用户.
+        meta (dict): 合集与列表基本信息.
         credential (Credential): 凭据类. Defaults to None.
     """
 
@@ -78,36 +82,70 @@ class ChannelSeries:
         self.is_new = type_.value
         self.id_ = id_
         self.owner = User(self.__uid, credential=credential)
-        self.credential: Credential = credential
+        self.credential: Credential = credential if credential else Credential()
         self.meta = None
-        if not f"{type_.value}-{id_}" in channel_meta_cache.keys():
-            if self.is_new:
-                api = API_USER["channel_series"]["season_info"]
-                params = {"season_id": self.id_}
-            else:
-                api = API_USER["channel_series"]["info"]
-                params = {"series_id": self.id_}
-            resp = Api(**api).update_params(**params).result_sync
-            if self.is_new:
-                self.meta = resp["info"]
-                self.meta["mid"] = resp["info"]["upper"]["mid"]
-                self.__uid = self.meta["mid"]
-                self.owner = User(self.__uid, credential=credential)
-            else:
-                self.meta = resp["meta"]
-                self.__uid = self.meta["mid"]
-                self.owner = User(self.__uid, credential=credential)
-        else:
+        if f"{type_.value}-{id_}" in channel_meta_cache.keys():
             self.meta = channel_meta_cache[f"{type_.value}-{id_}"]
 
-    def get_meta(self) -> dict:
+    async def __fetch_meta(self) -> None:
+        from .user import User
+
+        if self.is_new:
+            api = API_USER["channel_series"]["season_info"]
+            params = {"season_id": self.id_}
+        else:
+            api = API_USER["channel_series"]["info"]
+            params = {"series_id": self.id_}
+        resp = await Api(**api).update_params(**params).result
+        if self.is_new:
+            self.meta = resp["info"]
+            self.meta["mid"] = resp["info"]["upper"]["mid"]
+            self.__uid = self.meta["mid"]
+            self.owner = User(self.__uid, credential=self.credential)
+        else:
+            self.meta = resp["meta"]
+            self.__uid = self.meta["mid"]
+            self.owner = User(self.__uid, credential=self.credential)
+
+    def get_type(self) -> ChannelSeriesType:
+        """
+        获取合集与列表类型
+
+        Returns:
+            ChannelSeriesType: 合集与列表类型
+        """
+        return ChannelSeriesType(self.is_new)
+
+    def get_id(self) -> int:
+        """
+        获取 season_id / series_id
+
+        Returns:
+            int: season_id / series_id
+        """
+        return self.id_
+
+    async def get_meta(self) -> dict:
         """
         获取元数据
 
         Returns:
-            调用 API 返回的结果
+            dict: 调用 API 返回的结果
         """
+        if not self.meta:
+            await self.__fetch_meta()
         return self.meta  # type: ignore
+
+    async def get_owner(self) -> "user.User":
+        """
+        获取合集列表对应用户
+
+        Returns:
+            user.User: 对应用户
+        """
+        if self.__uid == -1:
+            await self.__fetch_meta()
+        return self.owner
 
     async def get_videos(
         self, sort: ChannelOrder = ChannelOrder.DEFAULT, pn: int = 1, ps: int = 100
@@ -122,8 +160,10 @@ class ChannelSeries:
             ps(int)           : 每一页显示的视频数量
 
         Returns:
-            调用 API 返回的结果
+            dict: 调用 API 返回的结果
         """
+        if self.__uid == -1:
+            await self.__fetch_meta()
         if self.is_new:
             return await self.owner.get_channel_videos_season(self.id_, sort, pn, ps)
         else:

@@ -10,6 +10,61 @@ bilibili_api.live
 from bilibili_api import live
 ```
 
+- [class LiveCodec()](#class-LiveCodec)
+- [class LiveDanmaku()](#class-LiveDanmaku)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def connect()](#async-def-connect)
+  - [async def disconnect()](#async-def-disconnect)
+  - [def get\_live\_room()](#def-get\_live\_room)
+  - [def get\_status()](#def-get\_status)
+- [class LiveFormat()](#class-LiveFormat)
+- [class LiveProtocol()](#class-LiveProtocol)
+- [class LiveRoom()](#class-LiveRoom)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def ban\_user()](#async-def-ban\_user)
+  - [async def get\_black\_list()](#async-def-get\_black\_list)
+  - [async def get\_dahanghai()](#async-def-get\_dahanghai)
+  - [async def get\_danmu\_info()](#async-def-get\_danmu\_info)
+  - [async def get\_emoticons()](#async-def-get\_emoticons)
+  - [async def get\_fan\_model()](#async-def-get\_fan\_model)
+  - [async def get\_fans\_medal\_rank()](#async-def-get\_fans\_medal\_rank)
+  - [async def get\_gaonengbang()](#async-def-get\_gaonengbang)
+  - [async def get\_general\_info()](#async-def-get\_general\_info)
+  - [async def get\_gift\_common()](#async-def-get\_gift\_common)
+  - [async def get\_gift\_special()](#async-def-get\_gift\_special)
+  - [async def get\_popular\_ticket\_num()](#async-def-get\_popular\_ticket\_num)
+  - [async def get\_room\_id()](#async-def-get\_room\_id)
+  - [async def get\_room\_info()](#async-def-get\_room\_info)
+  - [async def get\_room\_play\_info()](#async-def-get\_room\_play\_info)
+  - [async def get\_room\_play\_info\_v2()](#async-def-get\_room\_play\_info\_v2)
+  - [async def get\_room\_play\_url()](#async-def-get\_room\_play\_url)
+  - [async def get\_ruid()](#async-def-get\_ruid)
+  - [async def get\_seven\_rank()](#async-def-get\_seven\_rank)
+  - [async def get\_user\_info\_in\_room()](#async-def-get\_user\_info\_in\_room)
+  - [async def receive\_reward()](#async-def-receive\_reward)
+  - [async def send\_danmaku()](#async-def-send\_danmaku)
+  - [async def send\_emoticon()](#async-def-send\_emoticon)
+  - [async def send\_gift\_from\_bag()](#async-def-send\_gift\_from\_bag)
+  - [async def send\_gift\_gold()](#async-def-send\_gift\_gold)
+  - [async def send\_gift\_silver()](#async-def-send\_gift\_silver)
+  - [async def send\_popular\_ticket()](#async-def-send\_popular\_ticket)
+  - [async def sign\_up\_dahanghai()](#async-def-sign\_up\_dahanghai)
+  - [async def start()](#async-def-start)
+  - [async def stop()](#async-def-stop)
+  - [async def unban\_user()](#async-def-unban\_user)
+  - [async def update\_news()](#async-def-update\_news)
+- [class ScreenResolution()](#class-ScreenResolution)
+- [async def create\_live\_reserve()](#async-def-create\_live\_reserve)
+- [async def get\_area\_info()](#async-def-get\_area\_info)
+- [async def get\_gift\_config()](#async-def-get\_gift\_config)
+- [async def get\_live\_followers\_info()](#async-def-get\_live\_followers\_info)
+- [async def get\_self\_bag()](#async-def-get\_self\_bag)
+- [async def get\_self\_dahanghai\_info()](#async-def-get\_self\_dahanghai\_info)
+- [async def get\_self\_info()](#async-def-get\_self\_info)
+- [async def get\_self\_live\_info()](#async-def-get\_self\_live\_info)
+- [async def get\_self\_live\_watching\_history()](#async-def-get\_self\_live\_watching\_history)
+- [async def get\_unlive\_followers\_info()](#async-def-get\_unlive\_followers\_info)
+
 ---
 
 ## class LiveCodec()
@@ -34,13 +89,18 @@ from bilibili_api import live
 
 Websocket 实时获取直播弹幕
 
-Events：
+Extends: AsyncEvent
+
+Logger: LiveDanmaku().logger
+
+Events:
 + DANMU_MSG: 用户发送弹幕
 + SEND_GIFT: 礼物
-+ COMBO_SEND：礼物连击
-+ GUARD_BUY：续费大航海
-+ SUPER_CHAT_MESSAGE：醒目留言（SC）
-+ SUPER_CHAT_MESSAGE_JPN：醒目留言（带日语翻译？）
++ COMBO_SEND: 礼物连击
++ GUARD_BUY: 续费大航海
++ SUPER_CHAT_MESSAGE: 醒目留言(SC)
++ SUPER_CHAT_MESSAGE_JPN: 醒目留言(带日语翻译?)
++ SUPER_CHAT_MESSAGE_DELETE: 醒目留言删除
 + WELCOME: 老爷进入房间
 + WELCOME_GUARD: 房管进入房间
 + NOTICE_MSG: 系统通知（全频道广播之类的）
@@ -49,8 +109,65 @@ Events：
 + ROOM_REAL_TIME_MESSAGE_UPDATE: 粉丝数等更新
 + ENTRY_EFFECT: 进场特效
 + ROOM_RANK: 房间排名更新
-+ INTERACT_WORD: 用户进入直播间
++ INTERACT_WORD_V2: 用户进入直播间 (*)
 + ACTIVITY_BANNER_UPDATE_V2: 好像是房间名旁边那个 xx 小时榜
++ DM_INTERACTION: 交互信息合并
++ USER_TOAST_MSG: 用户庆祝消息
++ GIFT_STAR_PROCESS: 礼物星球点亮
++ SPECIAL_GIFT: 特殊礼物
++ ONLINE_RANK_V3: 直播间高能榜 (*)
++ LOG_IN_NOTICE: 未登录通知
++ ONLINE_RANK_TOP3: 用户到达直播间高能榜前三名的消息
++ POPULAR_RANK_CHANGED: 直播间在人气榜的排名改变
++ HOT_RANK_CHANGED / HOT_RANK_CHANGED_V2: 直播间限时热门榜排名改变
++ HOT_RANK_SETTLEMENT / HOT_RANK_SETTLEMENT_V2: 限时热门榜上榜信息
++ LIKE_INFO_V3_CLICK: 直播间用户点赞
++ LIKE_INFO_V3_UPDATE: 直播间点赞数更新
++ POPULARITY_RED_POCKET_START: 直播间发红包弹幕
++ POPULARITY_RED_POCKET_NEW: 直播间红包
++ POPULARITY_RED_POCKET_WINNER_LIST: 直播间抢到红包的用户
++ WATCHED_CHANGE: 直播间看过人数
++ ENTRY_EFFECT_MUST_RECEIVE: 必须接受的用户进场特效
++ FULL_SCREEN_SPECIAL_EFFECT: 全屏特效
++ AREA_RANK_CHANGED: 直播间在所属分区的排名改变
++ COMMON_NOTICE_DANMAKU: 广播通知弹幕信息
++ ROOM_CHANGE: 直播间信息更改
++ ROOM_CONTENT_AUDIT_REPORT: 直播间内容审核报告
++ SUPER_CHAT_ENTRANCE: 醒目留言按钮
++ WIDGET_BANNER: 顶部横幅
++ WIDGET_WISH_LIST: 礼物心愿单进度
++ WIDGET_WISH_INFO: 礼物星球信息
++ STOP_LIVE_ROOM_LIST: 下播的直播间
++ SYS_MSG: 系统信息
++ WARNING: 警告
++ CUT_OFF: 切断
++ CUT_OFF_V2: 切断V2
++ ANCHOR_ECOLOGY_LIVING_DIALOG: 直播对话框
++ CHANGE_ROOM_INFO: 直播间背景图片修改
++ ROOM_SKIN_MSG: 直播间皮肤变更
++ ROOM_SILENT_ON: 开启等级禁言
++ ROOM_SILENT_OFF: 关闭等级禁言
++ ROOM_BLOCK_MSG: 指定观众禁言
++ ROOM_ADMINS: 房管列表
++ room_admin_entrance: 设立房管
++ ROOM_ADMIN_REVOKE: 撤销房管
++ ANCHOR_LOT_CHECKSTATUS: 天选时刻合法检查
++ ANCHOR_LOT_START: 天选时刻开始
++ ANCHOR_LOT_END: 天选时刻结束
++ ANCHOR_LOT_AWARD: 天选时刻中奖者
++ ANCHOR_LOT_NOTICE: 天选时刻通知
++ VOICE_JOIN_SWITCH: 语音连麦开关
++ VIDEO_CONNECTION_JOIN_START: 邀请视频连线
++ VIDEO_CONNECTION_MSG: 视频连线信息
++ VIDEO_CONNECTION_JOIN_END: 结束视频连线
++ PLAY_TAG: 直播进度条节点标签
++ OTHER_SLICE_LOADING_RESULT: 直播剪辑
++ GOTO_BUY_FLOW: 有人购买主播推荐商品
++ HOT_BUY_NUM: 热抢提示
++ WEALTH_NOTIFY: 荣耀等级通知
++ MESSAGEBOX_USER_MEDAL_CHANGE: 粉丝勋章更新
++ MESSAGEBOX_USER_GAIN_MEDAL: 获得粉丝勋章
++ FANS_CLUB_POKE_GIFT_NOTICE: 粉丝团戳一戳礼物通知
 + ===========================
 + 本模块自定义事件：
 + ==========================
@@ -60,7 +177,22 @@ Events：
 + TIMEOUT: 心跳响应超时
 + VERIFICATION_SUCCESSFUL: 认证成功
 
+(*: 包含 protobuf 格式数据的事件，模块将自动解析 protobuf 数据格式并连同原数据一同返回)
 
+
+
+
+### def \_\_init\_\_()
+
+
+| name | type | description |
+| - | - | - |
+| `room_display_id` | `int` | 房间展示 ID |
+| `debug` | `bool, optional` | 调试模式，将输出更多信息。. Defaults to False. |
+| `credential` | `Credential \| None, optional` | 凭据. Defaults to None. |
+| `max_retry` | `int, optional` | 连接出错后最大重试次数. Defaults to 5 |
+| `retry_after` | `int, optional` | 连接出错后重试间隔时间（秒）. Defaults to 1 |
+| `max_retry_for_credential` | `int, optional` | 获取用户信息最大重试次数. Defaults to 5 |
 
 
 ### async def connect()
@@ -69,7 +201,6 @@ Events：
 
 
 
-**Returns:** None
 
 
 
@@ -79,7 +210,17 @@ Events：
 
 
 
-**Returns:** None
+
+
+
+### def get_live_room()
+
+获取对应直播间对象
+
+
+
+**Returns:** `LiveRoom`:  直播间对象
+
 
 
 
@@ -89,7 +230,7 @@ Events：
 
 
 
-**Returns:** int: 0 初始化，1 连接建立中，2 已连接，3 断开连接中，4 已断开，5 错误
+**Returns:** `int`:  0 初始化，1 连接建立中，2 已连接，3 断开连接中，4 已断开，5 错误
 
 
 
@@ -136,8 +277,17 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| credential | Credential | 凭据类 |
-| room_display_id | int | 房间展示 id |
+| `credential` | `Credential` | 凭据类 |
+| `room_display_id` | `int` | 房间展示 id |
+
+
+### def \_\_init\_\_()
+
+
+| name | type | description |
+| - | - | - |
+| `room_display_id` | `int` | 房间展示 ID（即 URL 中的 ID） |
+| `credential` | `Credential, optional` | 凭据. Defaults to None. |
 
 
 ### async def ban_user()
@@ -147,9 +297,10 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| uid | int | 用户 UID |
+| `uid` | `int` | 用户 UID |
+| `hour` | `int` | 禁言时长，-1为永久，0为直到本场结束 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -160,7 +311,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -172,9 +323,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| page | Union[int, None] | 页码. Defaults to 1. |
+| `page` | `int, optional` | 页码. Defaults to 1. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -185,7 +336,18 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+### async def get_emoticons()
+
+获取本房间可用表情包
+
+
+
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -201,11 +363,11 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| roomId | Union[int, None] | 指定房间，查询是否拥有此房间的粉丝牌 |
-| target_id | Union[int, None] | 指定返回一个主播的粉丝牌，留空就不返回 |
-| page_num | Union[int, None] | 粉丝牌列表，默认 1 |
+| `roomId` | `int, optional` | 指定房间，查询是否拥有此房间的粉丝牌 |
+| `target_id` | `int \| None, optional` | 指定返回一个主播的粉丝牌，留空就不返回 |
+| `page_num` | `int \| None, optional` | 粉丝牌列表，默认 1 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -216,7 +378,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -228,9 +390,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| page | Union[int, None] | 页码. Defaults to 1 |
+| `page` | `int, optional` | 页码. Defaults to 1 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -242,9 +404,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| act_id | Union[int, None] | 未知，Defaults to 100061 |
+| `act_id` | `int, optional` | 未知，Defaults to 100061 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -255,7 +417,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -269,9 +431,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| tab_id | int | 2：特权礼物，3：定制礼物 |
+| `tab_id` | `int` | 2：特权礼物，3：定制礼物 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -282,18 +444,18 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
 
 ### async def get_room_id()
 
-获取直播间 id
+获取直播间真实 id
 
 
 
-**Returns:** int: 直播间 id
+**Returns:** `int`:  直播间 id
 
 
 
@@ -304,7 +466,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -315,7 +477,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -327,12 +489,12 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| live_protocol | Union[LiveProtocol, None] | 直播源流协议. Defaults to LiveProtocol.DEFAULT. |
-| live_format | Union[LiveFormat, None] | 直播源容器格式. Defaults to LiveFormat.DEFAULT. |
-| live_codec | Union[LiveCodec, None] | 直播源视频编码. Defaults to LiveCodec.DEFAULT. |
-| live_qn | Union[ScreenResolution, None] | 直播源清晰度. Defaults to ScreenResolution.ORIGINAL. |
+| `live_protocol` | `LiveProtocol, optional` | 直播源流协议. Defaults to LiveProtocol.DEFAULT. |
+| `live_format` | `LiveFormat, optional` | 直播源容器格式. Defaults to LiveFormat.DEFAULT. |
+| `live_codec` | `LiveCodec, optional` | 直播源视频编码. Defaults to LiveCodec.DEFAULT. |
+| `live_qn` | `ScreenResolution, optional` | 直播源清晰度. Defaults to ScreenResolution.ORIGINAL. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -344,20 +506,20 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| screen_resolution | Union[ScreenResolution, None] | 清晰度. Defaults to ScreenResolution.ORIGINAL |
+| `screen_resolution` | `ScreenResolution, optional` | 清晰度. Defaults to ScreenResolution.ORIGINAL |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
 
 ### async def get_ruid()
 
-获取真实房间 id
+获取直播的 up 的 uid (ruid)
 
 
 
-**Returns:** int: 真实房间 id
+**Returns:** `int`:  ruid
 
 
 
@@ -368,7 +530,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -379,7 +541,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -391,9 +553,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| receive_type | int | 领取类型，Defaults to 2. |
+| `receive_type` | `int` | 领取类型，Defaults to 2. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -405,10 +567,24 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| danmaku | Danmaku | 弹幕类 |
-| reply_mid | Union[int, None] | @的 UID. Defaults to None. |
+| `danmaku` | `Danmaku` | 弹幕类 |
+| `reply_mid` | `int, optional` | @的 UID. Defaults to None. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+### async def send_emoticon()
+
+直播间发送表情包
+
+
+| name | type | description |
+| - | - | - |
+| `emoticon` | `Danmaku` | text为表情包代号 |
+
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -420,14 +596,14 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| uid | int | 赠送用户的 UID |
-| bag_id | int | 礼物背包 ID |
-| gift_id | int | 礼物 ID |
-| gift_num | int | 礼物数量 |
-| storm_beat_id | Union[int, None] | 未知， Defaults to 0 |
-| price | Union[int, None] | 礼物单价，Defaults to 0 |
+| `uid` | `int` | 赠送用户的 UID |
+| `bag_id` | `int` | 礼物背包 ID |
+| `gift_id` | `int` | 礼物 ID |
+| `gift_num` | `int` | 礼物数量 |
+| `storm_beat_id` | `int, optional` | 未知， Defaults to 0 |
+| `price` | `int, optional` | 礼物单价，Defaults to 0 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -439,13 +615,13 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| uid | int | 赠送用户的 UID |
-| gift_id | int | 礼物 ID (可以通过 get_gift_common 或 get_gift_special 或 get_gift_config 获取) |
-| gift_num | int | 赠送礼物数量 |
-| price | int | 礼物单价 |
-| storm_beat_id | int, Optional | 未知，Defaults to 0 |
+| `uid` | `int` | 赠送用户的 UID |
+| `gift_id` | `int` | 礼物 ID (可以通过 get_gift_common 或 get_gift_special 或 get_gift_config 获取) |
+| `gift_num` | `int` | 赠送礼物数量 |
+| `price` | `int` | 礼物单价 |
+| `storm_beat_id` | `int, Optional` | 未知，Defaults to 0 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -457,13 +633,13 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| uid | int | 赠送用户的 UID |
-| gift_id | int | 礼物 ID (可以通过 get_gift_common 或 get_gift_special 或 get_gift_config 获取) |
-| gift_num | int | 赠送礼物数量 |
-| price | int | 礼物单价 |
-| storm_beat_id | int, Optional | 未知, Defaults to 0 |
+| `uid` | `int` | 赠送用户的 UID |
+| `gift_id` | `int` | 礼物 ID (可以通过 get_gift_common 或 get_gift_special 或 get_gift_config 获取) |
+| `gift_num` | `int` | 赠送礼物数量 |
+| `price` | `int` | 礼物单价 |
+| `storm_beat_id` | `int, Optional` | 未知, Defaults to 0 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -474,7 +650,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -486,9 +662,23 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| task_id | Union[int, None] | 签到任务 ID. Defaults to 1447 |
+| `task_id` | `int, optional` | 签到任务 ID. Defaults to 1447 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+### async def start()
+
+开始直播
+
+
+| name | type | description |
+| - | - | - |
+| `area_id` | `int` | 直播分区id（子分区id）。可使用 live_area 模块查询。 |
+
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -499,7 +689,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -511,9 +701,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| uid | int | 用户 UID |
+| `uid` | `int` | 用户 UID |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -525,9 +715,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| content: 最多60字符 |  | 最多60字符 |
+| `content` | `str` | 最多 60 字符 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -561,10 +751,10 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| title | str | 直播间标题 |
-| start_time | int | 开播时间戳 |
+| `title` | `str` | 直播间标题 |
+| `start_time` | `int` | 开播时间戳 |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -577,7 +767,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -595,11 +785,11 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| room_id | Union[int, None] | 房间显示 ID. Defaults to None. |
-| area_id | Union[int, None] | 子分区 ID. Defaults to None. |
-| area_parent_id | Union[int, None] | 父分区 ID. Defaults to None. |
+| `room_id` | `int, optional` | 房间显示 ID. Defaults to None. |
+| `area_id` | `int, optional` | 子分区 ID. Defaults to None. |
+| `area_parent_id` | `int, optional` | 父分区 ID. Defaults to None. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -613,9 +803,9 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| need_recommend | Union[bool, None] | 是否接受推荐直播间，Defaults to True |
+| `need_recommend` | `bool, optional` | 是否接受推荐直播间，Defaults to True |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -628,7 +818,7 @@ Events：
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -642,10 +832,10 @@ Events：
 
 | name | type | description |
 | - | - | - |
-| page | Union[int, None] | 页数. Defaults to 1. |
-| page_size | Union[int, None] | 每页数量. Defaults to 10. |
+| `page` | `int, optional` | 页数. Defaults to 1. |
+| `page_size` | `int, optional` | 每页数量. Defaults to 10. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 总页数取得方法:
@@ -667,7 +857,7 @@ pages = math.ceil(info['data']['guards'] / 10)
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -680,7 +870,23 @@ pages = math.ceil(info['data']['guards'] / 10)
 
 
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
+
+
+
+
+---
+
+## async def get_self_live_watching_history()
+
+获取用户直播观看记录
+
+
+| name | type | description |
+| - | - | - |
+| `credential` | `Credential` | 凭据类 |
+
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 
@@ -694,10 +900,10 @@ pages = math.ceil(info['data']['guards'] / 10)
 
 | name | type | description |
 | - | - | - |
-| page | Union[int, None] | 页码, Defaults to 1. |
-| page_size | Union[int, None] | 每页数量 Defaults to 30. |
+| `page` | `int, optional` | 页码, Defaults to 1. |
+| `page_size` | `int, optional` | 每页数量 Defaults to 30. |
 
-**Returns:** dict: 调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果
 
 
 

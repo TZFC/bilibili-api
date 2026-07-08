@@ -21,14 +21,13 @@ from .user import get_self_info
 from .utils.utils import get_api, raise_for_statement
 from .utils.picture import Picture
 from .utils.AsyncEvent import AsyncEvent
-from .utils.credential import Credential
-from .utils.network import Api
+from .utils.network import Api, Credential
 
 API = get_api("session")
 
 
 async def fetch_session_msgs(
-    talker_id: int, credential: Credential, session_type: int = 1, begin_seqno: int = 0
+    talker_id: int, credential: Credential, session_type: int = 1, begin_seqno: int = 0,
 ) -> dict:
     """
     获取指定用户的近三十条消息
@@ -50,6 +49,7 @@ async def fetch_session_msgs(
     params = {
         "talker_id": talker_id,
         "session_type": session_type,
+        "size": 30,
         "begin_seqno": begin_seqno,
     }
     api = API["session"]["fetch"]
@@ -141,9 +141,9 @@ async def get_replies(
     Args:
         credential (Credential): 凭据类.
 
-        last_reply_id (Optional, int): 最后一个评论的 ID
+        last_reply_id (Optional, int): 最后一个评论的 ID. 用于翻页。Defaults to None.
 
-        reply_time (Optional, int): 最后一个评论发送时间
+        reply_time (Optional, int): 最后一个评论发送时间. 用于翻页。Defaults to None.
 
     Returns:
         dict: 调用 API 返回的结果
@@ -162,9 +162,9 @@ async def get_likes(
     Args:
         credential (Credential): 凭据类.
 
-        last_id (Optional, int): 最后一个 ID
+        last_id (Optional, int): 最后一个 ID. 用于翻页。Defaults to None.
 
-        like_time (Optional, int): 最后一个点赞发送时间
+        like_time (Optional, int): 最后一个点赞发送时间. 用于翻页。Defaults to None.
 
     Returns:
         dict: 调用 API 返回的结果
@@ -175,7 +175,7 @@ async def get_likes(
 
 
 async def get_at(
-    credential: Credential, last_uid: int = None, at_time: int = None
+    credential: Credential, last_uid: int = None, at_time: int = None, last_id: int = None
 ) -> dict:
     """
     获取收到的 AT
@@ -183,15 +183,17 @@ async def get_at(
     Args:
         credential (Credential): 凭据类.
 
-        last_id (Optional, int): 最后一个 ID
+        last_id (Optional, int): 最后一个 ID. 用于翻页。Defaults to None.
 
-        at_time (Optional, int): 最后一个点赞发送时间
+        at_time (Optional, int): 最后一个点赞发送时间. 用于翻页。Defaults to None.
 
     Returns:
         dict: 调用 API 返回的结果
     """
     api = API["session"]["at"]
-    params = {"id": last_uid, "at_time": at_time}
+    if last_id is None:
+        last_id = last_uid
+    params = {"id": last_id, "at_time": at_time}
     return await Api(**api, credential=credential).update_params(**params).result
 
 
@@ -290,9 +292,9 @@ class Event:
         信息事件类型
 
         Args:
-            data: 接收到的事件详细信息
+            data (dict): 接收到的事件详细信息
 
-            self_uid: 用户自身 UID
+            self_uid (int): 用户自身 UID
         """
         self.__dict__.update(data)
         self.uid = self_uid
@@ -303,6 +305,9 @@ class Event:
             logging.error(f"解析消息错误：{data}")
 
     def __str__(self):
+        msg_type = "[]"
+        user_id = 0
+
         if self.receiver_type == 1:
             if self.receiver_id == self.uid:
                 msg_type = "收到"
@@ -361,6 +366,8 @@ async def send_msg(
     """
     给用户发送私聊信息。目前仅支持纯文本。
 
+    调用 API 需要发送者用户的 UID，可将此携带在凭据类的 DedeUserID 字段，不携带模块将自动获取对应 UID。
+
     Args:
         credential  (Credential)   : 凭证
 
@@ -377,8 +384,11 @@ async def send_msg(
     credential.raise_for_no_bili_jct()
 
     api = API["operate"]["send_msg"]
-    self_info = await get_self_info(credential)
-    sender_uid = self_info["mid"]
+    if credential.has_dedeuserid() and int(credential.dedeuserid) != 0:
+        sender_uid = int(credential.dedeuserid)
+    else:
+        self_info = await get_self_info(credential)
+        sender_uid = self_info["mid"]
 
     if msg_type == EventType.TEXT:
         real_content = json.dumps({"content": content})
@@ -386,7 +396,8 @@ async def send_msg(
         real_content = str(content)
     elif msg_type == EventType.PICTURE or msg_type == EventType.GROUPS_PICTURE:
         raise_for_statement(isinstance(content, Picture), "TypeError")
-        await content.upload_file(credential=credential, data={"biz": "im"})
+        if content.url.startswith("file://") or content.url.startswith("bytes://"):
+            await content.upload(credential=credential)
         real_content = json.dumps(
             {
                 "url": content.url,
@@ -414,13 +425,24 @@ async def send_msg(
         "build": 0,
         "mobi_app": "web",
     }
-    return await Api(**api, credential=credential).update_data(**data).result
+    query = {
+        "w_sender_uid": sender_uid,
+        "w_receiver_id": receiver_id,
+    }
+
+    return (
+        await Api(**api, credential=credential)
+        .update_params(**query)
+        .update_data(**data)
+        .result
+    )
 
 
 class Session(AsyncEvent):
     """
     会话类，用来开启消息监听。
     """
+
     def __init__(self, credential: Credential, debug=False):
         super().__init__()
         # 会话状态
@@ -476,7 +498,7 @@ class Session(AsyncEvent):
         非阻塞异步爬虫 定时发送请求获取消息
 
         Args:
-            exclude_self: bool 是否排除自己发出的消息，默认排除
+            exclude_self (bool): 是否排除自己发出的消息，默认排除
         """
 
         # 获取自身UID 用于后续判断消息是发送还是接收
@@ -498,7 +520,7 @@ class Session(AsyncEvent):
             max_instances=3,
             next_run_time=datetime.datetime.now(),
         )
-        async def qurey():
+        async def query():
             js: dict = await new_sessions(self.credential, self.maxTs)
             if js.get("session_list") is None:
                 return
@@ -555,11 +577,11 @@ class Session(AsyncEvent):
         阻塞异步启动 通过调用 self.close() 后可断开连接
 
         Args:
-            exclude_self: bool 是否排除自己发出的消息，默认排除
+            exclude_self (bool): 是否排除自己发出的消息，默认排除
         """
 
         await self.run(exclude_self)
-        while self.get_status() < 2:
+        while self.get_status() < 2:  # noqa: ASYNC110
             await asyncio.sleep(1)
 
         if self.get_status() == 2:
@@ -570,9 +592,9 @@ class Session(AsyncEvent):
         快速回复消息
 
         Args:
-            event  :  Event          要回复的消息
+            event  (Event)         : 要回复的消息
 
-            content:  str | Picture  要回复的文字内容
+            content (str | Picture): 要回复的文字内容
 
         Returns:
             dict: 调用接口返回的内容。

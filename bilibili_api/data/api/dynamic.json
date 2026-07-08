@@ -87,6 +87,8 @@
       "url": "https://api.bilibili.com/x/dynamic/feed/create/dyn",
       "method": "POST",
       "verify": true,
+      "wbi": true,
+      "dm": true,
       "data": {
         "content": {
           "contents": [
@@ -149,6 +151,34 @@
         "extension": "const str: {\"emoji_type\":1}"
       },
       "comment": "转发"
+    },
+    "set_top": {
+      "url": "https://api.bilibili.com/x/dynamic/feed/space/set_top",
+      "method": "POST",
+      "verify": true,
+      "json_body": true,
+      "no_csrf": true,
+      "params": {
+        "csrf": "str: bili_jct"
+      },
+      "data": {
+        "dyn_str": "int: 动态 ID"
+      },
+      "comment": "添加置顶"
+    },
+    "rm_top": {
+      "url": "https://api.bilibili.com/x/dynamic/feed/space/rm_top",
+      "method": "POST",
+      "verify": true,
+      "json_body": true,
+      "no_csrf": true,
+      "params": {
+        "csrf": "str: bili_jct"
+      },
+      "data": {
+        "dyn_str": "int: 动态 ID"
+      },
+      "comment": "取消置顶"
     }
   },
   "info": {
@@ -196,7 +226,12 @@
       "params": {
         "timezone_offset":"int: 时区偏移量",
         "dynamic_id": "int: 动态 ID",
-        "features":"str: 默认 itemOpusStyle"
+        "features":"str: 默认 itemOpusStyle",
+        "x-bili-device-req-json": {
+          "platform": "str: sweb",
+          "device": "str: pc"
+        },
+        "x-bili-web-req-json": { "spm_id": "str: 333.1368" }
       },
       "comment": "动态详细信息"
     },
@@ -238,6 +273,17 @@
         "page": "int: 页码. Defaults to 1. "
       },
       "comment": "获取热门动态"
+    },
+    "lottery": {
+      "url": "https://api.vc.bilibili.com/lottery_svr/v1/lottery_svr/lottery_notice",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "business_id": "int: 动态 ID",
+        "business_type": "int: 1",
+        "web_location": "str: 333.1330"
+      },
+      "comment": "获取动态抽奖信息"
     }
   },
   "schedule": {

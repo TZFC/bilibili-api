@@ -3,13 +3,13 @@ bilibili_api.video_uploader
 
 视频上传
 """
+
 import os
 import json
 import time
 import base64
 import re
 import asyncio
-import httpx
 from enum import Enum
 from typing import List, Union, Optional
 from copy import copy, deepcopy
@@ -22,10 +22,9 @@ from .topic import Topic
 from .utils.utils import get_api
 from .utils.picture import Picture
 from .utils.AsyncEvent import AsyncEvent
-from .utils.credential import Credential
 from .utils.aid_bvid_transformer import bvid2aid
 from .exceptions.ApiException import ApiException
-from .utils.network import Api, get_session
+from .utils.network import Api, get_client, Credential, request_settings
 from .exceptions.NetworkException import NetworkException
 from .exceptions.ResponseCodeException import ResponseCodeException
 
@@ -83,17 +82,24 @@ async def _probe() -> dict:
     # api = _API["probe"]
     # info = await Api(**api).update_params(r="probe").result # 不实时获取线路直接用 LINES_INFO
     min_cost, fastest_line = 30, None
+    legacy_timeout = request_settings.get_timeout()
+    request_settings.set_timeout(30) # 测试时设置为 30
     for line in LINES_INFO.values():
         start = time.perf_counter()
         data = bytes(int(1024 * 0.1 * 1024))  # post 0.1MB
-        timeout = 30
+        client = get_client()
         try:
-            httpx.post(f'https:{line["probe_url"]}', data=data, timeout=timeout)
+            await client.request(
+                method="POST",
+                url=f'https:{line["probe_url"]}',
+                data=data,
+            )
             cost_time = time.perf_counter() - start
-        except httpx.ReadTimeout:
-            cost_time = timeout
+        except Exception:
+            cost_time = request_settings.get_timeout()
         if cost_time < min_cost:
             min_cost, fastest_line = cost_time, line
+    request_settings.set_timeout(legacy_timeout)
     return fastest_line
 
 
@@ -305,6 +311,7 @@ class VideoPorderMeta:
     """
     视频商业相关参数
     """
+
     flow_id: int
     industry_id: Optional[int] = None
     official: Optional[int] = None
@@ -337,6 +344,7 @@ class VideoMeta:
     """
     视频源数据
     """
+
     tid: int  # 分区 ID。可以使用 channel 模块进行查询。
     title: str  # 视频标题
     desc: str  # 视频简介。
@@ -359,6 +367,7 @@ class VideoMeta:
     neutral_mark: Optional[str] = None  # 可选，创作者声明。
     delay_time: Optional[Union[int, datetime]] = None  # 可选，定时发布时间戳（秒）。
     porder: Optional[VideoPorderMeta] = None  # 可选，商业相关参数。
+    watermark: Optional[bool] = False  # 可选，水印
 
     __credential: Credential
     __pre_info = dict
@@ -385,8 +394,11 @@ class VideoMeta:
         subtitle: Optional[dict] = None,  # 可选，字幕设置。
         dynamic: Optional[str] = None,  # 可选，动态信息。
         neutral_mark: Optional[str] = None,  # 可选，中性化标签。
-        delay_time: Optional[Union[int, datetime]] = None,  # 可选，定时发布时间戳（秒）。
+        delay_time: Optional[
+            Union[int, datetime]
+        ] = None,  # 可选，定时发布时间戳（秒）。
         porder: Optional[VideoPorderMeta] = None,  # 可选，商业相关参数。
+        watermark: Optional[bool] = False, # 可选，水印
     ) -> None:
         """
         基本视频上传参数
@@ -437,6 +449,8 @@ class VideoMeta:
             delay_time (Optional[Union[int, datetime]]): 定时发布时间，可选
 
             porder (Optional[VideoPorderMeta]): 商业相关参数，可选
+
+            watermark (Optional[bool]): 是否添加水印，可选，默认为没有水印
         """
         if isinstance(tid, int):
             self.tid = tid
@@ -507,6 +521,7 @@ class VideoMeta:
         elif isinstance(delay_time, datetime):
             self.delay_time = int(delay_time.timestamp())
         self.porder = porder if isinstance(porder, dict) else None
+        self.watermark = watermark
 
     def __dict__(self) -> dict:
         meta = {
@@ -531,12 +546,14 @@ class VideoMeta:
             "porder": None if self.porder is None else self.porder.__dict__(),
             "adorder_type": 9,  # unknown
             "no_reprint": 1 if self.no_reprint else 0,
-            "subtitle": self.subtitle
-            if self.subtitle is not None
-            else {
-                "open": 0,
-                "lan": "",
-            },  # 莫名其妙没法上传 srt 字幕，显示格式错误，不校验
+            "subtitle": (
+                self.subtitle
+                if self.subtitle is not None
+                else {
+                    "open": 0,
+                    "lan": "",
+                }
+            ),  # 莫名其妙没法上传 srt 字幕，显示格式错误，不校验
             "neutral_mark": self.neutral_mark,  # 不知道能不能随便写文本
             "dolby": 1 if self.dolby else 0,
             "lossless_music": 1 if self.lossless_music else 0,
@@ -544,7 +561,8 @@ class VideoMeta:
             "up_close_reply": self.up_close_reply,
             "up_close_danmu": self.up_close_danmu,
             "web_os": 1,  # const 1
-            "source": self.source
+            "source": self.source,
+            "watermark": {"state": 1 if self.watermark else 0},
         }
         for k in copy(meta).keys():
             if meta[k] is None:
@@ -699,7 +717,7 @@ class VideoUploader(AsyncEvent):
 
             cover        (Union[str, Picture])    : 封面路径或者封面对象. Defaults to ""，传入 meta 类型为 VideoMeta 时可不传
 
-            line:        (Lines, Optional)        : 线路. Defaults to None. 不选择则自动测速选择
+            line         (Lines, Optional)        : 线路. Defaults to None. 不选择则自动测速选择
 
         建议传入 VideoMeta 对象，避免参数有误
 
@@ -738,9 +756,7 @@ class VideoUploader(AsyncEvent):
         self.cover = (
             self.meta.cover
             if isinstance(self.meta, VideoMeta)
-            else cover
-            if isinstance(cover, Picture)
-            else Picture().from_file(cover)
+            else cover if isinstance(cover, Picture) else Picture().from_file(cover)
         )
         self.line = line
         self.__task: Union[Task, None] = None
@@ -756,10 +772,11 @@ class VideoUploader(AsyncEvent):
         api = _API["preupload"]
 
         # 首先获取视频文件预检信息
-        session = get_session()
+        session = get_client()
 
-        resp = await session.get(
-            api["url"],
+        resp = await session.request(
+            method="GET",
+            url=api["url"],
             params={
                 "profile": "ugcfx/bup",
                 "name": os.path.basename(page.path),
@@ -771,15 +788,15 @@ class VideoUploader(AsyncEvent):
                 "upcdn": self.line["upcdn"],
                 "probe_version": self.line["probe_version"],
             },
-            cookies=self.credential.get_cookies(),
+            cookies=await self.credential.get_buvid_cookies(),
             headers={
-                "User-Agent": "Mozilla/5.0",
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
                 "Referer": "https://www.bilibili.com",
             },
         )
-        if resp.status_code >= 400:
+        if resp.code >= 400:
             self.dispatch(VideoUploaderEvents.PREUPLOAD_FAILED.value, {"page": page})
-            raise NetworkException(resp.status_code, resp.reason_phrase)
+            raise NetworkException(resp.code, "")
 
         preupload = resp.json()
 
@@ -791,11 +808,12 @@ class VideoUploader(AsyncEvent):
         url = self._get_upload_url(preupload)
 
         # 获取 upload_id
-        resp = await session.post(
-            url,
+        resp = await session.request(
+            method="POST",
+            url=url,
             headers={
                 "x-upos-auth": preupload["auth"],
-                "user-agent": "Mozilla/5.0",
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
                 "referer": "https://www.bilibili.com",
             },
             params={
@@ -807,11 +825,11 @@ class VideoUploader(AsyncEvent):
                 "biz_id": preupload["biz_id"],
             },
         )
-        if resp.status_code >= 400:
+        if resp.code >= 400:
             self.dispatch(VideoUploaderEvents.PREUPLOAD_FAILED.value, {"page": page})
             raise ApiException("获取 upload_id 错误")
 
-        data = json.loads(resp.text)
+        data = resp.json()
 
         if data["OK"] != 1:
             self.dispatch(VideoUploaderEvents.PREUPLOAD_FAILED.value, {"page": page})
@@ -858,7 +876,7 @@ class VideoUploader(AsyncEvent):
         #     "build": "2100300",
         # }, cookies=self.credential.get_cookies(),
         #     headers={
-        #         "User-Agent": "Mozilla/5.0",
+        #         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
         #         "Referer": "https://www.bilibili.com"
         #     }, proxy=settings.proxy
         # ) as resp:
@@ -1103,7 +1121,7 @@ class VideoUploader(AsyncEvent):
             "total_chunk_count": total_chunk_count,
         }
         self.dispatch(VideoUploaderEvents.PRE_CHUNK.value, chunk_event_callback_data)
-        session = get_session()
+        session = get_client()
 
         stream = open(page.path, "rb")
         stream.seek(offset)
@@ -1142,21 +1160,22 @@ class VideoUploader(AsyncEvent):
         }
 
         try:
-            resp = await session.put(
-                url,
+            resp = await session.request(
+                method="PUT",
+                url=url,
                 data=chunk,  # type: ignore
                 params=params,
                 headers={"x-upos-auth": preupload["auth"]},
             )
-            if resp.status_code >= 400:
-                chunk_event_callback_data["info"] = f"Status {resp.status_code}"
+            if resp.code >= 400:
+                chunk_event_callback_data["info"] = f"Status {resp.code}"
                 self.dispatch(
                     VideoUploaderEvents.CHUNK_FAILED.value,
                     chunk_event_callback_data,
                 )
                 return err_return
 
-            data = resp.text
+            data = resp.utf8_text()
 
             if data != "MULTIPART_PUT_SUCCESS" and data != "":
                 chunk_event_callback_data["info"] = "分块上传失败"
@@ -1213,9 +1232,10 @@ class VideoUploader(AsyncEvent):
         preupload = self._switch_upload_endpoint(preupload, self.line)
         url = self._get_upload_url(preupload)
 
-        session = get_session()
+        session = get_client()
 
-        resp = await session.post(
+        resp = await session.request(
+            method="POST",
             url=url,
             data=json.dumps(data),  # type: ignore
             headers={
@@ -1224,15 +1244,15 @@ class VideoUploader(AsyncEvent):
             },
             params=params,
         )
-        if resp.status_code >= 400:
-            err = NetworkException(resp.status_code, "状态码错误，提交分 P 失败")
+        if resp.code >= 400:
+            err = NetworkException(resp.code, "状态码错误，提交分 P 失败")
             self.dispatch(
                 VideoUploaderEvents.PAGE_SUBMIT_FAILED.value,
                 {"page": page, "err": err},
             )
             raise err
 
-        data = json.loads(resp.read())
+        data = resp.json()
 
         if data["OK"] != 1:
             err = ResponseCodeException(-1, f'提交分 P 失败，原因: {data["message"]}')
@@ -1314,7 +1334,7 @@ async def get_missions(
         credential (Credential, optional): 凭据. Defaults to None.
 
     Returns:
-        dict API 调用返回结果
+        dict: API 调用返回结果
     """
     api = _API["missions"]
 
@@ -1380,15 +1400,6 @@ class VideoEditor(AsyncEvent):
         credential: Union[Credential, None] = None,
     ):
         """
-        Args:
-            bvid (str)                    : 稿件 BVID
-
-            meta (dict)                   : 视频信息
-
-            cover (str | Picture)         : 封面地址. Defaults to None(不更改封面).
-
-            credential (Credential | None): 凭据类. Defaults to None.
-
         meta 参数示例: (保留 video, cover, tid, aid 字段)
 
         ``` json
@@ -1412,6 +1423,15 @@ class VideoEditor(AsyncEvent):
             "web_os": "const int: 2"
         }
         ```
+
+        Args:
+            bvid (str)                    : 稿件 BVID
+
+            meta (dict)                   : 视频信息
+
+            cover (str | Picture)         : 封面地址. Defaults to None(不更改封面).
+
+            credential (Credential | None): 凭据类. Defaults to None.
         """
         super().__init__()
         self.bvid = bvid
@@ -1476,10 +1496,12 @@ class VideoEditor(AsyncEvent):
             headers = {
                 "content-type": "application/json;charset=UTF-8",
                 "referer": "https://member.bilibili.com",
-                "user-agent": "Mozilla/5.0",
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
             }
             resp = (
-                await Api(**api, credential=self.credential, no_csrf=True, json_body=True)
+                await Api(
+                    **api, credential=self.credential, no_csrf=True, json_body=True
+                )
                 .update_params(**params)
                 .update_data(**data)
                 .update_headers(**headers)

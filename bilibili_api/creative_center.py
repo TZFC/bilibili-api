@@ -11,9 +11,9 @@ from typing import List, Union, Optional
 from datetime import datetime
 
 from .video_zone import VideoZoneTypes
+from .video import Video
 from .utils.utils import get_api
-from .utils.credential import Credential
-from .utils.network import Api
+from .utils.network import Api, Credential
 
 API = get_api("creative_center")
 
@@ -260,6 +260,7 @@ class DanmakuPool(Enum):
     NORMAL = 0  # 普通
     SUBTITLE = 1  # 字幕
     SPECIAL = 2  # 特殊
+
 
 class DanmakuOrder(Enum):
     """
@@ -561,7 +562,7 @@ async def get_video_upload_manager_info(
 
         ps (int): 每页项数
 
-        tid: (VideoZoneTypes, None, int): 分区
+        tid (VideoZoneTypes, None, int): 分区
 
         status (UploadManagerStatus): 稿件状态
 
@@ -749,9 +750,6 @@ async def get_recently_danmakus(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-
-
-
 async def get_danmakus(
     credential: Credential,
     oid: int,
@@ -823,26 +821,30 @@ async def get_danmakus(
         "keyword": keyword,
         "progress_from": progress_from,
         "progress_to": progress_to,
-        "ctime_from": ctime_from.strftime("%d-%m-%Y %H:%M:%S")
-        if ctime_from is not None
-        else None,
-        "ctime_to": ctime_to.strftime("%d-%m-%Y %H:%M:%S")
-        if ctime_to is not None
-        else None,
+        "ctime_from": (
+            ctime_from.strftime("%d-%m-%Y %H:%M:%S") if ctime_from is not None else None
+        ),
+        "ctime_to": (
+            ctime_to.strftime("%d-%m-%Y %H:%M:%S") if ctime_to is not None else None
+        ),
         "modes": (
-            ",".join([mode.value for mode in modes])
-            if isinstance(modes, list)
-            else modes.value
-        )
-        if modes is not None
-        else None,
+            (
+                ",".join([mode.value for mode in modes])
+                if isinstance(modes, list)
+                else modes.value
+            )
+            if modes is not None
+            else None
+        ),
         "pool": (
-            ",".join([pool.value for pool in pools])
-            if isinstance(pools, list)
-            else pools.value
-        )
-        if pools is not None
-        else None,
+            (
+                ",".join([pool.value for pool in pools])
+                if isinstance(pools, list)
+                else pools.value
+            )
+            if pools is not None
+            else None
+        ),
         "attrs": attrs,
         "order": order.value,
         "sort": sort.value,
@@ -867,7 +869,9 @@ async def del_danmaku(
         dmids (list[int], int): 弹幕 id，可以传入列表和 int
     """
 
-    return await edit_danmaku_state(credential=credential, oid=oid, dmids=dmids, state=1)
+    return await edit_danmaku_state(
+        credential=credential, oid=oid, dmids=dmids, state=1
+    )
 
 
 async def edit_danmaku_state(
@@ -928,3 +932,41 @@ async def edit_danmaku_pool(
 
     api = API["danmaku-manager"]["pool"]
     return await Api(**api, credential=credential).update_data(**data).result
+
+
+"""
+单个稿件相关
+
+from: https://github.com/SocialSisterYi/bilibili-API-collect/issues/1286
+from: https://github.com/SocialSisterYi/bilibili-API-collect/issues/1285
+"""
+
+
+async def get_archive_edits(video: Video) -> dict:
+    """
+    获取自己的单个稿件的编辑记录
+
+    Args:
+        video (Video): 视频对象。请在视频对象中传入凭据类。
+
+    Returns:
+        dict: 调用 API 返回的结果
+    """
+    api = API["archive"]["edits"]
+    params = {"bvid": video.get_bvid()}
+    return await Api(**api, credential=video.credential).update_params(**params).result
+
+
+async def get_archive_parts(video: Video) -> dict:
+    """
+    获取自己的单个稿件的分 P 信息
+
+    Args:
+        video (Video): 视频对象。请在视频对象中传入凭据类。
+
+    Returns:
+        dict: 调用 API 返回的结果
+    """
+    api = API["archive"]["pages"]
+    params = {"aid": video.get_aid()}
+    return await Api(**api, credential=video.credential).update_params(**params).result
