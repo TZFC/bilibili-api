@@ -34,14 +34,14 @@ CMD_DESCRIPTIONS = {
 def infer_schema(data: Any, path: str = "", typical_vals: Dict[str, Set[Any]] = None) -> Dict[str, Any]:
     if typical_vals is None:
         typical_vals = {}
-        
+
     if isinstance(data, dict):
         properties = {}
         for k, v in data.items():
             child_path = f"{path}.{k}" if path else k
             properties[k] = infer_schema(v, child_path, typical_vals)
         return {"type": "object", "properties": properties}
-        
+
     elif isinstance(data, list):
         if not data:
             return {"type": "array", "items": {"type": "any"}}
@@ -62,7 +62,7 @@ def infer_schema(data: Any, path: str = "", typical_vals: Dict[str, Set[Any]] = 
             # Use the first element as the structural template
             items_schema = infer_schema(data[0], child_path, typical_vals)
             return {"type": "array", "items": items_schema}
-            
+
     else:
         # Primitive
         if data is None:
@@ -75,37 +75,37 @@ def infer_schema(data: Any, path: str = "", typical_vals: Dict[str, Set[Any]] = 
             type_name = "number"
         else:
             type_name = "string"
-            
+
         if path:
             if path not in typical_vals:
                 typical_vals[path] = set()
-            if data is not None and len(typical_vals[path]) < 8:
+            if data is not None and len(typical_vals[path]) < 1:
                 # Limit length of typical values to keep them readable
                 val_str = str(data)
                 if len(val_str) < 150:
                     typical_vals[path].add(data)
-                    
+
         return {"type": type_name}
 
 def compile_wiki_data(db_path: str) -> Dict[str, Any]:
     if not os.path.exists(db_path):
         print(f"Database {db_path} not found.")
         return {"event_types": {}}
-        
+
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT event_type, raw_data FROM livechat_events ORDER BY id ASC")
-    
+
     event_types_data = {}
     total_events = 0
-    
+
     for event_type, raw_data_str in cursor.fetchall():
         total_events += 1
         try:
             raw_data = json.loads(raw_data_str)
         except Exception:
             continue
-            
+
         if event_type not in event_types_data:
             event_types_data[event_type] = {
                 "count": 0,
@@ -113,28 +113,28 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
                 "typical_vals_raw": {},  # Set internally
                 "example": raw_data
             }
-            
+
         event_types_data[event_type]["count"] += 1
         # Update schema and typical values
         infer_schema(raw_data, "", event_types_data[event_type]["typical_vals_raw"])
-        
+
     conn.close()
-    
+
     # Process final data structure
     compiled = {
         "total_events": total_events,
         "last_updated": time.strftime("%Y-%m-%d %H:%M:%S"),
         "event_types": {}
     }
-    
+
     for event_type, val in event_types_data.items():
         # Convert schema
         typical_vals_serializable = {}
         for path, values in val["typical_vals_raw"].items():
             typical_vals_serializable[path] = list(values)
-            
+
         schema = infer_schema(val["example"])
-        
+
         compiled["event_types"][event_type] = {
             "count": val["count"],
             "description": val["description"],
@@ -142,21 +142,21 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
             "typical_values": typical_vals_serializable,
             "example": val["example"]
         }
-        
+
     return compiled
 
 def update_wiki():
     db_path = 'livechat_events.db'
     wiki_template_path = os.path.join('docs', 'wiki_template.html')
     wiki_out_path = os.path.join('docs', 'wiki.html')
-    
+
     # Compile
     data = compile_wiki_data(db_path)
     data_json_str = json.dumps(data, ensure_ascii=False, indent=2)
-    
+
     if not os.path.exists('docs'):
         os.makedirs('docs')
-        
+
     # Read template if exists, otherwise use standard template string
     if os.path.exists(wiki_template_path):
         with open(wiki_template_path, 'r', encoding='utf-8') as f:
@@ -165,13 +165,13 @@ def update_wiki():
         template = get_default_html_template()
         with open(wiki_template_path, 'w', encoding='utf-8') as f:
             f.write(template)
-            
+
     # Inject data
     output = template.replace('/* WIKI_DATA_PLACEHOLDER */', f'const wikiData = {data_json_str};')
-    
+
     with open(wiki_out_path, 'w', encoding='utf-8') as f:
         f.write(output)
-        
+
     print(f"Successfully compiled wiki to {wiki_out_path} with {len(data['event_types'])} event types.")
 
 def get_default_html_template() -> str:
@@ -495,30 +495,30 @@ def get_default_html_template() -> str:
             <!-- Event types injected here -->
         </div>
     </div>
-    
+
     <div class="content" id="content-panel">
         <div class="welcome-screen" id="welcome-panel">
             <h3>协议库文档中心</h3>
             <p>从左侧列表中选择一个事件类型，以浏览它的协议字段结构、典型取值与 JSON 数据样例。</p>
         </div>
-        
+
         <div id="data-panel" style="display: none; height: 100%; flex-direction: column;">
             <div class="content-header">
                 <h2 id="active-cmd-name">CMD_NAME</h2>
                 <div class="description" id="active-cmd-desc">Description of the event command.</div>
             </div>
-            
+
             <div class="content-tabs">
                 <button class="tab-btn active" onclick="switchTab('schema')">协议字段结构</button>
                 <button class="tab-btn" onclick="switchTab('values')">典型字段取值</button>
                 <button class="tab-btn" onclick="switchTab('examples')">JSON 样例数据</button>
             </div>
-            
+
             <div class="tab-content-container">
                 <div class="tab-content active" id="tab-schema">
                     <div id="schema-tree"></div>
                 </div>
-                
+
                 <div class="tab-content" id="tab-values">
                     <table>
                         <thead>
@@ -532,7 +532,7 @@ def get_default_html_template() -> str:
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="tab-content" id="tab-examples">
                     <pre><code id="json-example-code"></code></pre>
                 </div>
@@ -555,34 +555,34 @@ def get_default_html_template() -> str:
             }
 
             document.getElementById('wiki-stats').innerText = `已加载 ${Object.keys(wikiData.event_types).length} 种事件 • 共记录 ${wikiData.total_events} 条包 • 更新于 ${wikiData.last_updated}`;
-            
+
             renderEventList();
         }
 
         function renderEventList() {
             const listContainer = document.getElementById('event-list');
             listContainer.innerHTML = '';
-            
+
             // Sort event types by count descending
             const sortedCmds = Object.keys(wikiData.event_types).sort((a, b) => {
                 return wikiData.event_types[b].count - wikiData.event_types[a].count;
             });
-            
+
             sortedCmds.forEach(cmd => {
                 const info = wikiData.event_types[cmd];
                 const item = document.createElement('div');
                 item.className = 'event-item';
                 item.id = `item-${cmd}`;
                 item.onclick = () => selectEvent(cmd);
-                
+
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'event-name';
                 nameSpan.innerText = cmd;
-                
+
                 const countBadge = document.createElement('span');
                 countBadge.className = 'event-count';
                 countBadge.innerText = info.count;
-                
+
                 item.appendChild(nameSpan);
                 item.appendChild(countBadge);
                 listContainer.appendChild(item);
@@ -592,7 +592,7 @@ def get_default_html_template() -> str:
         function filterEvents() {
             const query = document.getElementById('search-input').value.toLowerCase();
             const items = document.getElementsByClassName('event-item');
-            
+
             for (let i = 0; i < items.length; i++) {
                 const cmd = items[i].id.replace('item-', '');
                 const desc = wikiData.event_types[cmd].description.toLowerCase();
@@ -606,22 +606,22 @@ def get_default_html_template() -> str:
 
         function selectEvent(cmd) {
             currentCmd = cmd;
-            
+
             // Toggle active classes in list
             const items = document.getElementsByClassName('event-item');
             for (let i = 0; i < items.length; i++) {
                 items[i].classList.remove('active');
             }
             document.getElementById(`item-${cmd}`).classList.add('active');
-            
+
             // Show panels
             document.getElementById('welcome-panel').style.display = 'none';
             document.getElementById('data-panel').style.display = 'flex';
-            
+
             // Fill headers
             document.getElementById('active-cmd-name').innerText = cmd;
             document.getElementById('active-cmd-desc').innerText = wikiData.event_types[cmd].description;
-            
+
             // Render active tab contents
             renderTabContent();
         }
@@ -632,24 +632,24 @@ def get_default_html_template() -> str:
             for (let i = 0; i < tabs.length; i++) {
                 tabs[i].classList.remove('active');
             }
-            
+
             // Find active tab button
             event.target.classList.add('active');
-            
+
             // Show corresponding content panel
             const contents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < contents.length; i++) {
                 contents[i].classList.remove('active');
             }
             document.getElementById(`tab-${tab}`).classList.add('active');
-            
+
             renderTabContent();
         }
 
         function renderTabContent() {
             if (!currentCmd) return;
             const info = wikiData.event_types[currentCmd];
-            
+
             if (currentTab === 'schema') {
                 const container = document.getElementById('schema-tree');
                 container.innerHTML = '';
@@ -657,7 +657,7 @@ def get_default_html_template() -> str:
             } else if (currentTab === 'values') {
                 const tbody = document.getElementById('values-table-body');
                 tbody.innerHTML = '';
-                
+
                 // Sort keys alphabetically
                 const paths = Object.keys(info.typical_values).sort();
                 paths.forEach(path => {
@@ -666,7 +666,7 @@ def get_default_html_template() -> str:
                     tdPath.innerText = path;
                     tdPath.style.fontWeight = '500';
                     tdPath.style.color = '#c084fc';
-                    
+
                     const tdVals = document.createElement('td');
                     info.typical_values[path].forEach(val => {
                         const span = document.createElement('span');
@@ -674,7 +674,7 @@ def get_default_html_template() -> str:
                         span.innerText = JSON.stringify(val);
                         tdVals.appendChild(span);
                     });
-                    
+
                     tr.appendChild(tdPath);
                     tr.appendChild(tdVals);
                     tbody.appendChild(tr);
@@ -688,22 +688,22 @@ def get_default_html_template() -> str:
         function buildSchemaNodeHtml(schema, key) {
             const container = document.createElement('div');
             container.className = 'schema-node';
-            
+
             const row = document.createElement('div');
             row.className = 'schema-row';
-            
+
             const keySpan = document.createElement('span');
             keySpan.className = 'key-name';
             keySpan.innerText = key + ':';
-            
+
             const typeBadge = document.createElement('span');
             typeBadge.className = `type-badge type-${schema.type}`;
             typeBadge.innerText = schema.type.replace('_', ' ');
-            
+
             row.appendChild(keySpan);
             row.appendChild(typeBadge);
             container.appendChild(row);
-            
+
             if (schema.type === 'object' && schema.properties) {
                 Object.keys(schema.properties).forEach(propKey => {
                     container.appendChild(buildSchemaNodeHtml(schema.properties[propKey], propKey));
@@ -715,7 +715,7 @@ def get_default_html_template() -> str:
             } else if (schema.type === 'array' && schema.items) {
                 container.appendChild(buildSchemaNodeHtml(schema.items, '[index]'));
             }
-            
+
             return container;
         }
 
