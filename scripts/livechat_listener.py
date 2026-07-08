@@ -141,12 +141,15 @@ async def main():
             except Exception as e:
                 print(f"Failed to launch wiki compiler: {e}", file=sys.stderr)
             
-    try:
-        await room.connect()
-    except asyncio.CancelledError:
-        print("Listener canceled.")
-    except Exception as e:
-        print(f"Websocket error: {e}", file=sys.stderr)
+    while True:
+        try:
+            await room.connect()
+        except asyncio.CancelledError:
+            print("Listener canceled.")
+            break
+        except Exception as e:
+            print(f"Websocket error: {e}. Reconnecting in 5 seconds...", file=sys.stderr)
+            await asyncio.sleep(5)
 
 if __name__ == '__main__':
     try:
