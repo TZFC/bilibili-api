@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilibili 直播弹幕协议 Wiki 文档</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #a855f7;
+            --accent-glow: rgba(168, 85, 247, 0.4);
+            --border: #334155;
+            --type-string: #10b981;
+            --type-number: #f59e0b;
+            --type-boolean: #3b82f6;
+            --type-object: #ec4899;
+            --type-array: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 320px;
+            background-color: #0b0f19;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c084fc, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .search-box {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.875rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        .event-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .event-item:hover {
+            background-color: var(--bg-card);
+            transform: translateX(4px);
+        }
+
+        .event-item.active {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .event-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .event-count {
+            font-size: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Content Panel styling */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--bg-main);
+        }
+
+        .content-header {
+            padding: 32px;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--bg-card);
+        }
+
+        .content-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .content-header .description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .content-tabs {
+            display: flex;
+            gap: 16px;
+            padding: 16px 32px 0 32px;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--bg-card);
+        }
+
+        .tab-btn {
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Schema representation */
+        .schema-node {
+            margin-left: 20px;
+            border-left: 1px dashed var(--border);
+            padding-left: 16px;
+            margin-top: 8px;
+        }
+
+        .schema-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .key-name {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .type-badge {
+            font-size: 0.75rem;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-transform: lowercase;
+        }
+
+        .type-string { background-color: rgba(16, 185, 129, 0.15); color: var(--type-string); }
+        .type-integer, .type-number { background-color: rgba(245, 158, 11, 0.15); color: var(--type-number); }
+        .type-boolean { background-color: rgba(59, 130, 246, 0.15); color: var(--type-boolean); }
+        .type-object { background-color: rgba(236, 72, 153, 0.15); color: var(--type-object); }
+        .type-array, .type-heterogeneous_array { background-color: rgba(139, 92, 246, 0.15); color: var(--type-array); }
+
+        /* Typical values table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            font-family: monospace;
+        }
+
+        .val-badge {
+            display: inline-block;
+            background-color: var(--bg-card);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin: 2px;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* JSON Example View */
+        pre {
+            background-color: #0b0f19;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Welcome screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 48px;
+        }
+
+        .welcome-screen h3 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>Bilibili Livechat Wiki</h1>
+            <div class="subtitle" id="wiki-stats">加载中...</div>
+        </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="搜索事件类型..." oninput="filterEvents()">
+        </div>
+        <div class="event-list" id="event-list">
+            <!-- Event types injected here -->
+        </div>
+    </div>
+    
+    <div class="content" id="content-panel">
+        <div class="welcome-screen" id="welcome-panel">
+            <h3>协议库文档中心</h3>
+            <p>从左侧列表中选择一个事件类型，以浏览它的协议字段结构、典型取值与 JSON 数据样例。</p>
+        </div>
+        
+        <div id="data-panel" style="display: none; height: 100%; flex-direction: column;">
+            <div class="content-header">
+                <h2 id="active-cmd-name">CMD_NAME</h2>
+                <div class="description" id="active-cmd-desc">Description of the event command.</div>
+            </div>
+            
+            <div class="content-tabs">
+                <button class="tab-btn active" onclick="switchTab('schema')">协议字段结构</button>
+                <button class="tab-btn" onclick="switchTab('values')">典型字段取值</button>
+                <button class="tab-btn" onclick="switchTab('examples')">JSON 样例数据</button>
+            </div>
+            
+            <div class="tab-content-container">
+                <div class="tab-content active" id="tab-schema">
+                    <div id="schema-tree"></div>
+                </div>
+                
+                <div class="tab-content" id="tab-values">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 35%">字段路径 (Path)</th>
+                                <th style="width: 65%">典型取值 (Typical Values)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="values-table-body">
+                            <!-- Injected rows -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tab-content" id="tab-examples">
+                    <pre><code id="json-example-code"></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="wiki-data-placeholder">
+        /* WIKI_DATA_PLACEHOLDER */
+    </script>
+
+    <script>
+        let currentTab = 'schema';
+        let currentCmd = null;
+
+        function initWiki() {
+            if (typeof wikiData === 'undefined' || !wikiData.event_types) {
+                document.getElementById('wiki-stats').innerText = "未找到协议事件数据，请运行 build_wiki.py 编译。";
+                return;
+            }
+
+            document.getElementById('wiki-stats').innerText = `已加载 ${Object.keys(wikiData.event_types).length} 种事件 • 共记录 ${wikiData.total_events} 条包 • 更新于 ${wikiData.last_updated}`;
+            
+            renderEventList();
+        }
+
+        function renderEventList() {
+            const listContainer = document.getElementById('event-list');
+            listContainer.innerHTML = '';
+            
+            // Sort event types by count descending
+            const sortedCmds = Object.keys(wikiData.event_types).sort((a, b) => {
+                return wikiData.event_types[b].count - wikiData.event_types[a].count;
+            });
+            
+            sortedCmds.forEach(cmd => {
+                const info = wikiData.event_types[cmd];
+                const item = document.createElement('div');
+                item.className = 'event-item';
+                item.id = `item-${cmd}`;
+                item.onclick = () => selectEvent(cmd);
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'event-name';
+                nameSpan.innerText = cmd;
+                
+                const countBadge = document.createElement('span');
+                countBadge.className = 'event-count';
+                countBadge.innerText = info.count;
+                
+                item.appendChild(nameSpan);
+                item.appendChild(countBadge);
+                listContainer.appendChild(item);
+            });
+        }
+
+        function filterEvents() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const items = document.getElementsByClassName('event-item');
+            
+            for (let i = 0; i < items.length; i++) {
+                const cmd = items[i].id.replace('item-', '');
+                const desc = wikiData.event_types[cmd].description.toLowerCase();
+                if (cmd.toLowerCase().includes(query) || desc.includes(query)) {
+                    items[i].style.display = 'flex';
+                } else {
+                    items[i].style.display = 'none';
+                }
+            }
+        }
+
+        function selectEvent(cmd) {
+            currentCmd = cmd;
+            
+            // Toggle active classes in list
+            const items = document.getElementsByClassName('event-item');
+            for (let i = 0; i < items.length; i++) {
+                items[i].classList.remove('active');
+            }
+            document.getElementById(`item-${cmd}`).classList.add('active');
+            
+            // Show panels
+            document.getElementById('welcome-panel').style.display = 'none';
+            document.getElementById('data-panel').style.display = 'flex';
+            
+            // Fill headers
+            document.getElementById('active-cmd-name').innerText = cmd;
+            document.getElementById('active-cmd-desc').innerText = wikiData.event_types[cmd].description;
+            
+            // Render active tab contents
+            renderTabContent();
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            const tabs = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            // Find active tab button
+            event.target.classList.add('active');
+            
+            // Show corresponding content panel
+            const contents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            if (!currentCmd) return;
+            const info = wikiData.event_types[currentCmd];
+            
+            if (currentTab === 'schema') {
+                const container = document.getElementById('schema-tree');
+                container.innerHTML = '';
+                container.appendChild(buildSchemaNodeHtml(info.schema, 'Root'));
+            } else if (currentTab === 'values') {
+                const tbody = document.getElementById('values-table-body');
+                tbody.innerHTML = '';
+                
+                // Sort keys alphabetically
+                const paths = Object.keys(info.typical_values).sort();
+                paths.forEach(path => {
+                    const tr = document.createElement('tr');
+                    const tdPath = document.createElement('td');
+                    tdPath.innerText = path;
+                    tdPath.style.fontWeight = '500';
+                    tdPath.style.color = '#c084fc';
+                    
+                    const tdVals = document.createElement('td');
+                    info.typical_values[path].forEach(val => {
+                        const span = document.createElement('span');
+                        span.className = 'val-badge';
+                        span.innerText = JSON.stringify(val);
+                        tdVals.appendChild(span);
+                    });
+                    
+                    tr.appendChild(tdPath);
+                    tr.appendChild(tdVals);
+                    tbody.appendChild(tr);
+                });
+            } else if (currentTab === 'examples') {
+                const pre = document.getElementById('json-example-code');
+                pre.innerText = JSON.stringify(info.example, null, 2);
+            }
+        }
+
+        function buildSchemaNodeHtml(schema, key) {
+            const container = document.createElement('div');
+            container.className = 'schema-node';
+            
+            const row = document.createElement('div');
+            row.className = 'schema-row';
+            
+            const keySpan = document.createElement('span');
+            keySpan.className = 'key-name';
+            keySpan.innerText = key + ':';
+            
+            const typeBadge = document.createElement('span');
+            typeBadge.className = `type-badge type-${schema.type}`;
+            typeBadge.innerText = schema.type.replace('_', ' ');
+            
+            row.appendChild(keySpan);
+            row.appendChild(typeBadge);
+            container.appendChild(row);
+            
+            if (schema.type === 'object' && schema.properties) {
+                Object.keys(schema.properties).forEach(propKey => {
+                    container.appendChild(buildSchemaNodeHtml(schema.properties[propKey], propKey));
+                });
+            } else if (schema.type === 'heterogeneous_array' && schema.items) {
+                Object.keys(schema.items).forEach(indexKey => {
+                    container.appendChild(buildSchemaNodeHtml(schema.items[indexKey], `[${indexKey}]`));
+                });
+            } else if (schema.type === 'array' && schema.items) {
+                container.appendChild(buildSchemaNodeHtml(schema.items, '[index]'));
+            }
+            
+            return container;
+        }
+
+        window.onload = initWiki;
+    </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+syntax = "proto3";
+
+package bilibili.livechat;
+
+message RiskCtrlInfo {
+    string name = 1;
+    string face = 2;
+}
+
+message AccountInfo {
+    string name = 1;
+    string face = 2;
+}
+
+message OfficialInfo {
+    int32 role = 1;
+    string title = 2;
+    string desc = 3;
+    int32 type = 4;
+}
+
+message BaseInfo {
+    string name = 1;
+    string face = 2;
+    int32 name_color = 3;
+    bool is_mystery = 4;
+    RiskCtrlInfo risk_ctrl_info = 5;
+    AccountInfo account_info = 6;
+    OfficialInfo official_info = 7;
+    string name_color_str = 8;
+}
+
+message MedalInfo {
+    string name = 1;
+    int32 level = 2;
+    int32 color_start = 3;
+    int32 color_end = 4;
+    int32 color_border = 5;
+    int32 color = 6;
+    int32 id = 7;
+    int32 have_medal_type = 8;
+    int32 is_light = 9;
+    int64 ruid = 10;
+    int32 guard_level = 11;
+    int32 score = 12;
+    string guard_icon = 13;
+    string honor_icon = 14;
+    string v2_medal_color_start = 15;
+    string v2_medal_color_end = 16;
+    string v2_medal_color_border = 17;
+    string v2_medal_color_text = 18;
+    string v2_medal_color_level = 19;
+    int32 user_receive_count = 20;
+}
+
+message WealthInfo {
+    int32 level = 1;
+    string dm_icon_key = 2;
+}
+
+message TitleInfo {
+    string old_title_css_id = 1;
+    string title_css_id = 2;
+}
+
+message GuardInfo {
+    int32 level = 1;
+    string expired_str = 2;
+}
+
+message UserHeadFrame {
+    int32 id = 1;
+    string frame_img = 2;
+}
+
+message GuardLeader {
+    bool is_guard_leader = 1;
+}
+
+message UserInfo {
+    int64 uid = 1;
+    BaseInfo base = 2;
+    MedalInfo medal = 3;
+    WealthInfo wealth = 4;
+    TitleInfo title = 5;
+    GuardInfo guard = 6;
+    UserHeadFrame user_head_frame = 7;
+    GuardLeader guard_leader = 8;
+}
+
+message FansMedalInfo {
+    int64 target_id = 1;
+    int32 medal_level = 2;
+    string medal_name = 3;
+    int32 medal_color = 4;
+    int32 medal_color_start = 5;
+    int32 medal_color_end = 6;
+    int32 medal_color_border = 7;
+    int32 is_lighted = 8;
+    int32 guard_level = 9;
+    string special = 10;
+    int32 icon_id = 11;
+    int64 anchor_roomid = 12;
+    int64 score = 13;
+}
+
+message ContributionInfo {
+    int32 grade = 1;
+}
+
+message ContributionInfoV2 {
+    int32 grade = 1;
+    string rank_type = 2;
+    string text = 3;
+}
+
+message GroupMedalBrief {
+    int32 medal_id = 1;
+    string name = 2;
+    int32 is_lighted = 3;
+}
+
+message UserAnchorRelation {
+    string tail_icon = 1;
+    string tail_guide_text = 2;
+    int32 tail_type = 3;
+}
+
+message InteractWordV2 {
+    int64 uid = 1;
+    string uname = 2;
+    string uname_color = 3;
+    repeated int32 identities = 4;
+    int32 msg_type = 5;
+    int64 room_id = 6;
+    int64 timestamp = 7;
+    int64 score = 8;
+    FansMedalInfo fans_medal_info = 9;
+    int32 is_spread = 10;
+    string spread_info = 11;
+    ContributionInfo contribution_info = 12;
+    string spread_desc = 13;
+    int32 tail_icon = 14;
+    int64 trigger_time = 15;
+    int32 privilege_type = 16;
+    int32 core_user_type = 17;
+    string tail_text = 18;
+    ContributionInfoV2 contribution_info_v2 = 19;
+    GroupMedalBrief group_medal_brief = 20;
+    bool is_mystery = 21;
+    UserInfo user_info = 22;
+    UserAnchorRelation user_anchor_relation = 23;
+}
+
+message GoldRankBroadcastItem {
+    int64 uid = 1;
+    string face = 2;
+    string score = 3;
+    string uname = 4;
+    int32 rank = 5;
+    int32 guard_level = 6;
+    bool is_mystery = 7;
+    UserInfo user_info = 8;
+}
+
+message OnlineRankV3 {
+    int32 rank_type = 1;
+    repeated GoldRankBroadcastItem list = 2;
+    repeated GoldRankBroadcastItem online_list = 3;
+}

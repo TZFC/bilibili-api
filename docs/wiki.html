@@ -1,0 +1,4477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilibili 直播弹幕协议 Wiki 文档</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #a855f7;
+            --accent-glow: rgba(168, 85, 247, 0.4);
+            --border: #334155;
+            --type-string: #10b981;
+            --type-number: #f59e0b;
+            --type-boolean: #3b82f6;
+            --type-object: #ec4899;
+            --type-array: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 320px;
+            background-color: #0b0f19;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c084fc, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .search-box {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.875rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        .event-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .event-item:hover {
+            background-color: var(--bg-card);
+            transform: translateX(4px);
+        }
+
+        .event-item.active {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .event-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .event-count {
+            font-size: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Content Panel styling */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--bg-main);
+        }
+
+        .content-header {
+            padding: 32px;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--bg-card);
+        }
+
+        .content-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .content-header .description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .content-tabs {
+            display: flex;
+            gap: 16px;
+            padding: 16px 32px 0 32px;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--bg-card);
+        }
+
+        .tab-btn {
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Schema representation */
+        .schema-node {
+            margin-left: 20px;
+            border-left: 1px dashed var(--border);
+            padding-left: 16px;
+            margin-top: 8px;
+        }
+
+        .schema-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .key-name {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .type-badge {
+            font-size: 0.75rem;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-transform: lowercase;
+        }
+
+        .type-string { background-color: rgba(16, 185, 129, 0.15); color: var(--type-string); }
+        .type-integer, .type-number { background-color: rgba(245, 158, 11, 0.15); color: var(--type-number); }
+        .type-boolean { background-color: rgba(59, 130, 246, 0.15); color: var(--type-boolean); }
+        .type-object { background-color: rgba(236, 72, 153, 0.15); color: var(--type-object); }
+        .type-array, .type-heterogeneous_array { background-color: rgba(139, 92, 246, 0.15); color: var(--type-array); }
+
+        /* Typical values table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            font-family: monospace;
+        }
+
+        .val-badge {
+            display: inline-block;
+            background-color: var(--bg-card);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin: 2px;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* JSON Example View */
+        pre {
+            background-color: #0b0f19;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Welcome screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 48px;
+        }
+
+        .welcome-screen h3 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>Bilibili Livechat Wiki</h1>
+            <div class="subtitle" id="wiki-stats">加载中...</div>
+        </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="搜索事件类型..." oninput="filterEvents()">
+        </div>
+        <div class="event-list" id="event-list">
+            <!-- Event types injected here -->
+        </div>
+    </div>
+    
+    <div class="content" id="content-panel">
+        <div class="welcome-screen" id="welcome-panel">
+            <h3>协议库文档中心</h3>
+            <p>从左侧列表中选择一个事件类型，以浏览它的协议字段结构、典型取值与 JSON 数据样例。</p>
+        </div>
+        
+        <div id="data-panel" style="display: none; height: 100%; flex-direction: column;">
+            <div class="content-header">
+                <h2 id="active-cmd-name">CMD_NAME</h2>
+                <div class="description" id="active-cmd-desc">Description of the event command.</div>
+            </div>
+            
+            <div class="content-tabs">
+                <button class="tab-btn active" onclick="switchTab('schema')">协议字段结构</button>
+                <button class="tab-btn" onclick="switchTab('values')">典型字段取值</button>
+                <button class="tab-btn" onclick="switchTab('examples')">JSON 样例数据</button>
+            </div>
+            
+            <div class="tab-content-container">
+                <div class="tab-content active" id="tab-schema">
+                    <div id="schema-tree"></div>
+                </div>
+                
+                <div class="tab-content" id="tab-values">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 35%">字段路径 (Path)</th>
+                                <th style="width: 65%">典型取值 (Typical Values)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="values-table-body">
+                            <!-- Injected rows -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tab-content" id="tab-examples">
+                    <pre><code id="json-example-code"></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="wiki-data-placeholder">
+        const wikiData = {
+  "total_events": 67,
+  "last_updated": "2026-07-07 21:47:37",
+  "event_types": {
+    "VERIFICATION_SUCCESSFUL": {
+      "count": 3,
+      "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
+      "schema": {
+        "type": "null"
+      },
+      "typical_values": {},
+      "example": null
+    },
+    "VIEW": {
+      "count": 6,
+      "description": "人气值更新 (PopularityUpdate): 心跳包返回的直播间当前人气数值值更新。",
+      "schema": {
+        "type": "integer"
+      },
+      "typical_values": {},
+      "example": 1
+    },
+    "ONLINE_RANK_COUNT": {
+      "count": 12,
+      "description": "高能用户数更新 (OnlineRankCount): 房间在线高能用户总数的实时波动更新。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "integer"
+              },
+              "count_text": {
+                "type": "string"
+              },
+              "online_count": {
+                "type": "integer"
+              },
+              "online_count_text": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "ONLINE_RANK_COUNT"
+        ],
+        "data.count": [
+          56,
+          57,
+          58,
+          59
+        ],
+        "data.count_text": [
+          "56",
+          "58",
+          "57",
+          "59"
+        ],
+        "data.online_count": [
+          56,
+          57,
+          58,
+          59
+        ],
+        "data.online_count_text": [
+          "56",
+          "58",
+          "57",
+          "59"
+        ]
+      },
+      "example": {
+        "cmd": "ONLINE_RANK_COUNT",
+        "data": {
+          "count": 56,
+          "count_text": "56",
+          "online_count": 56,
+          "online_count_text": "56"
+        }
+      }
+    },
+    "DANMU_MSG": {
+      "count": 16,
+      "description": "弹幕消息 (ChatMessage): 观众在直播间发送的常规弹幕，包含发言人、勋章、等级等丰富信息。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "dm_v2": {
+            "type": "string"
+          },
+          "info": {
+            "type": "heterogeneous_array",
+            "items": {
+              "0": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "1": {
+                "type": "string"
+              },
+              "2": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "3": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "4": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "5": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "6": {
+                "type": "integer"
+              },
+              "7": {
+                "type": "integer"
+              },
+              "8": {
+                "type": "null"
+              },
+              "9": {
+                "type": "object",
+                "properties": {
+                  "ct": {
+                    "type": "string"
+                  },
+                  "ts": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "10": {
+                "type": "integer"
+              },
+              "11": {
+                "type": "integer"
+              },
+              "12": {
+                "type": "null"
+              },
+              "13": {
+                "type": "null"
+              },
+              "14": {
+                "type": "integer"
+              },
+              "15": {
+                "type": "integer"
+              },
+              "16": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "17": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "DANMU_MSG"
+        ],
+        "dm_v2": [
+          ""
+        ],
+        "info.0[]": [
+          0
+        ],
+        "info.1": [
+          "哟，还会胡萝卜加大棒",
+          "怎么有人和AI急啊[dog]",
+          "笑看两机器人掐架",
+          "刮彩票赚钱",
+          "沐沐加油，先赚一个小目标[dog]",
+          "祝早日康复",
+          "哈哈哈",
+          "买3000万法国赢"
+        ],
+        "info.2[]": [
+          20052482,
+          355334885,
+          1620149419,
+          388616395,
+          170865942,
+          325897245,
+          35344030,
+          3850526
+        ],
+        "info.3[]": [
+          41,
+          45,
+          47,
+          22,
+          25,
+          27,
+          29,
+          30
+        ],
+        "info.4[]": [
+          7,
+          9,
+          41,
+          42,
+          11,
+          13,
+          14,
+          29
+        ],
+        "info.5[]": [
+          "",
+          "title-536-1"
+        ],
+        "info.6": [
+          0
+        ],
+        "info.7": [
+          0,
+          3
+        ],
+        "info.8": [],
+        "info.9.ct": [
+          "B568408A",
+          "43567B0B",
+          "B31B045C",
+          "17C3893E",
+          "D6CDE3EF",
+          "612E0AD3",
+          "4D055056",
+          "4A00DC47"
+        ],
+        "info.9.ts": [
+          1783485925,
+          1783485926,
+          1783485895,
+          1783485899,
+          1783485905,
+          1783485909,
+          1783485880,
+          1783485917
+        ],
+        "info.10": [
+          0
+        ],
+        "info.11": [
+          0
+        ],
+        "info.12": [],
+        "info.13": [],
+        "info.14": [
+          0
+        ],
+        "info.15": [
+          416,
+          260,
+          390,
+          429,
+          1105,
+          663,
+          858,
+          351
+        ],
+        "info.16[]": [
+          41,
+          13,
+          16,
+          50,
+          51,
+          20,
+          21,
+          22
+        ],
+        "info.17": []
+      },
+      "example": {
+        "cmd": "DANMU_MSG",
+        "dm_v2": "",
+        "info": [
+          [
+            0,
+            1,
+            25,
+            16777215,
+            1783485880115,
+            1783483969,
+            0,
+            "b6b12b06",
+            0,
+            0,
+            0,
+            "",
+            0,
+            "{}",
+            "{}",
+            {
+              "extra": "{\"send_from_me\":false,\"master_player_hidden\":false,\"mode\":0,\"color\":16777215,\"dm_type\":0,\"font_size\":25,\"player_mode\":1,\"show_player_type\":0,\"content\":\"刮彩票赚钱\",\"user_hash\":\"3065064198\",\"emoticon_unique\":\"\",\"bulge_display\":0,\"recommend_score\":7,\"dm_score\":0,\"chronos_force_display\":0,\"main_state_dm_color\":\"\",\"objective_state_dm_color\":\"\",\"direction\":0,\"pk_direction\":0,\"quartet_direction\":0,\"anniversary_crowd\":0,\"yeah_space_type\":\"\",\"yeah_space_url\":\"\",\"jump_to_url\":\"\",\"space_type\":\"\",\"space_url\":\"\",\"animation\":{},\"emots\":null,\"is_audited\":false,\"id_str\":\"060887d4ec6013ac33a918f7466a4dd54981\",\"icon\":null,\"show_reply\":true,\"reply_mid\":0,\"reply_uname\":\"\",\"reply_uname_color\":\"\",\"reply_is_mystery\":false,\"reply_type_enum\":0,\"hit_combo\":0,\"esports_jump_url\":\"\",\"is_mirror\":false,\"is_collaboration_member\":false,\"card\":{\"card_type\":0,\"oid_str\":\"\",\"oid_str_1\":\"\",\"origin_oid_str\":\"\",\"share_id\":\"\",\"share_origin\":\"\",\"from\":\"\",\"card_content\":null},\"voice\":null,\"background_type\":0}",
+              "mode": 0,
+              "show_player_type": 0,
+              "user": {
+                "anon": null,
+                "base": {
+                  "face": "https://i2.hdslb.com/bfs/face/44052f650656d7caf368171a7d682fcce5c7a7ab.jpg",
+                  "is_mystery": false,
+                  "name": "网瘾少年东尼",
+                  "name_color": 0,
+                  "name_color_str": "",
+                  "official_info": {
+                    "desc": "",
+                    "role": 0,
+                    "title": "",
+                    "type": -1
+                  },
+                  "origin_info": {
+                    "face": "https://i2.hdslb.com/bfs/face/44052f650656d7caf368171a7d682fcce5c7a7ab.jpg",
+                    "name": "网瘾少年东尼"
+                  },
+                  "risk_ctrl_info": null
+                },
+                "guard": null,
+                "guard_leader": null,
+                "medal": {
+                  "color": 398668,
+                  "color_border": 398668,
+                  "color_end": 6850801,
+                  "color_start": 398668,
+                  "guard_icon": "",
+                  "guard_level": 0,
+                  "honor_icon": "",
+                  "id": 542552,
+                  "is_light": 1,
+                  "level": 27,
+                  "name": "沐马",
+                  "ruid": 36265198,
+                  "score": 13548,
+                  "typ": 0,
+                  "user_receive_count": 0,
+                  "v2_medal_color_border": "#3FB4F699",
+                  "v2_medal_color_end": "#3FB4F699",
+                  "v2_medal_color_level": "#3FB4F6E6",
+                  "v2_medal_color_start": "#3FB4F699",
+                  "v2_medal_color_text": "#FFFFFF"
+                },
+                "title": {
+                  "old_title_css_id": "",
+                  "title_css_id": ""
+                },
+                "uhead_frame": null,
+                "uid": 355334885,
+                "wealth": null
+              }
+            },
+            {
+              "activity_identity": "",
+              "activity_source": 0,
+              "not_show": 0
+            },
+            0
+          ],
+          "刮彩票赚钱",
+          [
+            355334885,
+            "网瘾少年东尼",
+            0,
+            0,
+            0,
+            10000,
+            1,
+            ""
+          ],
+          [
+            27,
+            "沐马",
+            "沐晓空Channel",
+            23596840,
+            398668,
+            "",
+            0,
+            398668,
+            398668,
+            6850801,
+            0,
+            1,
+            36265198
+          ],
+          [
+            7,
+            0,
+            9868950,
+            ">50000",
+            3
+          ],
+          [
+            "",
+            ""
+          ],
+          0,
+          0,
+          null,
+          {
+            "ct": "4D055056",
+            "ts": 1783485880
+          },
+          0,
+          0,
+          null,
+          null,
+          0,
+          416,
+          [
+            20
+          ],
+          null
+        ]
+      }
+    },
+    "ONLINE_RANK_V3": {
+      "count": 5,
+      "description": "高能用户榜单更新 (OnlineRankV3): 房间内在线的高能用户排行榜信息，其详细列表数据由 Protobuf 编码。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "pb": {
+                "type": "string"
+              },
+              "pb_decoded": {
+                "type": "object",
+                "properties": {
+                  "rank_type": {
+                    "type": "integer"
+                  },
+                  "online_list": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "integer"
+                        },
+                        "face": {
+                          "type": "string"
+                        },
+                        "score": {
+                          "type": "string"
+                        },
+                        "uname": {
+                          "type": "string"
+                        },
+                        "rank": {
+                          "type": "integer"
+                        },
+                        "user_info": {
+                          "type": "object",
+                          "properties": {
+                            "uid": {
+                              "type": "integer"
+                            },
+                            "base": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "face": {
+                                  "type": "string"
+                                },
+                                "risk_ctrl_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "account_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "official_info": {
+                                  "type": "object",
+                                  "properties": {}
+                                }
+                              }
+                            },
+                            "guard": {
+                              "type": "object",
+                              "properties": {}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "pb_decode_message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "ONLINE_RANK_V3"
+        ],
+        "data.pb": [],
+        "data.pb_decoded.rank_type": [
+          11
+        ],
+        "data.pb_decoded.online_list[].uid": [
+          388616395
+        ],
+        "data.pb_decoded.online_list[].face": [
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.pb_decoded.online_list[].score": [
+          "182",
+          "161"
+        ],
+        "data.pb_decoded.online_list[].uname": [
+          "逍遥云闲"
+        ],
+        "data.pb_decoded.online_list[].rank": [
+          1
+        ],
+        "data.pb_decoded.online_list[].user_info.uid": [
+          388616395
+        ],
+        "data.pb_decoded.online_list[].user_info.base.name": [
+          "逍遥云闲"
+        ],
+        "data.pb_decoded.online_list[].user_info.base.face": [
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.pb_decoded.online_list[].user_info.base.risk_ctrl_info.name": [
+          "逍遥云闲"
+        ],
+        "data.pb_decoded.online_list[].user_info.base.account_info.name": [
+          "逍遥云闲"
+        ],
+        "data.pb_decode_message": [
+          "success"
+        ]
+      },
+      "example": {
+        "cmd": "ONLINE_RANK_V3",
+        "data": {
+          "pb": "CgtvbmxpbmVfcmFuaxqUAwjLoae5ARJKaHR0cHM6Ly9pMS5oZHNsYi5jb20vYmZzL2ZhY2UvNWVlMzM3NDAwZTI3ZDgxMjUyMTgxNGYxNzYwMGY4OTk5ZDhlODljNi5qcGcaAzE2MSIM6YCN6YGl5LqR6ZeyKAFCqgIIy6GnuQESnwIKDOmAjemBpeS6kemXshJKaHR0cHM6Ly9pMS5oZHNsYi5jb20vYmZzL2ZhY2UvNWVlMzM3NDAwZTI3ZDgxMjUyMTgxNGYxNzYwMGY4OTk5ZDhlODljNi5qcGcqWgoM6YCN6YGl5LqR6ZeyEkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS81ZWUzMzc0MDBlMjdkODEyNTIxODE0ZjE3NjAwZjg5OTlkOGU4OWM2LmpwZzJaCgzpgI3pgaXkupHpl7ISSmh0dHBzOi8vaTEuaGRzbGIuY29tL2Jmcy9mYWNlLzVlZTMzNzQwMGUyN2Q4MTI1MjE4MTRmMTc2MDBmODk5OWQ4ZTg5YzYuanBnOgsg////////////ATIAGrMDCMfR4QoSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzk3Yzc3ZmEwZTMxYjY4MWRhMjBlNWFhYjYxNmVlOTJmMWE3MjU4Y2YuanBnGgMxMjIiDlJpbmd0b25l5bCP55m9KAIwA0LGAgjH0eEKEqUCCg5SaW5ndG9uZeWwj+eZvRJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvOTdjNzdmYTBlMzFiNjgxZGEyMGU1YWFiNjE2ZWU5MmYxYTcyNThjZi5qcGcqXAoOUmluZ3RvbmXlsI/nmb0SSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzk3Yzc3ZmEwZTMxYjY4MWRhMjBlNWFhYjYxNmVlOTJmMWE3MjU4Y2YuanBnMlwKDlJpbmd0b25l5bCP55m9EkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS85N2M3N2ZhMGUzMWI2ODFkYTIwZTVhYWI2MTZlZTkyZjFhNzI1OGNmLmpwZzoLIP///////////wEyFwgDEhMyMDI2LTA4LTI2IDIzOjU5OjU5GqsDCOX1t6kBEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS80NDA1MmY2NTA2NTZkN2NhZjM2ODE3MWE3ZDY4MmZjY2U1YzdhN2FiLmpwZxoCMjMiEue9keeYvuWwkeW5tOS4nOWwvCgDQrwCCOX1t6kBErECChLnvZHnmL7lsJHlubTkuJzlsLwSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzQ0MDUyZjY1MDY1NmQ3Y2FmMzY4MTcxYTdkNjgyZmNjZTVjN2E3YWIuanBnKmAKEue9keeYvuWwkeW5tOS4nOWwvBJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvNDQwNTJmNjUwNjU2ZDdjYWYzNjgxNzFhN2Q2ODJmY2NlNWM3YTdhYi5qcGcyYAoS572R55i+5bCR5bm05Lic5bC8EkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS80NDA1MmY2NTA2NTZkN2NhZjM2ODE3MWE3ZDY4MmZjY2U1YzdhN2FiLmpwZzoLIP///////////wEyABqRAwjs6/INEkpodHRwczovL2kwLmhkc2xiLmNvbS9iZnMvZmFjZS81ZGIyZmEwMTkyNzRmYmNjYmU3OTM0NTZjYmRhNzYxNmNhYWI1NjczLmpwZxoCMTMiDOaZtOepuuW1kOaciCgEQqkCCOzr8g0SnwIKDOaZtOepuuW1kOaciBJKaHR0cHM6Ly9pMC5oZHNsYi5jb20vYmZzL2ZhY2UvNWRiMmZhMDE5Mjc0ZmJjY2JlNzkzNDU2Y2JkYTc2MTZjYWFiNTY3My5qcGcqWgoM5pm056m65bWQ5pyIEkpodHRwczovL2kwLmhkc2xiLmNvbS9iZnMvZmFjZS81ZGIyZmEwMTkyNzRmYmNjYmU3OTM0NTZjYmRhNzYxNmNhYWI1NjczLmpwZzJaCgzmmbTnqbrltZDmnIgSSmh0dHBzOi8vaTAuaGRzbGIuY29tL2Jmcy9mYWNlLzVkYjJmYTAxOTI3NGZiY2NiZTc5MzQ1NmNiZGE3NjE2Y2FhYjU2NzMuanBnOgsg////////////ATIAGqsDCIWZ+qQBEkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS9kMGNhM2RhYTBiZTMzYzU4OTY0NGM2ODg4YjllMzFjZDZmOWY1YTE3LmpwZxoCMTAiEumTgemUheeCluWwj+Wwj+eZvSgFQrwCCIWZ+qQBErECChLpk4HplIXngpblsI/lsI/nmb0SSmh0dHBzOi8vaTEuaGRzbGIuY29tL2Jmcy9mYWNlL2QwY2EzZGFhMGJlMzNjNTg5NjQ0YzY4ODhiOWUzMWNkNmY5ZjVhMTcuanBnKmAKEumTgemUheeCluWwj+Wwj+eZvRJKaHR0cHM6Ly9pMS5oZHNsYi5jb20vYmZzL2ZhY2UvZDBjYTNkYWEwYmUzM2M1ODk2NDRjNjg4OGI5ZTMxY2Q2ZjlmNWExNy5qcGcyYAoS6ZOB6ZSF54KW5bCP5bCP55m9EkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS9kMGNhM2RhYTBiZTMzYzU4OTY0NGM2ODg4YjllMzFjZDZmOWY1YTE3LmpwZzoLIP///////////wEyABrBAwiegusBEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS8yNDFjZDAxZGI1MWEwNTIwMDZjYWZmZWJlY2Y4Mjg1NWZjMWI1Njg0LmpwZxoBNyIS5Yid6Zuq5Za144Gu56WI44KKKAYwA0LSAgiegusBErECChLliJ3pm6rllrXjga7npYjjgooSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzI0MWNkMDFkYjUxYTA1MjAwNmNhZmZlYmVjZjgyODU1ZmMxYjU2ODQuanBnKmAKEuWInembquWWteOBrueliOOCihJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvMjQxY2QwMWRiNTFhMDUyMDA2Y2FmZmViZWNmODI4NTVmYzFiNTY4NC5qcGcyYAoS5Yid6Zuq5Za144Gu56WI44KKEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS8yNDFjZDAxZGI1MWEwNTIwMDZjYWZmZWJlY2Y4Mjg1NWZjMWI1Njg0LmpwZzoLIP///////////wEyFwgDEhMyMDI3LTA0LTIzIDIzOjU5OjU5GuUDCIL0xwkSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzc3MTAwNDNlMzc5ZDc3ZTMwMDY4ZGVkNWVjYWU2NGYzNjA5ZWFjM2IuanBnGgE0IhvlhrDmuIXnjonmtIHjga7lpKnlrZDmlrnovrAoBzADQu0CCIL0xwkSzAIKG+WGsOa4heeOiea0geOBruWkqeWtkOaWuei+sBJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvNzcxMDA0M2UzNzlkNzdlMzAwNjhkZWQ1ZWNhZTY0ZjM2MDllYWMzYi5qcGcqaQob5Yaw5riF546J5rSB44Gu5aSp5a2Q5pa56L6wEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS83NzEwMDQzZTM3OWQ3N2UzMDA2OGRlZDVlY2FlNjRmMzYwOWVhYzNiLmpwZzJpChvlhrDmuIXnjonmtIHjga7lpKnlrZDmlrnovrASSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzc3MTAwNDNlMzc5ZDc3ZTMwMDY4ZGVkNWVjYWU2NGYzNjA5ZWFjM2IuanBnOgsg////////////ATIXCAMSEzIwMjktMTItMDggMjM6NTk6NTk=",
+          "pb_decoded": {
+            "rank_type": 11,
+            "online_list": [
+              {
+                "uid": 388616395,
+                "face": "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+                "score": "161",
+                "uname": "逍遥云闲",
+                "rank": 1,
+                "user_info": {
+                  "uid": 388616395,
+                  "base": {
+                    "name": "逍遥云闲",
+                    "face": "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+                    "risk_ctrl_info": {
+                      "name": "逍遥云闲"
+                    },
+                    "account_info": {
+                      "name": "逍遥云闲"
+                    },
+                    "official_info": {}
+                  },
+                  "guard": {}
+                }
+              },
+              {
+                "uid": 22571207,
+                "face": "https://i2.hdslb.com/bfs/face/97c77fa0e31b681da20e5aab616ee92f1a7258cf.jpg",
+                "score": "122",
+                "uname": "Ringtone小白",
+                "rank": 2,
+                "guard_level": 3,
+                "user_info": {
+                  "uid": 22571207,
+                  "base": {
+                    "name": "Ringtone小白",
+                    "face": "https://i2.hdslb.com/bfs/face/97c77fa0e31b681da20e5aab616ee92f1a7258cf.jpg",
+                    "risk_ctrl_info": {
+                      "name": "Ringtone小白"
+                    },
+                    "account_info": {
+                      "name": "Ringtone小白"
+                    },
+                    "official_info": {}
+                  },
+                  "guard": {
+                    "level": 3,
+                    "expired_str": "2026-08-26 23:59:59"
+                  }
+                }
+              },
+              {
+                "uid": 355334885,
+                "face": "https://i2.hdslb.com/bfs/face/44052f650656d7caf368171a7d682fcce5c7a7ab.jpg",
+                "score": "23",
+                "uname": "网瘾少年东尼",
+                "rank": 3,
+                "user_info": {
+                  "uid": 355334885,
+                  "base": {
+                    "name": "网瘾少年东尼",
+                    "face": "https://i2.hdslb.com/bfs/face/44052f650656d7caf368171a7d682fcce5c7a7ab.jpg",
+                    "risk_ctrl_info": {
+                      "name": "网瘾少年东尼"
+                    },
+                    "account_info": {
+                      "name": "网瘾少年东尼"
+                    },
+                    "official_info": {}
+                  },
+                  "guard": {}
+                }
+              },
+              {
+                "uid": 29144556,
+                "face": "https://i0.hdslb.com/bfs/face/5db2fa019274fbccbe793456cbda7616caab5673.jpg",
+                "score": "13",
+                "uname": "晴空嵐月",
+                "rank": 4,
+                "user_info": {
+                  "uid": 29144556,
+                  "base": {
+                    "name": "晴空嵐月",
+                    "face": "https://i0.hdslb.com/bfs/face/5db2fa019274fbccbe793456cbda7616caab5673.jpg",
+                    "risk_ctrl_info": {
+                      "name": "晴空嵐月"
+                    },
+                    "account_info": {
+                      "name": "晴空嵐月"
+                    },
+                    "official_info": {}
+                  },
+                  "guard": {}
+                }
+              },
+              {
+                "uid": 345934981,
+                "face": "https://i1.hdslb.com/bfs/face/d0ca3daa0be33c589644c6888b9e31cd6f9f5a17.jpg",
+                "score": "10",
+                "uname": "铁锅炖小小白",
+                "rank": 5,
+                "user_info": {
+                  "uid": 345934981,
+                  "base": {
+                    "name": "铁锅炖小小白",
+                    "face": "https://i1.hdslb.com/bfs/face/d0ca3daa0be33c589644c6888b9e31cd6f9f5a17.jpg",
+                    "risk_ctrl_info": {
+                      "name": "铁锅炖小小白"
+                    },
+                    "account_info": {
+                      "name": "铁锅炖小小白"
+                    },
+                    "official_info": {}
+                  },
+                  "guard": {}
+                }
+              },
+              {
+                "uid": 3850526,
+                "face": "https://i2.hdslb.com/bfs/face/241cd01db51a052006caffebecf82855fc1b5684.jpg",
+                "score": "7",
+                "uname": "初雪喵の祈り",
+                "rank": 6,
+                "guard_level": 3,
+                "user_info": {
+                  "uid": 3850526,
+                  "base": {
+                    "name": "初雪喵の祈り",
+                    "face": "https://i2.hdslb.com/bfs/face/241cd01db51a052006caffebecf82855fc1b5684.jpg",
+                    "risk_ctrl_info": {
+                      "name": "初雪喵の祈り"
+                    },
+                    "account_info": {
+                      "name": "初雪喵の祈り"
+                    },
+                    "official_info": {}
+                  },
+                  "guard": {
+                    "level": 3,
+                    "expired_str": "2027-04-23 23:59:59"
+                  }
+                }
+              },
+              {
+                "uid": 20052482,
+                "face": "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+                "score": "4",
+                "uname": "冰清玉洁の天子方辰",
+                "rank": 7,
+                "guard_level": 3,
+                "user_info": {
+                  "uid": 20052482,
+                  "base": {
+                    "name": "冰清玉洁の天子方辰",
+                    "face": "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+                    "risk_ctrl_info": {
+                      "name": "冰清玉洁の天子方辰"
+                    },
+                    "account_info": {
+                      "name": "冰清玉洁の天子方辰"
+                    },
+                    "official_info": {}
+                  },
+                  "guard": {
+                    "level": 3,
+                    "expired_str": "2029-12-08 23:59:59"
+                  }
+                }
+              }
+            ]
+          },
+          "pb_decode_message": "success"
+        }
+      }
+    },
+    "INTERACT_WORD_V2": {
+      "count": 4,
+      "description": "用户交互事件 V2 (InteractWordV2): 包含与 INTERACT_WORD 类似的动作，其详细数据封装在 Protobuf (pb) 字节流中。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "dmscore": {
+                "type": "integer"
+              },
+              "pb": {
+                "type": "string"
+              },
+              "pb_decoded": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "uname": {
+                    "type": "string"
+                  },
+                  "identities": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "msg_type": {
+                    "type": "integer"
+                  },
+                  "room_id": {
+                    "type": "integer"
+                  },
+                  "timestamp": {
+                    "type": "integer"
+                  },
+                  "score": {
+                    "type": "integer"
+                  },
+                  "contribution_info": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "trigger_time": {
+                    "type": "integer"
+                  },
+                  "contribution_info_v2": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "user_info": {
+                    "type": "object",
+                    "properties": {
+                      "uid": {
+                        "type": "integer"
+                      },
+                      "base": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "face": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "wealth": {
+                        "type": "object",
+                        "properties": {
+                          "level": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "guard": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  "user_anchor_relation": {
+                    "type": "object",
+                    "properties": {
+                      "tail_icon": {
+                        "type": "string"
+                      },
+                      "tail_guide_text": {
+                        "type": "string"
+                      },
+                      "tail_type": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "pb_decode_message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "INTERACT_WORD_V2"
+        ],
+        "data.dmscore": [
+          33,
+          3,
+          12,
+          6
+        ],
+        "data.pb": [],
+        "data.pb_decoded.uid": [
+          403797664,
+          1565146,
+          85565011,
+          21744109
+        ],
+        "data.pb_decoded.uname": [
+          "灰常的逆袭",
+          "Swrin",
+          "从缘",
+          "白纸-摆烂版"
+        ],
+        "data.pb_decoded.identities[]": [
+          1
+        ],
+        "data.pb_decoded.msg_type": [
+          1
+        ],
+        "data.pb_decoded.room_id": [
+          23596840
+        ],
+        "data.pb_decoded.timestamp": [
+          1783486017,
+          1783485889,
+          1783485910
+        ],
+        "data.pb_decoded.score": [
+          1783486017256,
+          1783485889330,
+          1783485910468,
+          1783485889559
+        ],
+        "data.pb_decoded.trigger_time": [
+          1783485888389920959,
+          1783485909232570338,
+          1783486016087924755,
+          1783485888243844359
+        ],
+        "data.pb_decoded.user_info.uid": [
+          403797664,
+          1565146,
+          85565011,
+          21744109
+        ],
+        "data.pb_decoded.user_info.base.name": [
+          "灰常的逆袭",
+          "Swrin",
+          "从缘",
+          "白纸-摆烂版"
+        ],
+        "data.pb_decoded.user_info.base.face": [
+          "https://i1.hdslb.com/bfs/face/eb1b9c7f13dfdcf97f796c386e8f35f5d2ecd7d6.jpg",
+          "https://i1.hdslb.com/bfs/face/722044353bfcefe62fea948baf3c526c2a415908.jpg",
+          "https://i1.hdslb.com/bfs/face/9f382adc5c3b81ddd0f5db94eaf1a5f10a12f444.jpg",
+          "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg"
+        ],
+        "data.pb_decoded.user_info.wealth.level": [
+          2,
+          35,
+          28,
+          13
+        ],
+        "data.pb_decoded.user_anchor_relation.tail_icon": [
+          "https://i0.hdslb.com/bfs/live/bb88734558c6383a4cfb5fa16c9749d5290d95e8.png"
+        ],
+        "data.pb_decoded.user_anchor_relation.tail_guide_text": [
+          "曾经活跃过，近期与你互动较少"
+        ],
+        "data.pb_decoded.user_anchor_relation.tail_type": [
+          4
+        ],
+        "data.pb_decode_message": [
+          "success"
+        ],
+        "data.pb_decoded.fans_medal_info.target_id": [
+          36265198
+        ],
+        "data.pb_decoded.fans_medal_info.medal_level": [
+          9
+        ],
+        "data.pb_decoded.fans_medal_info.medal_name": [
+          "沐马"
+        ],
+        "data.pb_decoded.fans_medal_info.medal_color": [
+          9272486
+        ],
+        "data.pb_decoded.fans_medal_info.medal_color_start": [
+          12632256
+        ],
+        "data.pb_decoded.fans_medal_info.medal_color_end": [
+          12632256
+        ],
+        "data.pb_decoded.fans_medal_info.medal_color_border": [
+          12632256
+        ],
+        "data.pb_decoded.fans_medal_info.anchor_roomid": [
+          23596840
+        ],
+        "data.pb_decoded.fans_medal_info.score": [
+          135
+        ],
+        "data.pb_decoded.user_info.medal.name": [
+          "沐马"
+        ],
+        "data.pb_decoded.user_info.medal.level": [
+          9
+        ],
+        "data.pb_decoded.user_info.medal.color_start": [
+          12632256
+        ],
+        "data.pb_decoded.user_info.medal.color_end": [
+          12632256
+        ],
+        "data.pb_decoded.user_info.medal.color_border": [
+          12632256
+        ],
+        "data.pb_decoded.user_info.medal.color": [
+          9272486
+        ],
+        "data.pb_decoded.user_info.medal.id": [
+          542552
+        ],
+        "data.pb_decoded.user_info.medal.ruid": [
+          36265198
+        ],
+        "data.pb_decoded.user_info.medal.score": [
+          135
+        ],
+        "data.pb_decoded.user_info.medal.v2_medal_color_start": [
+          "#919298CC"
+        ],
+        "data.pb_decoded.user_info.medal.v2_medal_color_end": [
+          "#919298CC"
+        ],
+        "data.pb_decoded.user_info.medal.v2_medal_color_border": [
+          "#919298CC"
+        ],
+        "data.pb_decoded.user_info.medal.v2_medal_color_text": [
+          "#FFFFFF"
+        ],
+        "data.pb_decoded.user_info.medal.v2_medal_color_level": [
+          "#919298E6"
+        ]
+      },
+      "example": {
+        "cmd": "INTERACT_WORD_V2",
+        "data": {
+          "dmscore": 3,
+          "pb": "CKDtxcABEgVTd3JpbiIBASgBMKieoAs4wau30gZAsvargPQzYgB4h4rJ9fTejeAYmgEAsgFhCKDtxcABElMKBVN3cmluEkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS85ZjM4MmFkYzVjM2I4MWRkZDBmNWRiOTRlYWYxYTVmMTBhMTJmNDQ0LmpwZyICCAIyALoBegpKaHR0cHM6Ly9pMC5oZHNsYi5jb20vYmZzL2xpdmUvYmI4ODczNDU1OGM2MzgzYTRjZmI1ZmExNmM5NzQ5ZDUyOTBkOTVlOC5wbmcSKuabvue7j+a0u+i3g+i/h++8jOi/keacn+S4juS9oOS6kuWKqOi+g+WwkRgEwgEA",
+          "pb_decoded": {
+            "uid": 403797664,
+            "uname": "Swrin",
+            "identities": [
+              1
+            ],
+            "msg_type": 1,
+            "room_id": 23596840,
+            "timestamp": 1783485889,
+            "score": 1783485889330,
+            "contribution_info": {},
+            "trigger_time": 1783485888243844359,
+            "contribution_info_v2": {},
+            "user_info": {
+              "uid": 403797664,
+              "base": {
+                "name": "Swrin",
+                "face": "https://i1.hdslb.com/bfs/face/9f382adc5c3b81ddd0f5db94eaf1a5f10a12f444.jpg"
+              },
+              "wealth": {
+                "level": 2
+              },
+              "guard": {}
+            },
+            "user_anchor_relation": {
+              "tail_icon": "https://i0.hdslb.com/bfs/live/bb88734558c6383a4cfb5fa16c9749d5290d95e8.png",
+              "tail_guide_text": "曾经活跃过，近期与你互动较少",
+              "tail_type": 4
+            }
+          },
+          "pb_decode_message": "success"
+        }
+      }
+    },
+    "NOTICE_MSG": {
+      "count": 1,
+      "description": "自定义/未知事件 (NOTICE_MSG)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "full": {
+            "type": "object",
+            "properties": {
+              "head_icon": {
+                "type": "string"
+              },
+              "tail_icon": {
+                "type": "string"
+              },
+              "head_icon_fa": {
+                "type": "string"
+              },
+              "tail_icon_fa": {
+                "type": "string"
+              },
+              "head_icon_fan": {
+                "type": "integer"
+              },
+              "tail_icon_fan": {
+                "type": "integer"
+              },
+              "background": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              },
+              "highlight": {
+                "type": "string"
+              },
+              "time": {
+                "type": "integer"
+              }
+            }
+          },
+          "half": {
+            "type": "object",
+            "properties": {
+              "head_icon": {
+                "type": "string"
+              },
+              "tail_icon": {
+                "type": "string"
+              },
+              "background": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              },
+              "highlight": {
+                "type": "string"
+              },
+              "time": {
+                "type": "integer"
+              }
+            }
+          },
+          "side": {
+            "type": "null"
+          },
+          "roomid": {
+            "type": "integer"
+          },
+          "real_roomid": {
+            "type": "integer"
+          },
+          "msg_common": {
+            "type": "string"
+          },
+          "msg_self": {
+            "type": "string"
+          },
+          "link_url": {
+            "type": "string"
+          },
+          "msg_type": {
+            "type": "integer"
+          },
+          "shield_uid": {
+            "type": "integer"
+          },
+          "business_id": {
+            "type": "string"
+          },
+          "scatter": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "integer"
+              },
+              "max": {
+                "type": "integer"
+              }
+            }
+          },
+          "marquee_id": {
+            "type": "string"
+          },
+          "notice_type": {
+            "type": "integer"
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "NOTICE_MSG"
+        ],
+        "id": [
+          1938
+        ],
+        "name": [
+          "五灵威力跑马灯"
+        ],
+        "full.head_icon": [
+          "https://i0.hdslb.com/bfs/live/fdaf4f7ca7109bb714a4fb8d45ee78d402523a0b.webp"
+        ],
+        "full.tail_icon": [
+          ""
+        ],
+        "full.head_icon_fa": [
+          "https://i0.hdslb.com/bfs/live/939f221beb57e7962ba41a740b85d40b09e729ba.png"
+        ],
+        "full.tail_icon_fa": [
+          ""
+        ],
+        "full.head_icon_fan": [
+          39
+        ],
+        "full.tail_icon_fan": [
+          4
+        ],
+        "full.background": [
+          "#ef8e0e"
+        ],
+        "full.color": [
+          "#FFFFFF"
+        ],
+        "full.highlight": [
+          "#f4ff98"
+        ],
+        "full.time": [
+          20
+        ],
+        "half.head_icon": [
+          "https://i0.hdslb.com/bfs/live/31a3eed63d51d3013e1137cce5ccf913a9ac580b.gif"
+        ],
+        "half.tail_icon": [
+          ""
+        ],
+        "half.background": [
+          "#ef8e0e"
+        ],
+        "half.color": [
+          "#FFFFFFFF"
+        ],
+        "half.highlight": [
+          "#f4ff98"
+        ],
+        "half.time": [
+          15
+        ],
+        "side": [],
+        "roomid": [
+          27632810
+        ],
+        "real_roomid": [
+          27632810
+        ],
+        "msg_common": [
+          "<%bili_43829886239%>投喂<%小萝ツ%>1个五灵威力，点击前往TA的房间吧！"
+        ],
+        "msg_self": [
+          "<%bili_43829886239%>投喂<%小萝ツ%>1个五灵威力，快来围观吧！"
+        ],
+        "link_url": [
+          "https://live.bilibili.com/27632810?broadcast_type=1&is_room_feed=1&from=28003&extra_jump_from=28003&live_lottery_type=1"
+        ],
+        "msg_type": [
+          2
+        ],
+        "shield_uid": [
+          -1
+        ],
+        "business_id": [
+          "35699"
+        ],
+        "scatter.min": [
+          0
+        ],
+        "scatter.max": [
+          0
+        ],
+        "marquee_id": [
+          ""
+        ],
+        "notice_type": [
+          0
+        ]
+      },
+      "example": {
+        "cmd": "NOTICE_MSG",
+        "id": 1938,
+        "name": "五灵威力跑马灯",
+        "full": {
+          "head_icon": "https://i0.hdslb.com/bfs/live/fdaf4f7ca7109bb714a4fb8d45ee78d402523a0b.webp",
+          "tail_icon": "",
+          "head_icon_fa": "https://i0.hdslb.com/bfs/live/939f221beb57e7962ba41a740b85d40b09e729ba.png",
+          "tail_icon_fa": "",
+          "head_icon_fan": 39,
+          "tail_icon_fan": 4,
+          "background": "#ef8e0e",
+          "color": "#FFFFFF",
+          "highlight": "#f4ff98",
+          "time": 20
+        },
+        "half": {
+          "head_icon": "https://i0.hdslb.com/bfs/live/31a3eed63d51d3013e1137cce5ccf913a9ac580b.gif",
+          "tail_icon": "",
+          "background": "#ef8e0e",
+          "color": "#FFFFFFFF",
+          "highlight": "#f4ff98",
+          "time": 15
+        },
+        "side": null,
+        "roomid": 27632810,
+        "real_roomid": 27632810,
+        "msg_common": "<%bili_43829886239%>投喂<%小萝ツ%>1个五灵威力，点击前往TA的房间吧！",
+        "msg_self": "<%bili_43829886239%>投喂<%小萝ツ%>1个五灵威力，快来围观吧！",
+        "link_url": "https://live.bilibili.com/27632810?broadcast_type=1&is_room_feed=1&from=28003&extra_jump_from=28003&live_lottery_type=1",
+        "msg_type": 2,
+        "shield_uid": -1,
+        "business_id": "35699",
+        "scatter": {
+          "min": 0,
+          "max": 0
+        },
+        "marquee_id": "",
+        "notice_type": 0
+      }
+    },
+    "STOP_LIVE_ROOM_LIST": {
+      "count": 4,
+      "description": "自定义/未知事件 (STOP_LIVE_ROOM_LIST)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "room_id_list": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "STOP_LIVE_ROOM_LIST"
+        ],
+        "data.room_id_list[]": [
+          1714600442,
+          1726557931,
+          31759845,
+          12251091
+        ]
+      },
+      "example": {
+        "cmd": "STOP_LIVE_ROOM_LIST",
+        "data": {
+          "room_id_list": [
+            1714600442,
+            32390125,
+            1950859256,
+            12820853,
+            1785948398,
+            1984346793,
+            23349135,
+            1992279073,
+            27250841,
+            31752595,
+            1724210931,
+            1724776449,
+            8483096,
+            12842735,
+            14537820,
+            1741638817,
+            13506609,
+            1753192214,
+            24522461,
+            3931220,
+            965694,
+            1938417672,
+            24058123,
+            1882761310,
+            1963659249,
+            21952839,
+            22782817,
+            31153977,
+            11685739,
+            1781256173,
+            25929585,
+            32317624,
+            1909415359,
+            1909416296,
+            23795144,
+            6593065,
+            1824223567,
+            1838212040,
+            1749148875,
+            1755375101,
+            11695272,
+            1963472440,
+            26935491,
+            27100369,
+            1467171,
+            1749271054,
+            1960952071,
+            31785089,
+            1781254874,
+            13099115,
+            1774686532,
+            32803487,
+            1843688971,
+            1994828036,
+            1741089911,
+            1741639648,
+            1823574883,
+            1883019251,
+            1990573161,
+            26563076,
+            1726552755,
+            1732561213,
+            1726557696,
+            27206437,
+            1791505642,
+            23152654,
+            2439446,
+            27903656,
+            27947286,
+            1827737253
+          ]
+        }
+      }
+    },
+    "SUPER_CHAT_MESSAGE": {
+      "count": 3,
+      "description": "醒目留言 (SuperChat): 付费留言，在直播间顶部保留显示一段时间。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "background_bottom_color": {
+                "type": "string"
+              },
+              "background_color": {
+                "type": "string"
+              },
+              "background_color_end": {
+                "type": "string"
+              },
+              "background_color_start": {
+                "type": "string"
+              },
+              "background_icon": {
+                "type": "string"
+              },
+              "background_image": {
+                "type": "string"
+              },
+              "background_price_color": {
+                "type": "string"
+              },
+              "color_point": {
+                "type": "number"
+              },
+              "dmscore": {
+                "type": "integer"
+              },
+              "end_time": {
+                "type": "integer"
+              },
+              "gift": {
+                "type": "object",
+                "properties": {
+                  "gift_id": {
+                    "type": "integer"
+                  },
+                  "gift_name": {
+                    "type": "string"
+                  },
+                  "num": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "group_medal": {
+                "type": "object",
+                "properties": {
+                  "is_lighted": {
+                    "type": "integer"
+                  },
+                  "medal_id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "id": {
+                "type": "integer"
+              },
+              "is_mystery": {
+                "type": "boolean"
+              },
+              "is_ranked": {
+                "type": "integer"
+              },
+              "is_send_audit": {
+                "type": "integer"
+              },
+              "medal_info": {
+                "type": "object",
+                "properties": {
+                  "anchor_roomid": {
+                    "type": "integer"
+                  },
+                  "anchor_uname": {
+                    "type": "string"
+                  },
+                  "guard_level": {
+                    "type": "integer"
+                  },
+                  "icon_id": {
+                    "type": "integer"
+                  },
+                  "is_lighted": {
+                    "type": "integer"
+                  },
+                  "medal_color": {
+                    "type": "string"
+                  },
+                  "medal_color_border": {
+                    "type": "integer"
+                  },
+                  "medal_color_end": {
+                    "type": "integer"
+                  },
+                  "medal_color_start": {
+                    "type": "integer"
+                  },
+                  "medal_level": {
+                    "type": "integer"
+                  },
+                  "medal_name": {
+                    "type": "string"
+                  },
+                  "special": {
+                    "type": "string"
+                  },
+                  "target_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "message": {
+                "type": "string"
+              },
+              "message_font_color": {
+                "type": "string"
+              },
+              "message_trans": {
+                "type": "string"
+              },
+              "price": {
+                "type": "integer"
+              },
+              "rate": {
+                "type": "integer"
+              },
+              "start_time": {
+                "type": "integer"
+              },
+              "time": {
+                "type": "integer"
+              },
+              "token": {
+                "type": "string"
+              },
+              "trans_mark": {
+                "type": "integer"
+              },
+              "ts": {
+                "type": "integer"
+              },
+              "uid": {
+                "type": "integer"
+              },
+              "uinfo": {
+                "type": "object",
+                "properties": {
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "face": {
+                        "type": "string"
+                      },
+                      "is_mystery": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "name_color": {
+                        "type": "integer"
+                      },
+                      "name_color_str": {
+                        "type": "string"
+                      },
+                      "official_info": {
+                        "type": "object",
+                        "properties": {
+                          "desc": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "origin_info": {
+                        "type": "object",
+                        "properties": {
+                          "face": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "risk_ctrl_info": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "guard": {
+                    "type": "object",
+                    "properties": {
+                      "expired_str": {
+                        "type": "string"
+                      },
+                      "level": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "guard_leader": {
+                    "type": "null"
+                  },
+                  "medal": {
+                    "type": "object",
+                    "properties": {
+                      "color": {
+                        "type": "integer"
+                      },
+                      "color_border": {
+                        "type": "integer"
+                      },
+                      "color_end": {
+                        "type": "integer"
+                      },
+                      "color_start": {
+                        "type": "integer"
+                      },
+                      "guard_icon": {
+                        "type": "string"
+                      },
+                      "guard_level": {
+                        "type": "integer"
+                      },
+                      "honor_icon": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "is_light": {
+                        "type": "integer"
+                      },
+                      "level": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "ruid": {
+                        "type": "integer"
+                      },
+                      "score": {
+                        "type": "integer"
+                      },
+                      "typ": {
+                        "type": "integer"
+                      },
+                      "user_receive_count": {
+                        "type": "integer"
+                      },
+                      "v2_medal_color_border": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_end": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_level": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_start": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_text": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "title": {
+                    "type": "object",
+                    "properties": {
+                      "old_title_css_id": {
+                        "type": "string"
+                      },
+                      "title_css_id": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "uhead_frame": {
+                    "type": "null"
+                  },
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "wealth": {
+                    "type": "null"
+                  }
+                }
+              },
+              "user_info": {
+                "type": "object",
+                "properties": {
+                  "face": {
+                    "type": "string"
+                  },
+                  "face_frame": {
+                    "type": "string"
+                  },
+                  "guard_level": {
+                    "type": "integer"
+                  },
+                  "is_main_vip": {
+                    "type": "integer"
+                  },
+                  "is_svip": {
+                    "type": "integer"
+                  },
+                  "is_vip": {
+                    "type": "integer"
+                  },
+                  "level_color": {
+                    "type": "string"
+                  },
+                  "manager": {
+                    "type": "integer"
+                  },
+                  "name_color": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "uname": {
+                    "type": "string"
+                  },
+                  "user_level": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "is_report": {
+            "type": "boolean"
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "SUPER_CHAT_MESSAGE"
+        ],
+        "data.background_bottom_color": [
+          "#2A60B2"
+        ],
+        "data.background_color": [
+          "#EDF5FF"
+        ],
+        "data.background_color_end": [
+          "#405D85"
+        ],
+        "data.background_color_start": [
+          "#3171D2"
+        ],
+        "data.background_icon": [
+          ""
+        ],
+        "data.background_image": [
+          ""
+        ],
+        "data.background_price_color": [
+          "#7497CD"
+        ],
+        "data.color_point": [
+          0.7
+        ],
+        "data.dmscore": [
+          448,
+          280,
+          420
+        ],
+        "data.end_time": [
+          1783485960,
+          1783485993,
+          1783485908
+        ],
+        "data.gift.gift_id": [
+          12000
+        ],
+        "data.gift.gift_name": [
+          "醒目留言"
+        ],
+        "data.gift.num": [
+          1
+        ],
+        "data.group_medal.is_lighted": [
+          0
+        ],
+        "data.group_medal.medal_id": [
+          0
+        ],
+        "data.group_medal.name": [
+          ""
+        ],
+        "data.id": [
+          17388274,
+          17388267,
+          17388253
+        ],
+        "data.is_mystery": [
+          false
+        ],
+        "data.is_ranked": [
+          0
+        ],
+        "data.is_send_audit": [
+          0
+        ],
+        "data.medal_info.anchor_roomid": [
+          23596840
+        ],
+        "data.medal_info.anchor_uname": [
+          "沐晓空Channel"
+        ],
+        "data.medal_info.guard_level": [
+          0
+        ],
+        "data.medal_info.icon_id": [
+          0
+        ],
+        "data.medal_info.is_lighted": [
+          1
+        ],
+        "data.medal_info.medal_color": [
+          "#06154c",
+          "#1a544b"
+        ],
+        "data.medal_info.medal_color_border": [
+          1725515,
+          398668
+        ],
+        "data.medal_info.medal_color_end": [
+          6850801,
+          5414290
+        ],
+        "data.medal_info.medal_color_start": [
+          1725515,
+          398668
+        ],
+        "data.medal_info.medal_level": [
+          25,
+          28,
+          22
+        ],
+        "data.medal_info.medal_name": [
+          "沐马"
+        ],
+        "data.medal_info.special": [
+          ""
+        ],
+        "data.medal_info.target_id": [
+          36265198
+        ],
+        "data.message": [
+          "那我也跟一个亿吧",
+          "+1亿",
+          "这是一个亿"
+        ],
+        "data.message_font_color": [
+          "#A3F6FF"
+        ],
+        "data.message_trans": [
+          ""
+        ],
+        "data.price": [
+          2
+        ],
+        "data.rate": [
+          1000
+        ],
+        "data.start_time": [
+          1783485955,
+          1783485988,
+          1783485903
+        ],
+        "data.time": [
+          5
+        ],
+        "data.token": [
+          "BB70A3B0",
+          "32803371",
+          "2EC3F549"
+        ],
+        "data.trans_mark": [
+          0
+        ],
+        "data.ts": [
+          1783485955,
+          1783485988,
+          1783485903
+        ],
+        "data.uid": [
+          388616395,
+          515184453,
+          35344030
+        ],
+        "data.uinfo.base.face": [
+          "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.uinfo.base.is_mystery": [
+          false
+        ],
+        "data.uinfo.base.name": [
+          "刺壳甲虫是刺客",
+          "被卷傻了的烈小焰",
+          "逍遥云闲"
+        ],
+        "data.uinfo.base.name_color": [
+          0
+        ],
+        "data.uinfo.base.name_color_str": [
+          "#666666"
+        ],
+        "data.uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.uinfo.base.official_info.role": [
+          0
+        ],
+        "data.uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.uinfo.base.origin_info.face": [
+          "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.uinfo.base.origin_info.name": [
+          "刺壳甲虫是刺客",
+          "被卷傻了的烈小焰",
+          "逍遥云闲"
+        ],
+        "data.uinfo.base.risk_ctrl_info": [],
+        "data.uinfo.guard.expired_str": [
+          ""
+        ],
+        "data.uinfo.guard.level": [
+          0
+        ],
+        "data.uinfo.guard_leader": [],
+        "data.uinfo.medal.color": [
+          1725515,
+          398668
+        ],
+        "data.uinfo.medal.color_border": [
+          1725515,
+          398668
+        ],
+        "data.uinfo.medal.color_end": [
+          6850801,
+          5414290
+        ],
+        "data.uinfo.medal.color_start": [
+          1725515,
+          398668
+        ],
+        "data.uinfo.medal.guard_icon": [
+          ""
+        ],
+        "data.uinfo.medal.guard_level": [
+          0
+        ],
+        "data.uinfo.medal.honor_icon": [
+          ""
+        ],
+        "data.uinfo.medal.id": [
+          0
+        ],
+        "data.uinfo.medal.is_light": [
+          1
+        ],
+        "data.uinfo.medal.level": [
+          25,
+          28,
+          22
+        ],
+        "data.uinfo.medal.name": [
+          "沐马"
+        ],
+        "data.uinfo.medal.ruid": [
+          36265198
+        ],
+        "data.uinfo.medal.score": [
+          16754,
+          3626,
+          7375
+        ],
+        "data.uinfo.medal.typ": [
+          0
+        ],
+        "data.uinfo.medal.user_receive_count": [
+          0
+        ],
+        "data.uinfo.medal.v2_medal_color_border": [
+          "#3FB4F699"
+        ],
+        "data.uinfo.medal.v2_medal_color_end": [
+          "#3FB4F699"
+        ],
+        "data.uinfo.medal.v2_medal_color_level": [
+          "#3FB4F6E6"
+        ],
+        "data.uinfo.medal.v2_medal_color_start": [
+          "#3FB4F699"
+        ],
+        "data.uinfo.medal.v2_medal_color_text": [
+          "#FFFFFF"
+        ],
+        "data.uinfo.title.old_title_css_id": [
+          ""
+        ],
+        "data.uinfo.title.title_css_id": [
+          ""
+        ],
+        "data.uinfo.uhead_frame": [],
+        "data.uinfo.uid": [
+          388616395,
+          515184453,
+          35344030
+        ],
+        "data.uinfo.wealth": [],
+        "data.user_info.face": [
+          "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.user_info.face_frame": [
+          ""
+        ],
+        "data.user_info.guard_level": [
+          0
+        ],
+        "data.user_info.is_main_vip": [
+          0,
+          1
+        ],
+        "data.user_info.is_svip": [
+          0
+        ],
+        "data.user_info.is_vip": [
+          0
+        ],
+        "data.user_info.level_color": [
+          "#61c05a",
+          "#969696"
+        ],
+        "data.user_info.manager": [
+          0
+        ],
+        "data.user_info.name_color": [
+          "#666666"
+        ],
+        "data.user_info.title": [
+          ""
+        ],
+        "data.user_info.uname": [
+          "刺壳甲虫是刺客",
+          "被卷傻了的烈小焰",
+          "逍遥云闲"
+        ],
+        "data.user_info.user_level": [
+          9,
+          11,
+          13
+        ],
+        "is_report": [
+          true
+        ],
+        "msg_id": [
+          "99543441454690816:1000:1000",
+          "99543496393773056:1000:1000",
+          "99543530209309184:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "send_time": [
+          1783485903482,
+          1783485955876,
+          1783485988125
+        ]
+      },
+      "example": {
+        "cmd": "SUPER_CHAT_MESSAGE",
+        "data": {
+          "background_bottom_color": "#2A60B2",
+          "background_color": "#EDF5FF",
+          "background_color_end": "#405D85",
+          "background_color_start": "#3171D2",
+          "background_icon": "",
+          "background_image": "",
+          "background_price_color": "#7497CD",
+          "color_point": 0.7,
+          "dmscore": 420,
+          "end_time": 1783485908,
+          "gift": {
+            "gift_id": 12000,
+            "gift_name": "醒目留言",
+            "num": 1
+          },
+          "group_medal": {
+            "is_lighted": 0,
+            "medal_id": 0,
+            "name": ""
+          },
+          "id": 17388253,
+          "is_mystery": false,
+          "is_ranked": 0,
+          "is_send_audit": 0,
+          "medal_info": {
+            "anchor_roomid": 23596840,
+            "anchor_uname": "沐晓空Channel",
+            "guard_level": 0,
+            "icon_id": 0,
+            "is_lighted": 1,
+            "medal_color": "#06154c",
+            "medal_color_border": 398668,
+            "medal_color_end": 6850801,
+            "medal_color_start": 398668,
+            "medal_level": 28,
+            "medal_name": "沐马",
+            "special": "",
+            "target_id": 36265198
+          },
+          "message": "这是一个亿",
+          "message_font_color": "#A3F6FF",
+          "message_trans": "",
+          "price": 2,
+          "rate": 1000,
+          "start_time": 1783485903,
+          "time": 5,
+          "token": "BB70A3B0",
+          "trans_mark": 0,
+          "ts": 1783485903,
+          "uid": 515184453,
+          "uinfo": {
+            "base": {
+              "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+              "is_mystery": false,
+              "name": "被卷傻了的烈小焰",
+              "name_color": 0,
+              "name_color_str": "#666666",
+              "official_info": {
+                "desc": "",
+                "role": 0,
+                "title": "",
+                "type": -1
+              },
+              "origin_info": {
+                "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+                "name": "被卷傻了的烈小焰"
+              },
+              "risk_ctrl_info": null
+            },
+            "guard": {
+              "expired_str": "",
+              "level": 0
+            },
+            "guard_leader": null,
+            "medal": {
+              "color": 398668,
+              "color_border": 398668,
+              "color_end": 6850801,
+              "color_start": 398668,
+              "guard_icon": "",
+              "guard_level": 0,
+              "honor_icon": "",
+              "id": 0,
+              "is_light": 1,
+              "level": 28,
+              "name": "沐马",
+              "ruid": 36265198,
+              "score": 16754,
+              "typ": 0,
+              "user_receive_count": 0,
+              "v2_medal_color_border": "#3FB4F699",
+              "v2_medal_color_end": "#3FB4F699",
+              "v2_medal_color_level": "#3FB4F6E6",
+              "v2_medal_color_start": "#3FB4F699",
+              "v2_medal_color_text": "#FFFFFF"
+            },
+            "title": {
+              "old_title_css_id": "",
+              "title_css_id": ""
+            },
+            "uhead_frame": null,
+            "uid": 515184453,
+            "wealth": null
+          },
+          "user_info": {
+            "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+            "face_frame": "",
+            "guard_level": 0,
+            "is_main_vip": 0,
+            "is_svip": 0,
+            "is_vip": 0,
+            "level_color": "#61c05a",
+            "manager": 0,
+            "name_color": "#666666",
+            "title": "",
+            "uname": "被卷傻了的烈小焰",
+            "user_level": 11
+          }
+        },
+        "is_report": true,
+        "msg_id": "99543441454690816:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "send_time": 1783485903482
+      }
+    },
+    "SUPER_CHAT_MESSAGE_JPN": {
+      "count": 3,
+      "description": "自定义/未知事件 (SUPER_CHAT_MESSAGE_JPN)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "uid": {
+                "type": "integer"
+              },
+              "price": {
+                "type": "integer"
+              },
+              "rate": {
+                "type": "integer"
+              },
+              "message": {
+                "type": "string"
+              },
+              "message_jpn": {
+                "type": "string"
+              },
+              "is_ranked": {
+                "type": "integer"
+              },
+              "background_image": {
+                "type": "string"
+              },
+              "background_color": {
+                "type": "string"
+              },
+              "background_icon": {
+                "type": "string"
+              },
+              "background_price_color": {
+                "type": "string"
+              },
+              "background_bottom_color": {
+                "type": "string"
+              },
+              "ts": {
+                "type": "integer"
+              },
+              "token": {
+                "type": "string"
+              },
+              "medal_info": {
+                "type": "object",
+                "properties": {
+                  "icon_id": {
+                    "type": "integer"
+                  },
+                  "target_id": {
+                    "type": "integer"
+                  },
+                  "special": {
+                    "type": "string"
+                  },
+                  "anchor_uname": {
+                    "type": "string"
+                  },
+                  "anchor_roomid": {
+                    "type": "integer"
+                  },
+                  "medal_level": {
+                    "type": "integer"
+                  },
+                  "medal_name": {
+                    "type": "string"
+                  },
+                  "medal_color": {
+                    "type": "string"
+                  },
+                  "medal_color_start": {
+                    "type": "integer"
+                  },
+                  "medal_color_end": {
+                    "type": "integer"
+                  },
+                  "medal_color_border": {
+                    "type": "integer"
+                  },
+                  "is_lighted": {
+                    "type": "integer"
+                  },
+                  "guard_level": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "user_info": {
+                "type": "object",
+                "properties": {
+                  "uname": {
+                    "type": "string"
+                  },
+                  "face": {
+                    "type": "string"
+                  },
+                  "face_frame": {
+                    "type": "string"
+                  },
+                  "name_color": {
+                    "type": "string"
+                  },
+                  "guard_level": {
+                    "type": "integer"
+                  },
+                  "user_level": {
+                    "type": "integer"
+                  },
+                  "level_color": {
+                    "type": "string"
+                  },
+                  "is_vip": {
+                    "type": "integer"
+                  },
+                  "is_svip": {
+                    "type": "integer"
+                  },
+                  "is_main_vip": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "manager": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "time": {
+                "type": "integer"
+              },
+              "start_time": {
+                "type": "integer"
+              },
+              "end_time": {
+                "type": "integer"
+              },
+              "gift": {
+                "type": "object",
+                "properties": {
+                  "num": {
+                    "type": "integer"
+                  },
+                  "gift_id": {
+                    "type": "integer"
+                  },
+                  "gift_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "group_medal": {
+                "type": "object",
+                "properties": {
+                  "medal_id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "is_lighted": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "is_mystery": {
+                "type": "boolean"
+              },
+              "uinfo": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "face": {
+                        "type": "string"
+                      },
+                      "name_color": {
+                        "type": "integer"
+                      },
+                      "is_mystery": {
+                        "type": "boolean"
+                      },
+                      "risk_ctrl_info": {
+                        "type": "null"
+                      },
+                      "origin_info": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "face": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "official_info": {
+                        "type": "object",
+                        "properties": {
+                          "role": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "desc": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "name_color_str": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "medal": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "level": {
+                        "type": "integer"
+                      },
+                      "color_start": {
+                        "type": "integer"
+                      },
+                      "color_end": {
+                        "type": "integer"
+                      },
+                      "color_border": {
+                        "type": "integer"
+                      },
+                      "color": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "typ": {
+                        "type": "integer"
+                      },
+                      "is_light": {
+                        "type": "integer"
+                      },
+                      "ruid": {
+                        "type": "integer"
+                      },
+                      "guard_level": {
+                        "type": "integer"
+                      },
+                      "score": {
+                        "type": "integer"
+                      },
+                      "guard_icon": {
+                        "type": "string"
+                      },
+                      "honor_icon": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_start": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_end": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_border": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_text": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_level": {
+                        "type": "string"
+                      },
+                      "user_receive_count": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "wealth": {
+                    "type": "null"
+                  },
+                  "title": {
+                    "type": "object",
+                    "properties": {
+                      "old_title_css_id": {
+                        "type": "string"
+                      },
+                      "title_css_id": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "guard": {
+                    "type": "object",
+                    "properties": {
+                      "level": {
+                        "type": "integer"
+                      },
+                      "expired_str": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "uhead_frame": {
+                    "type": "null"
+                  },
+                  "guard_leader": {
+                    "type": "null"
+                  },
+                  "anon": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "SUPER_CHAT_MESSAGE_JPN"
+        ],
+        "data.id": [
+          17388274,
+          17388267,
+          17388253
+        ],
+        "data.uid": [
+          388616395,
+          515184453,
+          35344030
+        ],
+        "data.price": [
+          2
+        ],
+        "data.rate": [
+          1000
+        ],
+        "data.message": [
+          "那我也跟一个亿吧",
+          "+1亿",
+          "这是一个亿"
+        ],
+        "data.message_jpn": [
+          "私も1億ドルを手に入れましょう",
+          "+1億",
+          "これは億です"
+        ],
+        "data.is_ranked": [
+          0
+        ],
+        "data.background_image": [
+          ""
+        ],
+        "data.background_color": [
+          "#EDF5FF"
+        ],
+        "data.background_icon": [
+          ""
+        ],
+        "data.background_price_color": [
+          "#7497CD"
+        ],
+        "data.background_bottom_color": [
+          "#2A60B2"
+        ],
+        "data.ts": [
+          1783485904,
+          1783485956,
+          1783485989
+        ],
+        "data.token": [
+          "5A5EA9D4",
+          "E269F5D7",
+          "81141EB2"
+        ],
+        "data.medal_info.icon_id": [
+          0
+        ],
+        "data.medal_info.target_id": [
+          36265198
+        ],
+        "data.medal_info.special": [
+          ""
+        ],
+        "data.medal_info.anchor_uname": [
+          "沐晓空Channel"
+        ],
+        "data.medal_info.anchor_roomid": [
+          23596840
+        ],
+        "data.medal_info.medal_level": [
+          25,
+          28,
+          22
+        ],
+        "data.medal_info.medal_name": [
+          "沐马"
+        ],
+        "data.medal_info.medal_color": [
+          "#06154c",
+          "#1a544b"
+        ],
+        "data.medal_info.medal_color_start": [
+          1725515,
+          398668
+        ],
+        "data.medal_info.medal_color_end": [
+          6850801,
+          5414290
+        ],
+        "data.medal_info.medal_color_border": [
+          1725515,
+          398668
+        ],
+        "data.medal_info.is_lighted": [
+          1
+        ],
+        "data.medal_info.guard_level": [
+          0
+        ],
+        "data.user_info.uname": [
+          "刺壳甲虫是刺客",
+          "被卷傻了的烈小焰",
+          "逍遥云闲"
+        ],
+        "data.user_info.face": [
+          "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.user_info.face_frame": [
+          ""
+        ],
+        "data.user_info.name_color": [
+          "#666666"
+        ],
+        "data.user_info.guard_level": [
+          0
+        ],
+        "data.user_info.user_level": [
+          9,
+          11,
+          13
+        ],
+        "data.user_info.level_color": [
+          "#61c05a",
+          "#969696"
+        ],
+        "data.user_info.is_vip": [
+          0
+        ],
+        "data.user_info.is_svip": [
+          0
+        ],
+        "data.user_info.is_main_vip": [
+          0,
+          1
+        ],
+        "data.user_info.title": [
+          ""
+        ],
+        "data.user_info.manager": [
+          0
+        ],
+        "data.time": [
+          4
+        ],
+        "data.start_time": [
+          1783485955,
+          1783485988,
+          1783485903
+        ],
+        "data.end_time": [
+          1783485960,
+          1783485993,
+          1783485908
+        ],
+        "data.gift.num": [
+          1
+        ],
+        "data.gift.gift_id": [
+          12000
+        ],
+        "data.gift.gift_name": [
+          "醒目留言"
+        ],
+        "data.group_medal.medal_id": [
+          0
+        ],
+        "data.group_medal.name": [
+          ""
+        ],
+        "data.group_medal.is_lighted": [
+          0
+        ],
+        "data.is_mystery": [
+          false
+        ],
+        "data.uinfo.uid": [
+          388616395,
+          515184453,
+          35344030
+        ],
+        "data.uinfo.base.name": [
+          "刺壳甲虫是刺客",
+          "被卷傻了的烈小焰",
+          "逍遥云闲"
+        ],
+        "data.uinfo.base.face": [
+          "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.uinfo.base.name_color": [
+          0
+        ],
+        "data.uinfo.base.is_mystery": [
+          false
+        ],
+        "data.uinfo.base.risk_ctrl_info": [],
+        "data.uinfo.base.origin_info.name": [
+          "刺壳甲虫是刺客",
+          "被卷傻了的烈小焰",
+          "逍遥云闲"
+        ],
+        "data.uinfo.base.origin_info.face": [
+          "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+        ],
+        "data.uinfo.base.official_info.role": [
+          0
+        ],
+        "data.uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.uinfo.base.name_color_str": [
+          "#666666"
+        ],
+        "data.uinfo.medal.name": [
+          "沐马"
+        ],
+        "data.uinfo.medal.level": [
+          25,
+          28,
+          22
+        ],
+        "data.uinfo.medal.color_start": [
+          1725515,
+          398668
+        ],
+        "data.uinfo.medal.color_end": [
+          6850801,
+          5414290
+        ],
+        "data.uinfo.medal.color_border": [
+          1725515,
+          398668
+        ],
+        "data.uinfo.medal.color": [
+          1725515,
+          398668
+        ],
+        "data.uinfo.medal.id": [
+          0
+        ],
+        "data.uinfo.medal.typ": [
+          0
+        ],
+        "data.uinfo.medal.is_light": [
+          1
+        ],
+        "data.uinfo.medal.ruid": [
+          36265198
+        ],
+        "data.uinfo.medal.guard_level": [
+          0
+        ],
+        "data.uinfo.medal.score": [
+          16754,
+          3646,
+          7375
+        ],
+        "data.uinfo.medal.guard_icon": [
+          ""
+        ],
+        "data.uinfo.medal.honor_icon": [
+          ""
+        ],
+        "data.uinfo.medal.v2_medal_color_start": [
+          "#3FB4F699"
+        ],
+        "data.uinfo.medal.v2_medal_color_end": [
+          "#3FB4F699"
+        ],
+        "data.uinfo.medal.v2_medal_color_border": [
+          "#3FB4F699"
+        ],
+        "data.uinfo.medal.v2_medal_color_text": [
+          "#FFFFFF"
+        ],
+        "data.uinfo.medal.v2_medal_color_level": [
+          "#3FB4F6E6"
+        ],
+        "data.uinfo.medal.user_receive_count": [
+          0
+        ],
+        "data.uinfo.wealth": [],
+        "data.uinfo.title.old_title_css_id": [
+          ""
+        ],
+        "data.uinfo.title.title_css_id": [
+          ""
+        ],
+        "data.uinfo.guard.level": [
+          0
+        ],
+        "data.uinfo.guard.expired_str": [
+          ""
+        ],
+        "data.uinfo.uhead_frame": [],
+        "data.uinfo.guard_leader": [],
+        "data.uinfo.anon": []
+      },
+      "example": {
+        "cmd": "SUPER_CHAT_MESSAGE_JPN",
+        "data": {
+          "id": 17388253,
+          "uid": 515184453,
+          "price": 2,
+          "rate": 1000,
+          "message": "这是一个亿",
+          "message_jpn": "これは億です",
+          "is_ranked": 0,
+          "background_image": "",
+          "background_color": "#EDF5FF",
+          "background_icon": "",
+          "background_price_color": "#7497CD",
+          "background_bottom_color": "#2A60B2",
+          "ts": 1783485904,
+          "token": "5A5EA9D4",
+          "medal_info": {
+            "icon_id": 0,
+            "target_id": 36265198,
+            "special": "",
+            "anchor_uname": "沐晓空Channel",
+            "anchor_roomid": 23596840,
+            "medal_level": 28,
+            "medal_name": "沐马",
+            "medal_color": "#06154c",
+            "medal_color_start": 398668,
+            "medal_color_end": 6850801,
+            "medal_color_border": 398668,
+            "is_lighted": 1,
+            "guard_level": 0
+          },
+          "user_info": {
+            "uname": "被卷傻了的烈小焰",
+            "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+            "face_frame": "",
+            "name_color": "#666666",
+            "guard_level": 0,
+            "user_level": 11,
+            "level_color": "#61c05a",
+            "is_vip": 0,
+            "is_svip": 0,
+            "is_main_vip": 0,
+            "title": "",
+            "manager": 0
+          },
+          "time": 4,
+          "start_time": 1783485903,
+          "end_time": 1783485908,
+          "gift": {
+            "num": 1,
+            "gift_id": 12000,
+            "gift_name": "醒目留言"
+          },
+          "group_medal": {
+            "medal_id": 0,
+            "name": "",
+            "is_lighted": 0
+          },
+          "is_mystery": false,
+          "uinfo": {
+            "uid": 515184453,
+            "base": {
+              "name": "被卷傻了的烈小焰",
+              "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
+              "name_color": 0,
+              "is_mystery": false,
+              "risk_ctrl_info": null,
+              "origin_info": {
+                "name": "被卷傻了的烈小焰",
+                "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg"
+              },
+              "official_info": {
+                "role": 0,
+                "title": "",
+                "desc": "",
+                "type": -1
+              },
+              "name_color_str": "#666666"
+            },
+            "medal": {
+              "name": "沐马",
+              "level": 28,
+              "color_start": 398668,
+              "color_end": 6850801,
+              "color_border": 398668,
+              "color": 398668,
+              "id": 0,
+              "typ": 0,
+              "is_light": 1,
+              "ruid": 36265198,
+              "guard_level": 0,
+              "score": 16754,
+              "guard_icon": "",
+              "honor_icon": "",
+              "v2_medal_color_start": "#3FB4F699",
+              "v2_medal_color_end": "#3FB4F699",
+              "v2_medal_color_border": "#3FB4F699",
+              "v2_medal_color_text": "#FFFFFF",
+              "v2_medal_color_level": "#3FB4F6E6",
+              "user_receive_count": 0
+            },
+            "wealth": null,
+            "title": {
+              "old_title_css_id": "",
+              "title_css_id": ""
+            },
+            "guard": {
+              "level": 0,
+              "expired_str": ""
+            },
+            "uhead_frame": null,
+            "guard_leader": null,
+            "anon": null
+          }
+        }
+      }
+    },
+    "POPULAR_RANK_CHANGED": {
+      "count": 3,
+      "description": "自定义/未知事件 (POPULAR_RANK_CHANGED)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "integer"
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "countdown": {
+                "type": "integer"
+              },
+              "timestamp": {
+                "type": "integer"
+              },
+              "cache_key": {
+                "type": "string"
+              },
+              "on_rank_name_by_type": {
+                "type": "string"
+              },
+              "rank_name_by_type": {
+                "type": "string"
+              },
+              "url_by_type": {
+                "type": "string"
+              },
+              "rank_by_type": {
+                "type": "integer"
+              },
+              "default_url": {
+                "type": "string"
+              },
+              "rank_type": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "POPULAR_RANK_CHANGED"
+        ],
+        "data.uid": [
+          36265198
+        ],
+        "data.rank": [
+          0
+        ],
+        "data.countdown": [
+          841,
+          781,
+          901
+        ],
+        "data.timestamp": [
+          1783485960,
+          1783485900,
+          1783486020
+        ],
+        "data.cache_key": [
+          "rank_change:6bf6b5e7173b4b5cbd31c53271fb5333",
+          "rank_change:300da53ecb1d4b58a3112c878bf2c1f6",
+          "rank_change:138bf9896c374f6297d06c683ec818ba"
+        ],
+        "data.on_rank_name_by_type": [
+          "虚拟人气"
+        ],
+        "data.rank_name_by_type": [
+          "人气榜"
+        ],
+        "data.url_by_type": [],
+        "data.rank_by_type": [
+          69,
+          70,
+          71
+        ],
+        "data.default_url": [],
+        "data.rank_type": [
+          1
+        ]
+      },
+      "example": {
+        "cmd": "POPULAR_RANK_CHANGED",
+        "data": {
+          "uid": 36265198,
+          "rank": 0,
+          "countdown": 901,
+          "timestamp": 1783485900,
+          "cache_key": "rank_change:138bf9896c374f6297d06c683ec818ba",
+          "on_rank_name_by_type": "虚拟人气",
+          "rank_name_by_type": "人气榜",
+          "url_by_type": "https://live.bilibili.com/p/html/live-app-hotrank/index.html?is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,30,100,12;2,2,375,100p,0,0,30,100,0;3,3,100p,70p,0,0,30,100,12;4,2,375,100p,0,0,30,100,0;5,3,100p,70p,0,0,30,100,0;6,3,100p,70p,0,0,30,100,0;7,3,100p,70p,0,0,30,100,0;8,3,100p,70p,0,0,30,100,0&pc_ui=338,465,f4eefa,0&redirect=v2&anchorId=36265198&rank_type=2",
+          "rank_by_type": 69,
+          "default_url": "https://live.bilibili.com/p/html/live-app-hotrank/index.html?is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,30,100,12;2,2,375,100p,0,0,30,100,0;3,3,100p,70p,0,0,30,100,12;4,2,375,100p,0,0,30,100,0;5,3,100p,70p,0,0,30,100,0;6,3,100p,70p,0,0,30,100,0;7,3,100p,70p,0,0,30,100,0;8,3,100p,70p,0,0,30,100,0&pc_ui=338,465,f4eefa,0&redirect=v2&anchorId=36265198",
+          "rank_type": 1
+        }
+      }
+    },
+    "WATCHED_CHANGE": {
+      "count": 3,
+      "description": "自定义/未知事件 (WATCHED_CHANGE)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "num": {
+                "type": "integer"
+              },
+              "text_small": {
+                "type": "string"
+              },
+              "text_large": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "WATCHED_CHANGE"
+        ],
+        "data.num": [
+          216,
+          219
+        ],
+        "data.text_small": [
+          "219",
+          "216"
+        ],
+        "data.text_large": [
+          "216人看过",
+          "219人看过"
+        ]
+      },
+      "example": {
+        "cmd": "WATCHED_CHANGE",
+        "data": {
+          "num": 216,
+          "text_small": "216",
+          "text_large": "216人看过"
+        }
+      }
+    },
+    "RANK_CHANGED_V2": {
+      "count": 3,
+      "description": "自定义/未知事件 (RANK_CHANGED_V2)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "integer"
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "countdown": {
+                "type": "integer"
+              },
+              "timestamp": {
+                "type": "integer"
+              },
+              "url": {
+                "type": "string"
+              },
+              "on_rank_name_by_type": {
+                "type": "string"
+              },
+              "rank_name_by_type": {
+                "type": "string"
+              },
+              "url_by_type": {
+                "type": "string"
+              },
+              "rank_by_type": {
+                "type": "integer"
+              },
+              "rank_type": {
+                "type": "integer"
+              },
+              "sub_rank_type": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "RANK_CHANGED_V2"
+        ],
+        "data.uid": [
+          36265198
+        ],
+        "data.rank": [
+          0,
+          50,
+          30
+        ],
+        "data.countdown": [
+          880,
+          890,
+          870
+        ],
+        "data.timestamp": [
+          1783485920,
+          1783485930,
+          1783485910
+        ],
+        "data.url": [],
+        "data.on_rank_name_by_type": [
+          "全站"
+        ],
+        "data.rank_name_by_type": [
+          "热门榜"
+        ],
+        "data.url_by_type": [
+          ""
+        ],
+        "data.rank_by_type": [
+          0
+        ],
+        "data.rank_type": [
+          5
+        ],
+        "data.sub_rank_type": [
+          1
+        ]
+      },
+      "example": {
+        "cmd": "RANK_CHANGED_V2",
+        "data": {
+          "uid": 36265198,
+          "rank": 30,
+          "countdown": 890,
+          "timestamp": 1783485910,
+          "url": "https://live.bilibili.com/p/html/live-app-hotrank/index.html?is_live_half_webview=1&hot_type=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,30,100,12;2,2,375,100p,0,0,30,100,0;3,3,100p,70p,0,0,30,100,12;4,2,375,100p,0,0,30,100,0;5,3,100p,70p,0,0,30,100,0;6,3,100p,70p,0,0,30,100,0;7,3,100p,70p,0,0,30,100,0;8,3,100p,70p,0,0,30,100,0&pc_ui=338,465,f4eefa,0#/hotv3",
+          "on_rank_name_by_type": "全站",
+          "rank_name_by_type": "热门榜",
+          "url_by_type": "",
+          "rank_by_type": 0,
+          "rank_type": 5,
+          "sub_rank_type": 1
+        }
+      }
+    },
+    "ENTRY_EFFECT": {
+      "count": 1,
+      "description": "特殊入场特效 (EntryEffect): 舰长/大航海等高阶用户进入直播间的酷炫进场特效提示。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "uid": {
+                "type": "integer"
+              },
+              "target_id": {
+                "type": "integer"
+              },
+              "mock_effect": {
+                "type": "integer"
+              },
+              "face": {
+                "type": "string"
+              },
+              "privilege_type": {
+                "type": "integer"
+              },
+              "copy_writing": {
+                "type": "string"
+              },
+              "copy_color": {
+                "type": "string"
+              },
+              "highlight_color": {
+                "type": "string"
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "basemap_url": {
+                "type": "string"
+              },
+              "show_avatar": {
+                "type": "integer"
+              },
+              "effective_time": {
+                "type": "integer"
+              },
+              "web_basemap_url": {
+                "type": "string"
+              },
+              "web_effective_time": {
+                "type": "integer"
+              },
+              "web_effect_close": {
+                "type": "integer"
+              },
+              "web_close_time": {
+                "type": "integer"
+              },
+              "business": {
+                "type": "integer"
+              },
+              "copy_writing_v2": {
+                "type": "string"
+              },
+              "icon_list": {
+                "type": "array",
+                "items": {
+                  "type": "any"
+                }
+              },
+              "max_delay_time": {
+                "type": "integer"
+              },
+              "trigger_time": {
+                "type": "integer"
+              },
+              "identities": {
+                "type": "integer"
+              },
+              "effect_silent_time": {
+                "type": "integer"
+              },
+              "effective_time_new": {
+                "type": "integer"
+              },
+              "web_dynamic_url_webp": {
+                "type": "string"
+              },
+              "web_dynamic_url_apng": {
+                "type": "string"
+              },
+              "mobile_dynamic_url_webp": {
+                "type": "string"
+              },
+              "wealthy_info": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "level": {
+                    "type": "integer"
+                  },
+                  "level_total_score": {
+                    "type": "integer"
+                  },
+                  "cur_score": {
+                    "type": "integer"
+                  },
+                  "upgrade_need_score": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "type": "integer"
+                  },
+                  "dm_icon_key": {
+                    "type": "string"
+                  }
+                }
+              },
+              "new_style": {
+                "type": "integer"
+              },
+              "is_mystery": {
+                "type": "boolean"
+              },
+              "uinfo": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "face": {
+                        "type": "string"
+                      },
+                      "name_color": {
+                        "type": "integer"
+                      },
+                      "is_mystery": {
+                        "type": "boolean"
+                      },
+                      "risk_ctrl_info": {
+                        "type": "null"
+                      },
+                      "origin_info": {
+                        "type": "null"
+                      },
+                      "official_info": {
+                        "type": "null"
+                      },
+                      "name_color_str": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "medal": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "level": {
+                        "type": "integer"
+                      },
+                      "color_start": {
+                        "type": "integer"
+                      },
+                      "color_end": {
+                        "type": "integer"
+                      },
+                      "color_border": {
+                        "type": "integer"
+                      },
+                      "color": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "typ": {
+                        "type": "integer"
+                      },
+                      "is_light": {
+                        "type": "integer"
+                      },
+                      "ruid": {
+                        "type": "integer"
+                      },
+                      "guard_level": {
+                        "type": "integer"
+                      },
+                      "score": {
+                        "type": "integer"
+                      },
+                      "guard_icon": {
+                        "type": "string"
+                      },
+                      "honor_icon": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_start": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_end": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_border": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_text": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_level": {
+                        "type": "string"
+                      },
+                      "user_receive_count": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "wealth": {
+                    "type": "object",
+                    "properties": {
+                      "level": {
+                        "type": "integer"
+                      },
+                      "dm_icon_key": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "title": {
+                    "type": "null"
+                  },
+                  "guard": {
+                    "type": "object",
+                    "properties": {
+                      "level": {
+                        "type": "integer"
+                      },
+                      "expired_str": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "uhead_frame": {
+                    "type": "null"
+                  },
+                  "guard_leader": {
+                    "type": "null"
+                  },
+                  "anon": {
+                    "type": "null"
+                  }
+                }
+              },
+              "full_cartoon_id": {
+                "type": "integer"
+              },
+              "priority_level": {
+                "type": "integer"
+              },
+              "wealth_style_info": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "ENTRY_EFFECT"
+        ],
+        "data.id": [
+          381
+        ],
+        "data.uid": [
+          1565146
+        ],
+        "data.target_id": [
+          36265198
+        ],
+        "data.mock_effect": [
+          0
+        ],
+        "data.face": [
+          "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg"
+        ],
+        "data.privilege_type": [
+          0
+        ],
+        "data.copy_writing": [
+          "<%从缘%> 来了"
+        ],
+        "data.copy_color": [
+          "#F7F7F7"
+        ],
+        "data.highlight_color": [
+          "#FFFFFF"
+        ],
+        "data.priority": [
+          1
+        ],
+        "data.basemap_url": [
+          ""
+        ],
+        "data.show_avatar": [
+          0
+        ],
+        "data.effective_time": [
+          0
+        ],
+        "data.web_basemap_url": [
+          "https://i0.hdslb.com/bfs/live/mlive/b436ffaac9ef05903023cc6acbcb59376d10ccd1.png"
+        ],
+        "data.web_effective_time": [
+          4
+        ],
+        "data.web_effect_close": [
+          1
+        ],
+        "data.web_close_time": [
+          900
+        ],
+        "data.business": [
+          6
+        ],
+        "data.copy_writing_v2": [
+          "<%从缘%> 来了"
+        ],
+        "data.max_delay_time": [
+          7
+        ],
+        "data.trigger_time": [
+          1783486016087924755
+        ],
+        "data.identities": [
+          1
+        ],
+        "data.effect_silent_time": [
+          0
+        ],
+        "data.effective_time_new": [
+          0
+        ],
+        "data.web_dynamic_url_webp": [
+          ""
+        ],
+        "data.web_dynamic_url_apng": [
+          ""
+        ],
+        "data.mobile_dynamic_url_webp": [
+          ""
+        ],
+        "data.wealthy_info.uid": [
+          0
+        ],
+        "data.wealthy_info.level": [
+          28
+        ],
+        "data.wealthy_info.level_total_score": [
+          0
+        ],
+        "data.wealthy_info.cur_score": [
+          0
+        ],
+        "data.wealthy_info.upgrade_need_score": [
+          0
+        ],
+        "data.wealthy_info.status": [
+          0
+        ],
+        "data.wealthy_info.dm_icon_key": [
+          ""
+        ],
+        "data.new_style": [
+          1
+        ],
+        "data.is_mystery": [
+          false
+        ],
+        "data.uinfo.uid": [
+          1565146
+        ],
+        "data.uinfo.base.name": [
+          "从缘"
+        ],
+        "data.uinfo.base.face": [
+          "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg"
+        ],
+        "data.uinfo.base.name_color": [
+          0
+        ],
+        "data.uinfo.base.is_mystery": [
+          false
+        ],
+        "data.uinfo.base.risk_ctrl_info": [],
+        "data.uinfo.base.origin_info": [],
+        "data.uinfo.base.official_info": [],
+        "data.uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.uinfo.medal.name": [
+          "沐马"
+        ],
+        "data.uinfo.medal.level": [
+          9
+        ],
+        "data.uinfo.medal.color_start": [
+          12632256
+        ],
+        "data.uinfo.medal.color_end": [
+          12632256
+        ],
+        "data.uinfo.medal.color_border": [
+          12632256
+        ],
+        "data.uinfo.medal.color": [
+          9272486
+        ],
+        "data.uinfo.medal.id": [
+          542552
+        ],
+        "data.uinfo.medal.typ": [
+          0
+        ],
+        "data.uinfo.medal.is_light": [
+          0
+        ],
+        "data.uinfo.medal.ruid": [
+          36265198
+        ],
+        "data.uinfo.medal.guard_level": [
+          0
+        ],
+        "data.uinfo.medal.score": [
+          135
+        ],
+        "data.uinfo.medal.guard_icon": [
+          ""
+        ],
+        "data.uinfo.medal.honor_icon": [
+          ""
+        ],
+        "data.uinfo.medal.v2_medal_color_start": [
+          "#919298CC"
+        ],
+        "data.uinfo.medal.v2_medal_color_end": [
+          "#919298CC"
+        ],
+        "data.uinfo.medal.v2_medal_color_border": [
+          "#919298CC"
+        ],
+        "data.uinfo.medal.v2_medal_color_text": [
+          "#FFFFFF"
+        ],
+        "data.uinfo.medal.v2_medal_color_level": [
+          "#919298E6"
+        ],
+        "data.uinfo.medal.user_receive_count": [
+          0
+        ],
+        "data.uinfo.wealth.level": [
+          28
+        ],
+        "data.uinfo.wealth.dm_icon_key": [
+          ""
+        ],
+        "data.uinfo.title": [],
+        "data.uinfo.guard.level": [
+          0
+        ],
+        "data.uinfo.guard.expired_str": [
+          ""
+        ],
+        "data.uinfo.uhead_frame": [],
+        "data.uinfo.guard_leader": [],
+        "data.uinfo.anon": [],
+        "data.full_cartoon_id": [
+          1801
+        ],
+        "data.priority_level": [
+          0
+        ],
+        "data.wealth_style_info.url": [
+          "https://i0.hdslb.com/bfs/live/62fe89aef112353cfd97016b4b2cc653438642ac.png"
+        ]
+      },
+      "example": {
+        "cmd": "ENTRY_EFFECT",
+        "data": {
+          "id": 381,
+          "uid": 1565146,
+          "target_id": 36265198,
+          "mock_effect": 0,
+          "face": "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg",
+          "privilege_type": 0,
+          "copy_writing": "<%从缘%> 来了",
+          "copy_color": "#F7F7F7",
+          "highlight_color": "#FFFFFF",
+          "priority": 1,
+          "basemap_url": "",
+          "show_avatar": 0,
+          "effective_time": 0,
+          "web_basemap_url": "https://i0.hdslb.com/bfs/live/mlive/b436ffaac9ef05903023cc6acbcb59376d10ccd1.png",
+          "web_effective_time": 4,
+          "web_effect_close": 1,
+          "web_close_time": 900,
+          "business": 6,
+          "copy_writing_v2": "<%从缘%> 来了",
+          "icon_list": [],
+          "max_delay_time": 7,
+          "trigger_time": 1783486016087924755,
+          "identities": 1,
+          "effect_silent_time": 0,
+          "effective_time_new": 0,
+          "web_dynamic_url_webp": "",
+          "web_dynamic_url_apng": "",
+          "mobile_dynamic_url_webp": "",
+          "wealthy_info": {
+            "uid": 0,
+            "level": 28,
+            "level_total_score": 0,
+            "cur_score": 0,
+            "upgrade_need_score": 0,
+            "status": 0,
+            "dm_icon_key": ""
+          },
+          "new_style": 1,
+          "is_mystery": false,
+          "uinfo": {
+            "uid": 1565146,
+            "base": {
+              "name": "从缘",
+              "face": "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg",
+              "name_color": 0,
+              "is_mystery": false,
+              "risk_ctrl_info": null,
+              "origin_info": null,
+              "official_info": null,
+              "name_color_str": ""
+            },
+            "medal": {
+              "name": "沐马",
+              "level": 9,
+              "color_start": 12632256,
+              "color_end": 12632256,
+              "color_border": 12632256,
+              "color": 9272486,
+              "id": 542552,
+              "typ": 0,
+              "is_light": 0,
+              "ruid": 36265198,
+              "guard_level": 0,
+              "score": 135,
+              "guard_icon": "",
+              "honor_icon": "",
+              "v2_medal_color_start": "#919298CC",
+              "v2_medal_color_end": "#919298CC",
+              "v2_medal_color_border": "#919298CC",
+              "v2_medal_color_text": "#FFFFFF",
+              "v2_medal_color_level": "#919298E6",
+              "user_receive_count": 0
+            },
+            "wealth": {
+              "level": 28,
+              "dm_icon_key": ""
+            },
+            "title": null,
+            "guard": {
+              "level": 0,
+              "expired_str": ""
+            },
+            "uhead_frame": null,
+            "guard_leader": null,
+            "anon": null
+          },
+          "full_cartoon_id": 1801,
+          "priority_level": 0,
+          "wealth_style_info": {
+            "url": "https://i0.hdslb.com/bfs/live/62fe89aef112353cfd97016b4b2cc653438642ac.png"
+          }
+        }
+      }
+    }
+  }
+};
+    </script>
+
+    <script>
+        let currentTab = 'schema';
+        let currentCmd = null;
+
+        function initWiki() {
+            if (typeof wikiData === 'undefined' || !wikiData.event_types) {
+                document.getElementById('wiki-stats').innerText = "未找到协议事件数据，请运行 build_wiki.py 编译。";
+                return;
+            }
+
+            document.getElementById('wiki-stats').innerText = `已加载 ${Object.keys(wikiData.event_types).length} 种事件 • 共记录 ${wikiData.total_events} 条包 • 更新于 ${wikiData.last_updated}`;
+            
+            renderEventList();
+        }
+
+        function renderEventList() {
+            const listContainer = document.getElementById('event-list');
+            listContainer.innerHTML = '';
+            
+            // Sort event types by count descending
+            const sortedCmds = Object.keys(wikiData.event_types).sort((a, b) => {
+                return wikiData.event_types[b].count - wikiData.event_types[a].count;
+            });
+            
+            sortedCmds.forEach(cmd => {
+                const info = wikiData.event_types[cmd];
+                const item = document.createElement('div');
+                item.className = 'event-item';
+                item.id = `item-${cmd}`;
+                item.onclick = () => selectEvent(cmd);
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'event-name';
+                nameSpan.innerText = cmd;
+                
+                const countBadge = document.createElement('span');
+                countBadge.className = 'event-count';
+                countBadge.innerText = info.count;
+                
+                item.appendChild(nameSpan);
+                item.appendChild(countBadge);
+                listContainer.appendChild(item);
+            });
+        }
+
+        function filterEvents() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const items = document.getElementsByClassName('event-item');
+            
+            for (let i = 0; i < items.length; i++) {
+                const cmd = items[i].id.replace('item-', '');
+                const desc = wikiData.event_types[cmd].description.toLowerCase();
+                if (cmd.toLowerCase().includes(query) || desc.includes(query)) {
+                    items[i].style.display = 'flex';
+                } else {
+                    items[i].style.display = 'none';
+                }
+            }
+        }
+
+        function selectEvent(cmd) {
+            currentCmd = cmd;
+            
+            // Toggle active classes in list
+            const items = document.getElementsByClassName('event-item');
+            for (let i = 0; i < items.length; i++) {
+                items[i].classList.remove('active');
+            }
+            document.getElementById(`item-${cmd}`).classList.add('active');
+            
+            // Show panels
+            document.getElementById('welcome-panel').style.display = 'none';
+            document.getElementById('data-panel').style.display = 'flex';
+            
+            // Fill headers
+            document.getElementById('active-cmd-name').innerText = cmd;
+            document.getElementById('active-cmd-desc').innerText = wikiData.event_types[cmd].description;
+            
+            // Render active tab contents
+            renderTabContent();
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            const tabs = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            // Find active tab button
+            event.target.classList.add('active');
+            
+            // Show corresponding content panel
+            const contents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            if (!currentCmd) return;
+            const info = wikiData.event_types[currentCmd];
+            
+            if (currentTab === 'schema') {
+                const container = document.getElementById('schema-tree');
+                container.innerHTML = '';
+                container.appendChild(buildSchemaNodeHtml(info.schema, 'Root'));
+            } else if (currentTab === 'values') {
+                const tbody = document.getElementById('values-table-body');
+                tbody.innerHTML = '';
+                
+                // Sort keys alphabetically
+                const paths = Object.keys(info.typical_values).sort();
+                paths.forEach(path => {
+                    const tr = document.createElement('tr');
+                    const tdPath = document.createElement('td');
+                    tdPath.innerText = path;
+                    tdPath.style.fontWeight = '500';
+                    tdPath.style.color = '#c084fc';
+                    
+                    const tdVals = document.createElement('td');
+                    info.typical_values[path].forEach(val => {
+                        const span = document.createElement('span');
+                        span.className = 'val-badge';
+                        span.innerText = JSON.stringify(val);
+                        tdVals.appendChild(span);
+                    });
+                    
+                    tr.appendChild(tdPath);
+                    tr.appendChild(tdVals);
+                    tbody.appendChild(tr);
+                });
+            } else if (currentTab === 'examples') {
+                const pre = document.getElementById('json-example-code');
+                pre.innerText = JSON.stringify(info.example, null, 2);
+            }
+        }
+
+        function buildSchemaNodeHtml(schema, key) {
+            const container = document.createElement('div');
+            container.className = 'schema-node';
+            
+            const row = document.createElement('div');
+            row.className = 'schema-row';
+            
+            const keySpan = document.createElement('span');
+            keySpan.className = 'key-name';
+            keySpan.innerText = key + ':';
+            
+            const typeBadge = document.createElement('span');
+            typeBadge.className = `type-badge type-${schema.type}`;
+            typeBadge.innerText = schema.type.replace('_', ' ');
+            
+            row.appendChild(keySpan);
+            row.appendChild(typeBadge);
+            container.appendChild(row);
+            
+            if (schema.type === 'object' && schema.properties) {
+                Object.keys(schema.properties).forEach(propKey => {
+                    container.appendChild(buildSchemaNodeHtml(schema.properties[propKey], propKey));
+                });
+            } else if (schema.type === 'heterogeneous_array' && schema.items) {
+                Object.keys(schema.items).forEach(indexKey => {
+                    container.appendChild(buildSchemaNodeHtml(schema.items[indexKey], `[${indexKey}]`));
+                });
+            } else if (schema.type === 'array' && schema.items) {
+                container.appendChild(buildSchemaNodeHtml(schema.items, '[index]'));
+            }
+            
+            return container;
+        }
+
+        window.onload = initWiki;
+    </script>
+</body>
+</html>
