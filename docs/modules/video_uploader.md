@@ -10,6 +10,7 @@ bilibili_api.video_uploader
 from bilibili_api import video_uploader
 ```
 
+- [class <subclass of "bilibili\_api.video\_uploader.VideoPorderMeta" and "builtins.dict[Any, Any]">()](#class-<subclass of "bilibili\_api.video\_uploader.VideoPorderMeta" and "builtins.dict[Any, Any]">)
 - [class Lines()](#class-Lines)
 - [class VideoEditor()](#class-VideoEditor)
   - [def \_\_init\_\_()](#def-\_\_init\_\_)
@@ -35,6 +36,16 @@ from bilibili_api import video_uploader
 - [async def get\_available\_topics()](#async-def-get\_available\_topics)
 - [async def get\_missions()](#async-def-get\_missions)
 - [async def upload\_cover()](#async-def-upload\_cover)
+
+---
+
+## class <subclass of "bilibili_api.video_uploader.VideoPorderMeta" and "builtins.dict[Any, Any]">()
+
+**Extend: bilibili_api.video_uploader.VideoPorderMeta**
+
+
+
+
 
 ---
 

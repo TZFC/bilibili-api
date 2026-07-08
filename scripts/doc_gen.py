@@ -6,7 +6,32 @@ import json
 
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-os.system("stubgen bilibili_api -o .doc_cache/ --include-docstrings")
+import glob
+import subprocess
+
+# Locate stubgen dynamically relative to sys.executable (supporting active venv)
+stubgen_name = "stubgen.exe" if os.name == "nt" else "stubgen"
+stubgen_path = os.path.join(os.path.dirname(sys.executable), stubgen_name)
+if not os.path.exists(stubgen_path):
+    stubgen_path = "stubgen"
+
+# Run stubgen
+subprocess.run([stubgen_path, "bilibili_api", "-o", ".doc_cache/", "--include-docstrings"], check=True)
+
+# Run mypy to compile types and generate cache metadata
+subprocess.run([sys.executable, "-m", "mypy", "--no-sqlite-cache", "bilibili_api"], check=False)
+
+# Export all binary mypy cache files (.data.ff) to JSON format (.data.json) if mypy version uses them
+ff_files = glob.glob(f".mypy_cache/{sys.version_info.major}.{sys.version_info.minor}/**/*.data.ff", recursive=True)
+for ff_path in ff_files:
+    subprocess.run([sys.executable, "-m", "mypy.exportjson", ff_path], check=True)
+    json_path = ff_path + ".json"
+    target_json_path = ff_path[:-3] + ".json"
+    if os.path.exists(json_path):
+        if os.path.exists(target_json_path):
+            os.remove(target_json_path)
+        os.rename(json_path, target_json_path)
+
 
 all_funcs = []
 funcs = []
@@ -401,6 +426,24 @@ def parse_docstring1(doc: str):
     return mdstring
 
 
+def get_symbol_doc(fullname: str) -> str:
+    if "<" in fullname or ">" in fullname or " " in fullname:
+        return ""
+    try:
+        parts = fullname.split(".")
+        obj = sys.modules.get(parts[0])
+        if obj is None:
+            obj = eval(parts[0])
+        for part in parts[1:]:
+            obj = getattr(obj, part)
+        return getattr(obj, "__doc__", "") or ""
+    except Exception:
+        try:
+            return eval(f"{fullname}.__doc__") or ""
+        except Exception:
+            return ""
+
+
 import bilibili_api
 
 for module in all_funcs:
@@ -411,10 +454,10 @@ for module in all_funcs:
     print("BEGIN", module[0][0])
     if module[0][0] != "bilibili_api":
         file.write(
-            f"# Module {module[0][0]}.py\n\n{eval(f'{module[0][1]}.__doc__')}\n\n``` python\nfrom bilibili_api import {module[0][0]}\n```\n\n"
+            f"# Module {module[0][0]}.py\n\n{get_symbol_doc(module[0][1])}\n\n``` python\nfrom bilibili_api import {module[0][0]}\n```\n\n"
         )
     else:
-        file.write(f"# Module bilibili_api\n\n{eval(f'{module[0][1]}.__doc__')}\n\n``` python\nfrom bilibili_api import ...\n```\n\n")
+        file.write(f"# Module bilibili_api\n\n{get_symbol_doc(module[0][1])}\n\n``` python\nfrom bilibili_api import ...\n```\n\n")
     print("GENERATING TOC")
     last_data_class = -114514
     for idx, func in enumerate(module[1:]):
@@ -425,7 +468,8 @@ for module in all_funcs:
             last_data_class = idx
         file.write(
             "  " * (func[4] - 2)
-            + f"- [{func[2]} {func[0].replace("_", "\\_")}{["()", ""][func[2] == "var"]}](#{func[2].replace(' ', '-')}-{func[0].replace("_", "\\_")})\n"
+            + "- [" + func[2] + " " + func[0].replace('_', '\\_') + ("()" if func[2] != "var" else "")
+            + "](#" + func[2].replace(' ', '-') + "-" + func[0].replace('_', '\\_') + ")\n"
         )
     file.write("\n")
     last_data_class = -114514
@@ -444,23 +488,23 @@ for module in all_funcs:
             last_data_class = idx
         if func[0] == "__init__":
             func[0] = "\\_\\_init\\_\\_"
-        file.write("#" * func[4] + f" {func[2]} {func[0]}{["()", ""][func[2] == "var"]}\n\n")
+        file.write("#" * func[4] + " " + func[2] + " " + func[0] + ("()" if func[2] != "var" else "") + "\n\n")
         if func[0] == "HEADERS":
             continue
         if func[2] == "class" or func[2] == "var":
             if not func[3].startswith("@") and func[3] != "builtins.object":
                 file.write(f"**Extend: {func[3]}**\n\n")
             if func[0] in ["request_log", "BiliAPIClient"]:
-                doc = eval(f"{func[1]}.__doc__")
+                doc = get_symbol_doc(func[1])
                 for line in doc.split("\n"):
                     file.write(line + "\n")
                 file.write("\n\n")
             else:
-                file.write(parse_docstring1(eval(f"{func[1]}.__doc__")))
+                file.write(parse_docstring1(get_symbol_doc(func[1])))
         else:
             if func[0] == "\\_\\_init\\_\\_":
-                file.write(parse_docstring1(eval(f"{func[1]}.__doc__")))
+                file.write(parse_docstring1(get_symbol_doc(func[1])))
             else:
-                file.write(parse_docstring(eval(f"{func[1]}.__doc__")))
+                file.write(parse_docstring(get_symbol_doc(func[1])))
     file.close()
     print("DONE", docs_dir)
