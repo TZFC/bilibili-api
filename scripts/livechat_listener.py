@@ -156,3 +156,8 @@ if __name__ == '__main__':
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Stopped by user.")
+    except BaseException as e:
+        print("FATAL BaseException caught:", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        sys.exit(1)

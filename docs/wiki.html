@@ -365,11 +365,11 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_events": 116,
-  "last_updated": "2026-07-07 21:50:44",
+  "total_events": 170,
+  "last_updated": "2026-07-07 21:53:17",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
-      "count": 7,
+      "count": 8,
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
       "schema": {
         "type": "null"
@@ -378,7 +378,7 @@
       "example": null
     },
     "VIEW": {
-      "count": 9,
+      "count": 14,
       "description": "人气值更新 (PopularityUpdate): 心跳包返回的直播间当前人气数值值更新。",
       "schema": {
         "type": "integer"
@@ -387,7 +387,7 @@
       "example": 1
     },
     "ONLINE_RANK_COUNT": {
-      "count": 20,
+      "count": 29,
       "description": "高能用户数更新 (OnlineRankCount): 房间在线高能用户总数的实时波动更新。",
       "schema": {
         "type": "object",
@@ -419,28 +419,32 @@
           "ONLINE_RANK_COUNT"
         ],
         "data.count": [
+          55,
           56,
           57,
           58,
           59
         ],
         "data.count_text": [
-          "56",
-          "57",
           "58",
-          "59"
+          "57",
+          "56",
+          "59",
+          "55"
         ],
         "data.online_count": [
+          55,
           56,
           57,
           58,
           59
         ],
         "data.online_count_text": [
-          "56",
-          "57",
           "58",
-          "59"
+          "57",
+          "56",
+          "59",
+          "55"
         ]
       },
       "example": {
@@ -454,7 +458,7 @@
       }
     },
     "DANMU_MSG": {
-      "count": 27,
+      "count": 43,
       "description": "弹幕消息 (ChatMessage): 观众在直播间发送的常规弹幕，包含发言人、勋章、等级等丰富信息。",
       "schema": {
         "type": "object",
@@ -563,14 +567,14 @@
           0
         ],
         "info.1": [
-          "祝早日康复",
-          "哈哈哈",
           "买3000万法国赢",
-          "哟，还会胡萝卜加大棒",
-          "笑看两机器人掐架",
           "怎么有人和AI急啊[dog]",
           "沐沐加油，先赚一个小目标[dog]",
-          "刮彩票赚钱"
+          "笑看两机器人掐架",
+          "哟，还会胡萝卜加大棒",
+          "刮彩票赚钱",
+          "哈哈哈",
+          "祝早日康复"
         ],
         "info.2[]": [
           20052482,
@@ -615,14 +619,14 @@
         ],
         "info.8": [],
         "info.9.ct": [
-          "17C3893E",
-          "B568408A",
           "4D055056",
-          "4A00DC47",
           "D6CDE3EF",
-          "B31B045C",
+          "4A00DC47",
           "43567B0B",
-          "612E0AD3"
+          "612E0AD3",
+          "B568408A",
+          "17C3893E",
+          "B31B045C"
         ],
         "info.9.ts": [
           1783485925,
@@ -809,7 +813,7 @@
       }
     },
     "ONLINE_RANK_V3": {
-      "count": 11,
+      "count": 13,
       "description": "高能用户榜单更新 (OnlineRankV3): 房间内在线的高能用户排行榜信息，其详细列表数据由 Protobuf 编码。",
       "schema": {
         "type": "object",
@@ -913,35 +917,44 @@
           11
         ],
         "data.pb_decoded.online_list[].uid": [
-          388616395
+          388616395,
+          325897245
         ],
         "data.pb_decoded.online_list[].face": [
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i0.hdslb.com/bfs/face/0fa3807f8bc3e829c7a7a524954081274f3ccfdb.webp"
         ],
         "data.pb_decoded.online_list[].score": [
           "182",
+          "300",
           "161"
         ],
         "data.pb_decoded.online_list[].uname": [
-          "逍遥云闲"
+          "逍遥云闲",
+          "七曜新星"
         ],
         "data.pb_decoded.online_list[].rank": [
           1
         ],
         "data.pb_decoded.online_list[].user_info.uid": [
-          388616395
+          388616395,
+          325897245
         ],
         "data.pb_decoded.online_list[].user_info.base.name": [
-          "逍遥云闲"
+          "逍遥云闲",
+          "七曜新星"
         ],
         "data.pb_decoded.online_list[].user_info.base.face": [
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i0.hdslb.com/bfs/face/0fa3807f8bc3e829c7a7a524954081274f3ccfdb.webp"
         ],
         "data.pb_decoded.online_list[].user_info.base.risk_ctrl_info.name": [
-          "逍遥云闲"
+          "逍遥云闲",
+          "七曜新星"
         ],
         "data.pb_decoded.online_list[].user_info.base.account_info.name": [
-          "逍遥云闲"
+          "逍遥云闲",
+          "七曜新星"
         ],
         "data.pb_decode_message": [
           "success"
@@ -1127,7 +1140,7 @@
       }
     },
     "INTERACT_WORD_V2": {
-      "count": 8,
+      "count": 13,
       "description": "用户交互事件 V2 (InteractWordV2): 包含与 INTERACT_WORD 类似的动作，其详细数据封装在 Protobuf (pb) 字节流中。",
       "schema": {
         "type": "object",
@@ -1246,6 +1259,8 @@
           6,
           10,
           12,
+          44,
+          18,
           30
         ],
         "data.pb": [],
@@ -1260,14 +1275,14 @@
           1565146
         ],
         "data.pb_decoded.uname": [
-          "从缘",
-          "No风灵",
-          "Swrin",
-          "若水彤心",
-          "白纸-摆烂版",
-          "啊烨夜",
           "小新蜡笔小小新",
-          "灰常的逆袭"
+          "Swrin",
+          "从缘",
+          "灰常的逆袭",
+          "若水彤心",
+          "啊烨夜",
+          "No风灵",
+          "白纸-摆烂版"
         ],
         "data.pb_decoded.identities[]": [
           1,
@@ -1282,8 +1297,10 @@
         "data.pb_decoded.timestamp": [
           1783486017,
           1783485889,
+          1783486280,
           1783486061,
           1783486128,
+          1783486261,
           1783485910,
           1783486143
         ],
@@ -1318,30 +1335,32 @@
           1565146
         ],
         "data.pb_decoded.user_info.base.name": [
-          "从缘",
-          "No风灵",
-          "Swrin",
-          "若水彤心",
-          "白纸-摆烂版",
-          "啊烨夜",
           "小新蜡笔小小新",
-          "灰常的逆袭"
+          "Swrin",
+          "从缘",
+          "灰常的逆袭",
+          "若水彤心",
+          "啊烨夜",
+          "No风灵",
+          "白纸-摆烂版"
         ],
         "data.pb_decoded.user_info.base.face": [
+          "https://i1.hdslb.com/bfs/face/722044353bfcefe62fea948baf3c526c2a415908.jpg",
+          "https://i0.hdslb.com/bfs/face/2cca5c0e713d7205516246b9b736e4d8f36e9343.jpg",
           "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg",
-          "https://i1.hdslb.com/bfs/face/ac4a9f5bca22d86a48978da8820b56df1338e000.jpg",
-          "https://i1.hdslb.com/bfs/face/4d8c0bf5ce6843f084e441ca278be9bb44aa0445.jpg",
+          "https://i1.hdslb.com/bfs/face/9f382adc5c3b81ddd0f5db94eaf1a5f10a12f444.jpg",
           "https://i1.hdslb.com/bfs/face/eb1b9c7f13dfdcf97f796c386e8f35f5d2ecd7d6.jpg",
           "https://i0.hdslb.com/bfs/face/9f1a07502479c5c64b0143a3c6bc8291a7ea822a.jpg",
-          "https://i0.hdslb.com/bfs/face/2cca5c0e713d7205516246b9b736e4d8f36e9343.jpg",
-          "https://i1.hdslb.com/bfs/face/722044353bfcefe62fea948baf3c526c2a415908.jpg",
-          "https://i1.hdslb.com/bfs/face/9f382adc5c3b81ddd0f5db94eaf1a5f10a12f444.jpg"
+          "https://i1.hdslb.com/bfs/face/ac4a9f5bca22d86a48978da8820b56df1338e000.jpg",
+          "https://i1.hdslb.com/bfs/face/4d8c0bf5ce6843f084e441ca278be9bb44aa0445.jpg"
         ],
         "data.pb_decoded.user_info.wealth.level": [
           2,
           35,
           4,
+          6,
           13,
+          21,
           26,
           28
         ],
@@ -1361,7 +1380,9 @@
           36265198
         ],
         "data.pb_decoded.fans_medal_info.medal_level": [
+          8,
           9,
+          11,
           15,
           31
         ],
@@ -1369,6 +1390,7 @@
           "沐马"
         ],
         "data.pb_decoded.fans_medal_info.medal_color": [
+          6126494,
           12478086,
           2951253,
           9272486
@@ -1389,15 +1411,19 @@
           23596840
         ],
         "data.pb_decoded.fans_medal_info.score": [
+          135,
+          211,
+          117,
           569,
-          41339,
-          135
+          41339
         ],
         "data.pb_decoded.user_info.medal.name": [
           "沐马"
         ],
         "data.pb_decoded.user_info.medal.level": [
+          8,
           9,
+          11,
           15,
           31
         ],
@@ -1414,6 +1440,7 @@
           2951253
         ],
         "data.pb_decoded.user_info.medal.color": [
+          6126494,
           12478086,
           2951253,
           9272486
@@ -1425,9 +1452,11 @@
           36265198
         ],
         "data.pb_decoded.user_info.medal.score": [
+          135,
+          211,
+          117,
           569,
-          41339,
-          135
+          41339
         ],
         "data.pb_decoded.user_info.medal.v2_medal_color_start": [
           "#4C7DFF99",
@@ -1445,8 +1474,8 @@
           "#FFFFFF"
         ],
         "data.pb_decoded.user_info.medal.v2_medal_color_level": [
-          "#4C7DFFE6",
-          "#919298E6"
+          "#919298E6",
+          "#4C7DFFE6"
         ],
         "data.pb_decoded.fans_medal_info.is_lighted": [
           1
@@ -1495,7 +1524,7 @@
       }
     },
     "NOTICE_MSG": {
-      "count": 1,
+      "count": 3,
       "description": "自定义/未知事件 (NOTICE_MSG)",
       "schema": {
         "type": "object",
@@ -1618,73 +1647,99 @@
           "NOTICE_MSG"
         ],
         "id": [
-          1938
+          1938,
+          979
         ],
         "name": [
+          "舰长12个月",
           "五灵威力跑马灯"
         ],
         "full.head_icon": [
+          "https://i0.hdslb.com/bfs/live/3cd61cf41b12bebfa1fd848361919c66dc46e0fc.png",
           "https://i0.hdslb.com/bfs/live/fdaf4f7ca7109bb714a4fb8d45ee78d402523a0b.webp"
         ],
         "full.tail_icon": [
-          ""
+          "",
+          "https://i0.hdslb.com/bfs/live/822da481fdaba986d738db5d8fd469ffa95a8fa1.webp"
         ],
         "full.head_icon_fa": [
+          "https://i0.hdslb.com/bfs/live/3cd61cf41b12bebfa1fd848361919c66dc46e0fc.png",
           "https://i0.hdslb.com/bfs/live/939f221beb57e7962ba41a740b85d40b09e729ba.png"
         ],
         "full.tail_icon_fa": [
-          ""
+          "",
+          "https://i0.hdslb.com/bfs/live/7d7af6107ef808438e6c3b4db0c7868bf78e5172.png"
         ],
         "full.head_icon_fan": [
+          1,
           39
         ],
         "full.tail_icon_fan": [
           4
         ],
         "full.background": [
-          "#ef8e0e"
+          "#ef8e0e",
+          "#FFE2B2"
         ],
         "full.color": [
+          "#B87436",
           "#FFFFFF"
         ],
         "full.highlight": [
-          "#f4ff98"
+          "#f4ff98",
+          "#E37921"
         ],
         "full.time": [
+          10,
           20
         ],
         "half.head_icon": [
-          "https://i0.hdslb.com/bfs/live/31a3eed63d51d3013e1137cce5ccf913a9ac580b.gif"
+          "https://i0.hdslb.com/bfs/live/31a3eed63d51d3013e1137cce5ccf913a9ac580b.gif",
+          ""
         ],
         "half.tail_icon": [
           ""
         ],
         "half.background": [
+          "",
           "#ef8e0e"
         ],
         "half.color": [
+          "",
           "#FFFFFFFF"
         ],
         "half.highlight": [
-          "#f4ff98"
+          "#f4ff98",
+          ""
         ],
         "half.time": [
+          0,
           15
         ],
         "side": [],
         "roomid": [
-          27632810
+          1888543529,
+          27632810,
+          1962481108
         ],
         "real_roomid": [
-          27632810
+          1888543529,
+          27632810,
+          1962481108
         ],
         "msg_common": [
-          "<%bili_43829886239%>投喂<%小萝ツ%>1个五灵威力，点击前往TA的房间吧！"
+          "<%睡觉的超级兵%> 在主播 <%苏苏吃饱饱w%>的直播间续费了12个月舰长，陪主播一起驶向星辰大海",
+          "<%bili_43829886239%>投喂<%小萝ツ%>1个五灵威力，点击前往TA的房间吧！",
+          "<%毛毛毛246527%>投喂<%心碎小橙子-%>1个五灵威力，点击前往TA的房间吧！"
         ],
         "msg_self": [
+          "<%睡觉的超级兵%> 在主播 <%苏苏吃饱饱w%>的直播间续费了12个月舰长，感谢上船陪伴",
+          "<%毛毛毛246527%>投喂<%心碎小橙子-%>1个五灵威力，快来围观吧！",
           "<%bili_43829886239%>投喂<%小萝ツ%>1个五灵威力，快来围观吧！"
         ],
         "link_url": [
+          "https://live.bilibili.com/1888543529?broadcast_type=1&is_room_feed=1&from=28003&extra_jump_from=28003&live_lottery_type=1",
+          "https://live.bilibili.com/1962481108?broadcast_type=0&is_room_feed=1&from=28003&extra_jump_from=28003&live_lottery_type=1",
           "https://live.bilibili.com/27632810?broadcast_type=1&is_room_feed=1&from=28003&extra_jump_from=28003&live_lottery_type=1"
         ],
         "msg_type": [
@@ -1694,7 +1749,8 @@
           -1
         ],
         "business_id": [
-          "35699"
+          "35699",
+          "xuser-guard"
         ],
         "scatter.min": [
           0
@@ -1751,7 +1807,7 @@
       }
     },
     "STOP_LIVE_ROOM_LIST": {
-      "count": 6,
+      "count": 11,
       "description": "自定义/未知事件 (STOP_LIVE_ROOM_LIST)",
       "schema": {
         "type": "object",
@@ -1777,10 +1833,12 @@
           "STOP_LIVE_ROOM_LIST"
         ],
         "data.room_id_list[]": [
+          1963697568,
           31759845,
           1740575015,
           1713426985,
           1726557931,
+          10745038,
           12251091,
           1714600442
         ]
@@ -2328,8 +2386,8 @@
         ],
         "data.medal_info.medal_color": [
           "#06154c",
-          "#ff610b",
-          "#1a544b"
+          "#1a544b",
+          "#ff610b"
         ],
         "data.medal_info.medal_color_border": [
           1725515,
@@ -2363,9 +2421,9 @@
         ],
         "data.message": [
           "套麻袋娶走沐沐本沐的PS5和switch",
-          "+1亿",
           "这是一个亿",
-          "那我也跟一个亿吧"
+          "那我也跟一个亿吧",
+          "+1亿"
         ],
         "data.message_font_color": [
           "#A3F6FF"
@@ -2390,8 +2448,8 @@
         ],
         "data.token": [
           "BB70A3B0",
-          "2EC3F549",
           "32803371",
+          "2EC3F549",
           "24D31EBD"
         ],
         "data.trans_mark": [
@@ -2410,19 +2468,19 @@
           35344030
         ],
         "data.uinfo.base.face": [
-          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
           "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
-          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg"
         ],
         "data.uinfo.base.is_mystery": [
           false
         ],
         "data.uinfo.base.name": [
-          "冰清玉洁の天子方辰",
-          "被卷傻了的烈小焰",
+          "逍遥云闲",
           "刺壳甲虫是刺客",
-          "逍遥云闲"
+          "冰清玉洁の天子方辰",
+          "被卷傻了的烈小焰"
         ],
         "data.uinfo.base.name_color": [
           0
@@ -2444,16 +2502,16 @@
           -1
         ],
         "data.uinfo.base.origin_info.face": [
-          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
           "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
-          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg"
         ],
         "data.uinfo.base.origin_info.name": [
-          "冰清玉洁の天子方辰",
-          "被卷傻了的烈小焰",
+          "逍遥云闲",
           "刺壳甲虫是刺客",
-          "逍遥云闲"
+          "冰清玉洁の天子方辰",
+          "被卷傻了的烈小焰"
         ],
         "data.uinfo.base.risk_ctrl_info": [],
         "data.uinfo.guard.expired_str": [
@@ -2535,8 +2593,8 @@
           "#3FB4F699"
         ],
         "data.uinfo.medal.v2_medal_color_level": [
-          "#3FB4F6E6",
-          "#A773F1E6"
+          "#A773F1E6",
+          "#3FB4F6E6"
         ],
         "data.uinfo.medal.v2_medal_color_start": [
           "#A773F199",
@@ -2560,10 +2618,10 @@
         ],
         "data.uinfo.wealth": [],
         "data.user_info.face": [
-          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
           "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
-          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg"
         ],
         "data.user_info.face_frame": [
           "",
@@ -2584,8 +2642,8 @@
           0
         ],
         "data.user_info.level_color": [
-          "#61c05a",
           "#ff86b2",
+          "#61c05a",
           "#969696"
         ],
         "data.user_info.manager": [
@@ -2599,10 +2657,10 @@
           ""
         ],
         "data.user_info.uname": [
-          "冰清玉洁の天子方辰",
-          "被卷傻了的烈小焰",
+          "逍遥云闲",
           "刺壳甲虫是刺客",
-          "逍遥云闲"
+          "冰清玉洁の天子方辰",
+          "被卷傻了的烈小焰"
         ],
         "data.user_info.user_level": [
           9,
@@ -2614,10 +2672,10 @@
           true
         ],
         "msg_id": [
-          "99543716200496640:1000:1000",
           "99543530209309184:1000:1000",
-          "99543441454690816:1000:1000",
-          "99543496393773056:1000:1000"
+          "99543496393773056:1000:1000",
+          "99543716200496640:1000:1000",
+          "99543441454690816:1000:1000"
         ],
         "p_is_ack": [
           true
@@ -3126,15 +3184,15 @@
         ],
         "data.message": [
           "套麻袋娶走沐沐本沐的PS5和switch",
-          "+1亿",
           "这是一个亿",
-          "那我也跟一个亿吧"
+          "那我也跟一个亿吧",
+          "+1亿"
         ],
         "data.message_jpn": [
+          "麻袋セットで本沐浴のPS 5とswitchを嫁にする",
           "これは億です",
-          "+1億",
           "私も1億ドルを手に入れましょう",
-          "麻袋セットで本沐浴のPS 5とswitchを嫁にする"
+          "+1億"
         ],
         "data.is_ranked": [
           0
@@ -3162,9 +3220,9 @@
           1783486166
         ],
         "data.token": [
-          "81141EB2",
           "1B186028",
           "E269F5D7",
+          "81141EB2",
           "5A5EA9D4"
         ],
         "data.medal_info.icon_id": [
@@ -3193,8 +3251,8 @@
         ],
         "data.medal_info.medal_color": [
           "#06154c",
-          "#ff610b",
-          "#1a544b"
+          "#1a544b",
+          "#ff610b"
         ],
         "data.medal_info.medal_color_start": [
           16736523,
@@ -3219,16 +3277,16 @@
           3
         ],
         "data.user_info.uname": [
-          "冰清玉洁の天子方辰",
-          "被卷傻了的烈小焰",
+          "逍遥云闲",
           "刺壳甲虫是刺客",
-          "逍遥云闲"
+          "冰清玉洁の天子方辰",
+          "被卷傻了的烈小焰"
         ],
         "data.user_info.face": [
-          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
           "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
-          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg"
         ],
         "data.user_info.face_frame": [
           "",
@@ -3249,8 +3307,8 @@
           41
         ],
         "data.user_info.level_color": [
-          "#61c05a",
           "#ff86b2",
+          "#61c05a",
           "#969696"
         ],
         "data.user_info.is_vip": [
@@ -3312,16 +3370,16 @@
           35344030
         ],
         "data.uinfo.base.name": [
-          "冰清玉洁の天子方辰",
-          "被卷傻了的烈小焰",
+          "逍遥云闲",
           "刺壳甲虫是刺客",
-          "逍遥云闲"
+          "冰清玉洁の天子方辰",
+          "被卷傻了的烈小焰"
         ],
         "data.uinfo.base.face": [
-          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
           "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
-          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg"
         ],
         "data.uinfo.base.name_color": [
           0
@@ -3331,16 +3389,16 @@
         ],
         "data.uinfo.base.risk_ctrl_info": [],
         "data.uinfo.base.origin_info.name": [
-          "冰清玉洁の天子方辰",
-          "被卷傻了的烈小焰",
+          "逍遥云闲",
           "刺壳甲虫是刺客",
-          "逍遥云闲"
+          "冰清玉洁の天子方辰",
+          "被卷傻了的烈小焰"
         ],
         "data.uinfo.base.origin_info.face": [
-          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
           "https://i1.hdslb.com/bfs/face/e19f7830e63c3580c0f33afaa936c6eceb40d7d8.jpg",
-          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+          "https://i1.hdslb.com/bfs/face/5ee337400e27d812521814f17600f8999d8e89c6.jpg",
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+          "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg"
         ],
         "data.uinfo.base.official_info.role": [
           0
@@ -3432,8 +3490,8 @@
           "#FFFFFF"
         ],
         "data.uinfo.medal.v2_medal_color_level": [
-          "#3FB4F6E6",
-          "#A773F1E6"
+          "#A773F1E6",
+          "#3FB4F6E6"
         ],
         "data.uinfo.medal.user_receive_count": [
           0
@@ -3576,7 +3634,7 @@
       }
     },
     "POPULAR_RANK_CHANGED": {
-      "count": 4,
+      "count": 6,
       "description": "自定义/未知事件 (POPULAR_RANK_CHANGED)",
       "schema": {
         "type": "object",
@@ -3635,22 +3693,28 @@
           0
         ],
         "data.countdown": [
+          481,
+          901,
           841,
           781,
           721,
-          901
+          541
         ],
         "data.timestamp": [
+          1783486080,
+          1783486020,
           1783485960,
           1783485900,
-          1783486080,
-          1783486020
+          1783486320,
+          1783486260
         ],
         "data.cache_key": [
-          "rank_change:d8cf4c37968a41de99b96ce1140e7500",
           "rank_change:300da53ecb1d4b58a3112c878bf2c1f6",
+          "rank_change:b8bc3122f46f45b392ddecea01087f6a",
+          "rank_change:6bf6b5e7173b4b5cbd31c53271fb5333",
+          "rank_change:b299d3893d2e439283d3435c8349f098",
           "rank_change:138bf9896c374f6297d06c683ec818ba",
-          "rank_change:6bf6b5e7173b4b5cbd31c53271fb5333"
+          "rank_change:d8cf4c37968a41de99b96ce1140e7500"
         ],
         "data.on_rank_name_by_type": [
           "虚拟人气"
@@ -3660,10 +3724,12 @@
         ],
         "data.url_by_type": [],
         "data.rank_by_type": [
-          72,
           69,
           70,
-          71
+          71,
+          72,
+          75,
+          76
         ],
         "data.default_url": [],
         "data.rank_type": [
@@ -3688,7 +3754,7 @@
       }
     },
     "WATCHED_CHANGE": {
-      "count": 9,
+      "count": 13,
       "description": "自定义/未知事件 (WATCHED_CHANGE)",
       "schema": {
         "type": "object",
@@ -3719,17 +3785,20 @@
         "data.num": [
           216,
           219,
+          229,
           223
         ],
         "data.text_small": [
-          "219",
           "223",
+          "229",
+          "219",
           "216"
         ],
         "data.text_large": [
           "219人看过",
+          "216人看过",
           "223人看过",
-          "216人看过"
+          "229人看过"
         ]
       },
       "example": {
@@ -3850,7 +3919,7 @@
       }
     },
     "ENTRY_EFFECT": {
-      "count": 1,
+      "count": 3,
       "description": "特殊入场特效 (EntryEffect): 舰长/大航海等高阶用户进入直播间的酷炫进场特效提示。",
       "schema": {
         "type": "object",
@@ -4142,6 +4211,8 @@
           381
         ],
         "data.uid": [
+          173828632,
+          3461563342129473,
           1565146
         ],
         "data.target_id": [
@@ -4151,12 +4222,16 @@
           0
         ],
         "data.face": [
+          "https://i0.hdslb.com/bfs/face/40a1ac3475e3cab974fd281083705f8315356dc0.jpg",
+          "https://i1.hdslb.com/bfs/face/208b23a4c258729a179802c067bf5ecf1370ec46.jpg",
           "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg"
         ],
         "data.privilege_type": [
           0
         ],
         "data.copy_writing": [
+          "<%一只汪喵兽%> 来了",
+          "<%修会教徒%> 来了",
           "<%从缘%> 来了"
         ],
         "data.copy_color": [
@@ -4193,12 +4268,16 @@
           6
         ],
         "data.copy_writing_v2": [
+          "<%一只汪喵兽%> 来了",
+          "<%修会教徒%> 来了",
           "<%从缘%> 来了"
         ],
         "data.max_delay_time": [
           7
         ],
         "data.trigger_time": [
+          1783486295523834562,
+          1783486279296386371,
           1783486016087924755
         ],
         "data.identities": [
@@ -4223,7 +4302,8 @@
           0
         ],
         "data.wealthy_info.level": [
-          28
+          28,
+          21
         ],
         "data.wealthy_info.level_total_score": [
           0
@@ -4247,12 +4327,18 @@
           false
         ],
         "data.uinfo.uid": [
+          173828632,
+          3461563342129473,
           1565146
         ],
         "data.uinfo.base.name": [
-          "从缘"
+          "一只汪喵兽",
+          "从缘",
+          "修会教徒"
         ],
         "data.uinfo.base.face": [
+          "https://i0.hdslb.com/bfs/face/40a1ac3475e3cab974fd281083705f8315356dc0.jpg",
+          "https://i1.hdslb.com/bfs/face/208b23a4c258729a179802c067bf5ecf1370ec46.jpg",
           "https://i1.hdslb.com/bfs/face/8a6535ddb1b26423a9044fde8f18d7aa6ec9b59a.jpg"
         ],
         "data.uinfo.base.name_color": [
@@ -4271,6 +4357,7 @@
           "沐马"
         ],
         "data.uinfo.medal.level": [
+          8,
           9
         ],
         "data.uinfo.medal.color_start": [
@@ -4283,6 +4370,7 @@
           12632256
         ],
         "data.uinfo.medal.color": [
+          6126494,
           9272486
         ],
         "data.uinfo.medal.id": [
@@ -4301,6 +4389,7 @@
           0
         ],
         "data.uinfo.medal.score": [
+          117,
           135
         ],
         "data.uinfo.medal.guard_icon": [
@@ -4328,7 +4417,8 @@
           0
         ],
         "data.uinfo.wealth.level": [
-          28
+          28,
+          21
         ],
         "data.uinfo.wealth.dm_icon_key": [
           ""
@@ -4350,8 +4440,10 @@
           0
         ],
         "data.wealth_style_info.url": [
-          "https://i0.hdslb.com/bfs/live/62fe89aef112353cfd97016b4b2cc653438642ac.png"
-        ]
+          "https://i0.hdslb.com/bfs/live/62fe89aef112353cfd97016b4b2cc653438642ac.png",
+          "https://i0.hdslb.com/bfs/live/690c9a06d47e9cc53d78c0d951caef97bfcc6374.png"
+        ],
+        "data.uinfo.medal": []
       },
       "example": {
         "cmd": "ENTRY_EFFECT",
@@ -5033,6 +5125,1134 @@
           "fans": 62772,
           "red_notice": -1,
           "fans_club": 80
+        }
+      }
+    },
+    "SEND_GIFT": {
+      "count": 1,
+      "description": "投喂礼物 (SendGift): 观众向主播赠送道具礼物，包含礼物数量、价格、连击等。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "danmu": {
+            "type": "object",
+            "properties": {
+              "area": {
+                "type": "integer"
+              }
+            }
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "bag_gift": {
+                "type": "null"
+              },
+              "batch_combo_id": {
+                "type": "string"
+              },
+              "batch_combo_send": {
+                "type": "null"
+              },
+              "beatId": {
+                "type": "string"
+              },
+              "benefits": {
+                "type": "null"
+              },
+              "biz_source": {
+                "type": "string"
+              },
+              "blind_gift": {
+                "type": "null"
+              },
+              "broadcast_id": {
+                "type": "integer"
+              },
+              "coin_type": {
+                "type": "string"
+              },
+              "combo_resources_id": {
+                "type": "integer"
+              },
+              "combo_send": {
+                "type": "null"
+              },
+              "combo_stay_time": {
+                "type": "integer"
+              },
+              "combo_total_coin": {
+                "type": "integer"
+              },
+              "crit_prob": {
+                "type": "integer"
+              },
+              "demarcation": {
+                "type": "integer"
+              },
+              "discount_price": {
+                "type": "integer"
+              },
+              "dmscore": {
+                "type": "integer"
+              },
+              "draw": {
+                "type": "integer"
+              },
+              "effect": {
+                "type": "integer"
+              },
+              "effect_block": {
+                "type": "integer"
+              },
+              "effect_config": {
+                "type": "null"
+              },
+              "face": {
+                "type": "string"
+              },
+              "face_effect": {
+                "type": "object",
+                "properties": {
+                  "candidate_face_effects": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "effect_id": {
+                          "type": "integer"
+                        },
+                        "gender": {
+                          "type": "integer"
+                        },
+                        "source": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "face_effect_type": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "face_effect_id": {
+                "type": "integer"
+              },
+              "face_effect_type": {
+                "type": "integer"
+              },
+              "face_effect_v2": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "type": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "float_sc_resource_id": {
+                "type": "integer"
+              },
+              "giftId": {
+                "type": "integer"
+              },
+              "giftName": {
+                "type": "string"
+              },
+              "giftType": {
+                "type": "integer"
+              },
+              "gift_info": {
+                "type": "object",
+                "properties": {
+                  "effect_id": {
+                    "type": "integer"
+                  },
+                  "gif": {
+                    "type": "string"
+                  },
+                  "has_imaged_gift": {
+                    "type": "integer"
+                  },
+                  "img_basic": {
+                    "type": "string"
+                  },
+                  "webp": {
+                    "type": "string"
+                  }
+                }
+              },
+              "gift_tag": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "gold": {
+                "type": "integer"
+              },
+              "group_medal": {
+                "type": "null"
+              },
+              "guard_level": {
+                "type": "integer"
+              },
+              "is_first": {
+                "type": "boolean"
+              },
+              "is_join_receiver": {
+                "type": "boolean"
+              },
+              "is_naming": {
+                "type": "boolean"
+              },
+              "is_special_batch": {
+                "type": "integer"
+              },
+              "magnification": {
+                "type": "integer"
+              },
+              "medal_info": {
+                "type": "object",
+                "properties": {
+                  "anchor_roomid": {
+                    "type": "integer"
+                  },
+                  "anchor_uname": {
+                    "type": "string"
+                  },
+                  "guard_level": {
+                    "type": "integer"
+                  },
+                  "icon_id": {
+                    "type": "integer"
+                  },
+                  "is_lighted": {
+                    "type": "integer"
+                  },
+                  "medal_color": {
+                    "type": "integer"
+                  },
+                  "medal_color_border": {
+                    "type": "integer"
+                  },
+                  "medal_color_end": {
+                    "type": "integer"
+                  },
+                  "medal_color_start": {
+                    "type": "integer"
+                  },
+                  "medal_level": {
+                    "type": "integer"
+                  },
+                  "medal_name": {
+                    "type": "string"
+                  },
+                  "special": {
+                    "type": "string"
+                  },
+                  "target_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "name_color": {
+                "type": "string"
+              },
+              "num": {
+                "type": "integer"
+              },
+              "original_gift_name": {
+                "type": "string"
+              },
+              "price": {
+                "type": "integer"
+              },
+              "rcost": {
+                "type": "integer"
+              },
+              "receive_user_info": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "uname": {
+                    "type": "string"
+                  }
+                }
+              },
+              "receiver_uinfo": {
+                "type": "object",
+                "properties": {
+                  "anon": {
+                    "type": "null"
+                  },
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "face": {
+                        "type": "string"
+                      },
+                      "is_mystery": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "name_color": {
+                        "type": "integer"
+                      },
+                      "name_color_str": {
+                        "type": "string"
+                      },
+                      "official_info": {
+                        "type": "object",
+                        "properties": {
+                          "desc": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "origin_info": {
+                        "type": "object",
+                        "properties": {
+                          "face": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "risk_ctrl_info": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "guard": {
+                    "type": "null"
+                  },
+                  "guard_leader": {
+                    "type": "null"
+                  },
+                  "medal": {
+                    "type": "null"
+                  },
+                  "title": {
+                    "type": "null"
+                  },
+                  "uhead_frame": {
+                    "type": "null"
+                  },
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "wealth": {
+                    "type": "null"
+                  }
+                }
+              },
+              "remain": {
+                "type": "integer"
+              },
+              "rnd": {
+                "type": "string"
+              },
+              "send_master": {
+                "type": "null"
+              },
+              "sender_uinfo": {
+                "type": "object",
+                "properties": {
+                  "anon": {
+                    "type": "null"
+                  },
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "face": {
+                        "type": "string"
+                      },
+                      "is_mystery": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "name_color": {
+                        "type": "integer"
+                      },
+                      "name_color_str": {
+                        "type": "string"
+                      },
+                      "official_info": {
+                        "type": "object",
+                        "properties": {
+                          "desc": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "origin_info": {
+                        "type": "object",
+                        "properties": {
+                          "face": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "risk_ctrl_info": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "guard": {
+                    "type": "null"
+                  },
+                  "guard_leader": {
+                    "type": "null"
+                  },
+                  "medal": {
+                    "type": "object",
+                    "properties": {
+                      "color": {
+                        "type": "integer"
+                      },
+                      "color_border": {
+                        "type": "integer"
+                      },
+                      "color_end": {
+                        "type": "integer"
+                      },
+                      "color_start": {
+                        "type": "integer"
+                      },
+                      "guard_icon": {
+                        "type": "string"
+                      },
+                      "guard_level": {
+                        "type": "integer"
+                      },
+                      "honor_icon": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "is_light": {
+                        "type": "integer"
+                      },
+                      "level": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "ruid": {
+                        "type": "integer"
+                      },
+                      "score": {
+                        "type": "integer"
+                      },
+                      "typ": {
+                        "type": "integer"
+                      },
+                      "user_receive_count": {
+                        "type": "integer"
+                      },
+                      "v2_medal_color_border": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_end": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_level": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_start": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_text": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "title": {
+                    "type": "null"
+                  },
+                  "uhead_frame": {
+                    "type": "null"
+                  },
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "wealth": {
+                    "type": "null"
+                  }
+                }
+              },
+              "silver": {
+                "type": "integer"
+              },
+              "super": {
+                "type": "integer"
+              },
+              "super_batch_gift_num": {
+                "type": "integer"
+              },
+              "super_gift_num": {
+                "type": "integer"
+              },
+              "svga_block": {
+                "type": "integer"
+              },
+              "switch": {
+                "type": "boolean"
+              },
+              "tag_image": {
+                "type": "string"
+              },
+              "tid": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "integer"
+              },
+              "top_list": {
+                "type": "null"
+              },
+              "total_coin": {
+                "type": "integer"
+              },
+              "uid": {
+                "type": "integer"
+              },
+              "uname": {
+                "type": "string"
+              },
+              "wealth_level": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "SEND_GIFT"
+        ],
+        "danmu.area": [
+          0
+        ],
+        "data.action": [
+          "投喂"
+        ],
+        "data.bag_gift": [],
+        "data.batch_combo_id": [
+          ""
+        ],
+        "data.batch_combo_send": [],
+        "data.beatId": [
+          "0"
+        ],
+        "data.benefits": [],
+        "data.biz_source": [
+          "Live"
+        ],
+        "data.blind_gift": [],
+        "data.broadcast_id": [
+          0
+        ],
+        "data.coin_type": [
+          "silver"
+        ],
+        "data.combo_resources_id": [
+          10
+        ],
+        "data.combo_send": [],
+        "data.combo_stay_time": [
+          5
+        ],
+        "data.combo_total_coin": [
+          0
+        ],
+        "data.crit_prob": [
+          0
+        ],
+        "data.demarcation": [
+          2
+        ],
+        "data.discount_price": [
+          0
+        ],
+        "data.dmscore": [
+          425
+        ],
+        "data.draw": [
+          0
+        ],
+        "data.effect": [
+          3
+        ],
+        "data.effect_block": [
+          1
+        ],
+        "data.effect_config": [],
+        "data.face": [
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+        ],
+        "data.face_effect.candidate_face_effects[].effect_id": [
+          6036469
+        ],
+        "data.face_effect.candidate_face_effects[].gender": [
+          2
+        ],
+        "data.face_effect.candidate_face_effects[].source": [
+          2
+        ],
+        "data.face_effect.face_effect_type": [
+          1
+        ],
+        "data.face_effect_id": [
+          0
+        ],
+        "data.face_effect_type": [
+          0
+        ],
+        "data.face_effect_v2.id": [
+          5632012
+        ],
+        "data.face_effect_v2.type": [
+          1
+        ],
+        "data.float_sc_resource_id": [
+          0
+        ],
+        "data.giftId": [
+          31738
+        ],
+        "data.giftName": [
+          "粉丝团灯牌"
+        ],
+        "data.giftType": [
+          5
+        ],
+        "data.gift_info.effect_id": [
+          0
+        ],
+        "data.gift_info.gif": [
+          "https://i0.hdslb.com/bfs/live/816f8b7aa2132888fce928cdfb17b9cf21cc0823.gif"
+        ],
+        "data.gift_info.has_imaged_gift": [
+          0
+        ],
+        "data.gift_info.img_basic": [
+          "https://s1.hdslb.com/bfs/live/e051dfd4557678f8edcac4993ed00a0935cbd9cc.png"
+        ],
+        "data.gift_info.webp": [
+          "https://i0.hdslb.com/bfs/live/32b799120e1614fa6275b6d15da7a52b21dd019d.webp"
+        ],
+        "data.gift_tag[]": [
+          1201
+        ],
+        "data.gold": [
+          0
+        ],
+        "data.group_medal": [],
+        "data.guard_level": [
+          0
+        ],
+        "data.is_first": [
+          true
+        ],
+        "data.is_join_receiver": [
+          false
+        ],
+        "data.is_naming": [
+          false
+        ],
+        "data.is_special_batch": [
+          0
+        ],
+        "data.magnification": [
+          1
+        ],
+        "data.medal_info.anchor_roomid": [
+          0
+        ],
+        "data.medal_info.anchor_uname": [
+          ""
+        ],
+        "data.medal_info.guard_level": [
+          3
+        ],
+        "data.medal_info.icon_id": [
+          0
+        ],
+        "data.medal_info.is_lighted": [
+          1
+        ],
+        "data.medal_info.medal_color": [
+          16736523
+        ],
+        "data.medal_info.medal_color_border": [
+          6809855
+        ],
+        "data.medal_info.medal_color_end": [
+          16765060
+        ],
+        "data.medal_info.medal_color_start": [
+          16736523
+        ],
+        "data.medal_info.medal_level": [
+          45
+        ],
+        "data.medal_info.medal_name": [
+          "莎河粉"
+        ],
+        "data.medal_info.special": [
+          ""
+        ],
+        "data.medal_info.target_id": [
+          620903
+        ],
+        "data.name_color": [
+          ""
+        ],
+        "data.num": [
+          1
+        ],
+        "data.original_gift_name": [
+          ""
+        ],
+        "data.price": [
+          1000
+        ],
+        "data.rcost": [
+          16110877
+        ],
+        "data.receive_user_info.uid": [
+          36265198
+        ],
+        "data.receive_user_info.uname": [
+          "沐晓空Channel"
+        ],
+        "data.receiver_uinfo.anon": [],
+        "data.receiver_uinfo.base.face": [
+          "https://i1.hdslb.com/bfs/face/a06073ea409bc91403c20646b199ea6941188d2c.jpg"
+        ],
+        "data.receiver_uinfo.base.is_mystery": [
+          false
+        ],
+        "data.receiver_uinfo.base.name": [
+          "沐晓空Channel"
+        ],
+        "data.receiver_uinfo.base.name_color": [
+          0
+        ],
+        "data.receiver_uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.receiver_uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.receiver_uinfo.base.official_info.role": [
+          7
+        ],
+        "data.receiver_uinfo.base.official_info.title": [
+          "bilibili直播高能主播"
+        ],
+        "data.receiver_uinfo.base.official_info.type": [
+          0
+        ],
+        "data.receiver_uinfo.base.origin_info.face": [
+          "https://i1.hdslb.com/bfs/face/a06073ea409bc91403c20646b199ea6941188d2c.jpg"
+        ],
+        "data.receiver_uinfo.base.origin_info.name": [
+          "沐晓空Channel"
+        ],
+        "data.receiver_uinfo.base.risk_ctrl_info": [],
+        "data.receiver_uinfo.guard": [],
+        "data.receiver_uinfo.guard_leader": [],
+        "data.receiver_uinfo.medal": [],
+        "data.receiver_uinfo.title": [],
+        "data.receiver_uinfo.uhead_frame": [],
+        "data.receiver_uinfo.uid": [
+          36265198
+        ],
+        "data.receiver_uinfo.wealth": [],
+        "data.remain": [
+          1934
+        ],
+        "data.rnd": [
+          "4792168327927580160"
+        ],
+        "data.send_master": [],
+        "data.sender_uinfo.anon": [],
+        "data.sender_uinfo.base.face": [
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+        ],
+        "data.sender_uinfo.base.is_mystery": [
+          false
+        ],
+        "data.sender_uinfo.base.name": [
+          "冰清玉洁の天子方辰"
+        ],
+        "data.sender_uinfo.base.name_color": [
+          0
+        ],
+        "data.sender_uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.sender_uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.sender_uinfo.base.official_info.role": [
+          0
+        ],
+        "data.sender_uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.sender_uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.sender_uinfo.base.origin_info.face": [
+          "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg"
+        ],
+        "data.sender_uinfo.base.origin_info.name": [
+          "冰清玉洁の天子方辰"
+        ],
+        "data.sender_uinfo.base.risk_ctrl_info": [],
+        "data.sender_uinfo.guard": [],
+        "data.sender_uinfo.guard_leader": [],
+        "data.sender_uinfo.medal.color": [
+          16736523
+        ],
+        "data.sender_uinfo.medal.color_border": [
+          6809855
+        ],
+        "data.sender_uinfo.medal.color_end": [
+          16765060
+        ],
+        "data.sender_uinfo.medal.color_start": [
+          16736523
+        ],
+        "data.sender_uinfo.medal.guard_icon": [
+          "https://i0.hdslb.com/bfs/live/48360c8f3b7de8031e86ff1ef4a2dfc0ec2a61c2.png"
+        ],
+        "data.sender_uinfo.medal.guard_level": [
+          3
+        ],
+        "data.sender_uinfo.medal.honor_icon": [
+          ""
+        ],
+        "data.sender_uinfo.medal.id": [
+          0
+        ],
+        "data.sender_uinfo.medal.is_light": [
+          1
+        ],
+        "data.sender_uinfo.medal.level": [
+          47
+        ],
+        "data.sender_uinfo.medal.name": [
+          "沐马"
+        ],
+        "data.sender_uinfo.medal.ruid": [
+          36265198
+        ],
+        "data.sender_uinfo.medal.score": [
+          2254043
+        ],
+        "data.sender_uinfo.medal.typ": [
+          0
+        ],
+        "data.sender_uinfo.medal.user_receive_count": [
+          0
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_border": [
+          "#D47AFF"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_end": [
+          "#A773F199"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_level": [
+          "#A773F1E6"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_start": [
+          "#A773F199"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_text": [
+          "#FFFFFF"
+        ],
+        "data.sender_uinfo.title": [],
+        "data.sender_uinfo.uhead_frame": [],
+        "data.sender_uinfo.uid": [
+          20052482
+        ],
+        "data.sender_uinfo.wealth": [],
+        "data.silver": [
+          0
+        ],
+        "data.super": [
+          0
+        ],
+        "data.super_batch_gift_num": [
+          0
+        ],
+        "data.super_gift_num": [
+          0
+        ],
+        "data.svga_block": [
+          0
+        ],
+        "data.switch": [
+          true
+        ],
+        "data.tag_image": [
+          ""
+        ],
+        "data.tid": [
+          "4792168327927580160"
+        ],
+        "data.timestamp": [
+          1783486394
+        ],
+        "data.top_list": [],
+        "data.total_coin": [
+          1000
+        ],
+        "data.uid": [
+          20052482
+        ],
+        "data.uname": [
+          "冰清玉洁の天子方辰"
+        ],
+        "data.wealth_level": [
+          50
+        ]
+      },
+      "example": {
+        "cmd": "SEND_GIFT",
+        "danmu": {
+          "area": 0
+        },
+        "data": {
+          "action": "投喂",
+          "bag_gift": null,
+          "batch_combo_id": "",
+          "batch_combo_send": null,
+          "beatId": "0",
+          "benefits": null,
+          "biz_source": "Live",
+          "blind_gift": null,
+          "broadcast_id": 0,
+          "coin_type": "silver",
+          "combo_resources_id": 10,
+          "combo_send": null,
+          "combo_stay_time": 5,
+          "combo_total_coin": 0,
+          "crit_prob": 0,
+          "demarcation": 2,
+          "discount_price": 0,
+          "dmscore": 425,
+          "draw": 0,
+          "effect": 3,
+          "effect_block": 1,
+          "effect_config": null,
+          "face": "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+          "face_effect": {
+            "candidate_face_effects": [
+              {
+                "effect_id": 6036469,
+                "gender": 2,
+                "source": 2
+              },
+              {
+                "effect_id": 5632012,
+                "gender": 2,
+                "source": 1
+              }
+            ],
+            "face_effect_type": 1
+          },
+          "face_effect_id": 0,
+          "face_effect_type": 0,
+          "face_effect_v2": {
+            "id": 5632012,
+            "type": 1
+          },
+          "float_sc_resource_id": 0,
+          "giftId": 31738,
+          "giftName": "粉丝团灯牌",
+          "giftType": 5,
+          "gift_info": {
+            "effect_id": 0,
+            "gif": "https://i0.hdslb.com/bfs/live/816f8b7aa2132888fce928cdfb17b9cf21cc0823.gif",
+            "has_imaged_gift": 0,
+            "img_basic": "https://s1.hdslb.com/bfs/live/e051dfd4557678f8edcac4993ed00a0935cbd9cc.png",
+            "webp": "https://i0.hdslb.com/bfs/live/32b799120e1614fa6275b6d15da7a52b21dd019d.webp"
+          },
+          "gift_tag": [
+            1201
+          ],
+          "gold": 0,
+          "group_medal": null,
+          "guard_level": 0,
+          "is_first": true,
+          "is_join_receiver": false,
+          "is_naming": false,
+          "is_special_batch": 0,
+          "magnification": 1,
+          "medal_info": {
+            "anchor_roomid": 0,
+            "anchor_uname": "",
+            "guard_level": 3,
+            "icon_id": 0,
+            "is_lighted": 1,
+            "medal_color": 16736523,
+            "medal_color_border": 6809855,
+            "medal_color_end": 16765060,
+            "medal_color_start": 16736523,
+            "medal_level": 45,
+            "medal_name": "莎河粉",
+            "special": "",
+            "target_id": 620903
+          },
+          "name_color": "",
+          "num": 1,
+          "original_gift_name": "",
+          "price": 1000,
+          "rcost": 16110877,
+          "receive_user_info": {
+            "uid": 36265198,
+            "uname": "沐晓空Channel"
+          },
+          "receiver_uinfo": {
+            "anon": null,
+            "base": {
+              "face": "https://i1.hdslb.com/bfs/face/a06073ea409bc91403c20646b199ea6941188d2c.jpg",
+              "is_mystery": false,
+              "name": "沐晓空Channel",
+              "name_color": 0,
+              "name_color_str": "",
+              "official_info": {
+                "desc": "",
+                "role": 7,
+                "title": "bilibili直播高能主播",
+                "type": 0
+              },
+              "origin_info": {
+                "face": "https://i1.hdslb.com/bfs/face/a06073ea409bc91403c20646b199ea6941188d2c.jpg",
+                "name": "沐晓空Channel"
+              },
+              "risk_ctrl_info": null
+            },
+            "guard": null,
+            "guard_leader": null,
+            "medal": null,
+            "title": null,
+            "uhead_frame": null,
+            "uid": 36265198,
+            "wealth": null
+          },
+          "remain": 1934,
+          "rnd": "4792168327927580160",
+          "send_master": null,
+          "sender_uinfo": {
+            "anon": null,
+            "base": {
+              "face": "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+              "is_mystery": false,
+              "name": "冰清玉洁の天子方辰",
+              "name_color": 0,
+              "name_color_str": "",
+              "official_info": {
+                "desc": "",
+                "role": 0,
+                "title": "",
+                "type": -1
+              },
+              "origin_info": {
+                "face": "https://i2.hdslb.com/bfs/face/7710043e379d77e30068ded5ecae64f3609eac3b.jpg",
+                "name": "冰清玉洁の天子方辰"
+              },
+              "risk_ctrl_info": null
+            },
+            "guard": null,
+            "guard_leader": null,
+            "medal": {
+              "color": 16736523,
+              "color_border": 6809855,
+              "color_end": 16765060,
+              "color_start": 16736523,
+              "guard_icon": "https://i0.hdslb.com/bfs/live/48360c8f3b7de8031e86ff1ef4a2dfc0ec2a61c2.png",
+              "guard_level": 3,
+              "honor_icon": "",
+              "id": 0,
+              "is_light": 1,
+              "level": 47,
+              "name": "沐马",
+              "ruid": 36265198,
+              "score": 2254043,
+              "typ": 0,
+              "user_receive_count": 0,
+              "v2_medal_color_border": "#D47AFF",
+              "v2_medal_color_end": "#A773F199",
+              "v2_medal_color_level": "#A773F1E6",
+              "v2_medal_color_start": "#A773F199",
+              "v2_medal_color_text": "#FFFFFF"
+            },
+            "title": null,
+            "uhead_frame": null,
+            "uid": 20052482,
+            "wealth": null
+          },
+          "silver": 0,
+          "super": 0,
+          "super_batch_gift_num": 0,
+          "super_gift_num": 0,
+          "svga_block": 0,
+          "switch": true,
+          "tag_image": "",
+          "tid": "4792168327927580160",
+          "timestamp": 1783486394,
+          "top_list": null,
+          "total_coin": 1000,
+          "uid": 20052482,
+          "uname": "冰清玉洁の天子方辰",
+          "wealth_level": 50
         }
       }
     }
