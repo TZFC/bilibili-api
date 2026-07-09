@@ -365,12 +365,12 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 18,
-  "total_fields": 749,
-  "last_updated": "2026-07-08 21:46:01",
+  "total_types": 19,
+  "total_fields": 752,
+  "last_updated": "2026-07-08 22:51:56",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
-      "count": 11,
+      "count": 16,
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
       "schema": {
         "type": "null"
@@ -380,7 +380,7 @@
       "example": null
     },
     "VIEW": {
-      "count": 27,
+      "count": 41,
       "description": "人气值更新 (PopularityUpdate): 心跳包返回的直播间当前人气数值值更新。",
       "schema": {
         "type": "integer"
@@ -390,7 +390,7 @@
       "example": 1
     },
     "ONLINE_RANK_COUNT": {
-      "count": 45,
+      "count": 72,
       "description": "高能用户数更新 (OnlineRankCount): 房间在线高能用户总数的实时波动更新。",
       "schema": {
         "type": "object",
@@ -446,7 +446,7 @@
       }
     },
     "DANMU_MSG": {
-      "count": 55,
+      "count": 85,
       "description": "弹幕消息 (ChatMessage): 观众在直播间发送的常规弹幕，包含发言人、勋章、等级等丰富信息。",
       "schema": {
         "type": "object",
@@ -744,7 +744,7 @@
       }
     },
     "ONLINE_RANK_V3": {
-      "count": 18,
+      "count": 37,
       "description": "高能用户榜单更新 (OnlineRankV3): 房间内在线的高能用户排行榜信息，其详细列表数据由 Protobuf 编码。",
       "schema": {
         "type": "object",
@@ -984,6 +984,10 @@
                   "guard": {
                     "level": 3,
                     "expired_str": "2029-12-08 23:59:59"
+                  },
+                  "user_head_frame": {
+                    "id": 1775,
+                    "frame_img": "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png"
                   }
                 },
                 "guard_level": 3
@@ -1095,7 +1099,7 @@
       }
     },
     "INTERACT_WORD_V2": {
-      "count": 18,
+      "count": 37,
       "description": "用户交互事件 V2 (InteractWordV2): 包含与 INTERACT_WORD 类似的动作，其详细数据封装在 Protobuf (pb) 字节流中。",
       "schema": {
         "type": "object",
@@ -1493,7 +1497,7 @@
       }
     },
     "NOTICE_MSG": {
-      "count": 5,
+      "count": 8,
       "description": "自定义/未知事件 (NOTICE_MSG)",
       "schema": {
         "type": "object",
@@ -1750,7 +1754,7 @@
       }
     },
     "STOP_LIVE_ROOM_LIST": {
-      "count": 23,
+      "count": 38,
       "description": "自定义/未知事件 (STOP_LIVE_ROOM_LIST)",
       "schema": {
         "type": "object",
@@ -3538,7 +3542,7 @@
       }
     },
     "WATCHED_CHANGE": {
-      "count": 18,
+      "count": 33,
       "description": "自定义/未知事件 (WATCHED_CHANGE)",
       "schema": {
         "type": "object",
@@ -3690,7 +3694,7 @@
       }
     },
     "ENTRY_EFFECT": {
-      "count": 4,
+      "count": 10,
       "description": "特殊入场特效 (EntryEffect): 舰长/大航海等高阶用户进入直播间的酷炫进场特效提示。",
       "schema": {
         "type": "object",
@@ -4293,7 +4297,7 @@
       }
     },
     "LIKE_INFO_V3_CLICK": {
-      "count": 1,
+      "count": 3,
       "description": "自定义/未知事件 (LIKE_INFO_V3_CLICK)",
       "schema": {
         "type": "object",
@@ -4825,7 +4829,7 @@
       }
     },
     "ROOM_REAL_TIME_MESSAGE_UPDATE": {
-      "count": 1,
+      "count": 2,
       "description": "房间实时数据 (RealTimeStats): 直播间粉丝数、点赞数、热度等数据的周期性汇总更新。",
       "schema": {
         "type": "object",
@@ -6083,6 +6087,41 @@
           "parent_area_name": "虚拟主播",
           "live_key": "0",
           "sub_session_key": ""
+        }
+      }
+    },
+    "LIKE_INFO_V3_UPDATE": {
+      "count": 5,
+      "description": "自定义/未知事件 (LIKE_INFO_V3_UPDATE)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "click_count": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 3,
+      "typical_values": {
+        "cmd": [
+          "LIKE_INFO_V3_UPDATE"
+        ],
+        "data.click_count": [
+          118
+        ]
+      },
+      "example": {
+        "cmd": "LIKE_INFO_V3_UPDATE",
+        "data": {
+          "click_count": 118
         }
       }
     }
