@@ -220,7 +220,6 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
         total_fields += event_fields
 
         compiled["event_types"][event_type] = {
-            "count": val["count"],
             "description": val["description"],
             "schema": schema,
             "fields_count": event_fields,
