@@ -667,7 +667,12 @@ def get_default_html_template() -> str:
                 nameSpan.className = 'event-name';
                 nameSpan.innerText = cmd;
 
+                const fieldsBadge = document.createElement('span');
+                fieldsBadge.className = 'event-count';
+                fieldsBadge.innerText = info.fields_count;
+
                 item.appendChild(nameSpan);
+                item.appendChild(fieldsBadge);
                 listContainer.appendChild(item);
             });
         }

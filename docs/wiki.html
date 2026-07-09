@@ -365,9 +365,9 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 27,
-  "total_fields": 1032,
-  "last_updated": "2026-07-09 00:08:27",
+  "total_types": 28,
+  "total_fields": 1039,
+  "last_updated": "2026-07-09 00:10:01",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -8173,6 +8173,68 @@
         "pk_status": 201,
         "send_time": 1783580825919,
         "timestamp": 1783580825
+      }
+    },
+    "DM_INTERACTION": {
+      "description": "自定义/未知事件 (DM_INTERACTION)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string"
+              },
+              "dmscore": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "status": {
+                "type": "integer"
+              },
+              "type": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 7,
+      "typical_values": {
+        "cmd": [
+          "DM_INTERACTION"
+        ],
+        "data.data": [
+          "{\"fade_duration\":10000,\"cnt\":1,\"card_appear_interval\":0,\"suffix_text\":\"人分享了直播间\",\"reset_cnt\":0,\"display_flag\":1}"
+        ],
+        "data.dmscore": [
+          36
+        ],
+        "data.id": [
+          176651996516352
+        ],
+        "data.status": [
+          4
+        ],
+        "data.type": [
+          105
+        ]
+      },
+      "example": {
+        "cmd": "DM_INTERACTION",
+        "data": {
+          "data": "{\"fade_duration\":10000,\"cnt\":1,\"card_appear_interval\":0,\"suffix_text\":\"人分享了直播间\",\"reset_cnt\":0,\"display_flag\":1}",
+          "dmscore": 36,
+          "id": 176651996516352,
+          "status": 4,
+          "type": 105
+        }
       }
     }
   }
