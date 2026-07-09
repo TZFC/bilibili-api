@@ -123,6 +123,19 @@
             white-space: nowrap;
         }
 
+        .event-name.undocumented {
+            color: #ef4444;
+        }
+
+        .event-name.documented {
+            color: #60a5fa;
+        }
+
+        .event-item.active .event-name.undocumented,
+        .event-item.active .event-name.documented {
+            color: #ffffff;
+        }
+
         .event-count {
             font-size: 0.75rem;
             background-color: rgba(255, 255, 255, 0.15);
@@ -365,9 +378,9 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 29,
-  "total_fields": 1088,
-  "last_updated": "2026-07-09 00:12:57",
+  "total_types": 30,
+  "total_fields": 1169,
+  "last_updated": "2026-07-09 00:14:18",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -5003,7 +5016,30 @@
                     "type": "integer"
                   },
                   "blind_gift": {
-                    "type": "null"
+                    "type": "object",
+                    "properties": {
+                      "blind_gift_config_id": {
+                        "type": "integer"
+                      },
+                      "from": {
+                        "type": "integer"
+                      },
+                      "gift_action": {
+                        "type": "string"
+                      },
+                      "gift_tip_price": {
+                        "type": "integer"
+                      },
+                      "original_gift_id": {
+                        "type": "integer"
+                      },
+                      "original_gift_name": {
+                        "type": "string"
+                      },
+                      "original_gift_price": {
+                        "type": "integer"
+                      }
+                    }
                   },
                   "gift_id": {
                     "type": "integer"
@@ -5035,7 +5071,30 @@
                 "type": "string"
               },
               "blind_gift": {
-                "type": "null"
+                "type": "object",
+                "properties": {
+                  "blind_gift_config_id": {
+                    "type": "integer"
+                  },
+                  "from": {
+                    "type": "integer"
+                  },
+                  "gift_action": {
+                    "type": "string"
+                  },
+                  "gift_tip_price": {
+                    "type": "integer"
+                  },
+                  "original_gift_id": {
+                    "type": "integer"
+                  },
+                  "original_gift_name": {
+                    "type": "string"
+                  },
+                  "original_gift_price": {
+                    "type": "integer"
+                  }
+                }
               },
               "broadcast_id": {
                 "type": "integer"
@@ -5574,7 +5633,7 @@
           }
         }
       },
-      "fields_count": 189,
+      "fields_count": 203,
       "typical_values": {
         "cmd": [
           "SEND_GIFT"
@@ -6031,6 +6090,48 @@
         ],
         "send_time": [
           1783580829878
+        ],
+        "data.batch_combo_send.blind_gift.blind_gift_config_id": [
+          174
+        ],
+        "data.batch_combo_send.blind_gift.from": [
+          0
+        ],
+        "data.batch_combo_send.blind_gift.gift_action": [
+          "爆出"
+        ],
+        "data.batch_combo_send.blind_gift.gift_tip_price": [
+          9000
+        ],
+        "data.batch_combo_send.blind_gift.original_gift_id": [
+          35684
+        ],
+        "data.batch_combo_send.blind_gift.original_gift_name": [
+          "猪猪侠盲盒"
+        ],
+        "data.batch_combo_send.blind_gift.original_gift_price": [
+          9000
+        ],
+        "data.blind_gift.blind_gift_config_id": [
+          174
+        ],
+        "data.blind_gift.from": [
+          0
+        ],
+        "data.blind_gift.gift_action": [
+          "爆出"
+        ],
+        "data.blind_gift.gift_tip_price": [
+          9000
+        ],
+        "data.blind_gift.original_gift_id": [
+          35684
+        ],
+        "data.blind_gift.original_gift_name": [
+          "猪猪侠盲盒"
+        ],
+        "data.blind_gift.original_gift_price": [
+          9000
         ]
       },
       "example": {
@@ -6046,7 +6147,15 @@
             "action": "投喂",
             "batch_combo_id": "batch:gift:combo_id:3546604843829355:12939237:31164:1783580518.9577",
             "batch_combo_num": 1,
-            "blind_gift": null,
+            "blind_gift": {
+              "blind_gift_config_id": 174,
+              "from": 0,
+              "gift_action": "爆出",
+              "gift_tip_price": 9000,
+              "original_gift_id": 35684,
+              "original_gift_name": "猪猪侠盲盒",
+              "original_gift_price": 9000
+            },
             "gift_id": 31164,
             "gift_name": "粉丝团灯牌",
             "gift_num": 1,
@@ -6057,7 +6166,15 @@
           "beatId": "0",
           "benefits": null,
           "biz_source": "Live",
-          "blind_gift": null,
+          "blind_gift": {
+            "blind_gift_config_id": 174,
+            "from": 0,
+            "gift_action": "爆出",
+            "gift_tip_price": 9000,
+            "original_gift_id": 35684,
+            "original_gift_name": "猪猪侠盲盒",
+            "original_gift_price": 9000
+          },
           "broadcast_id": 0,
           "coin_type": "silver",
           "combo_resources_id": 10,
@@ -6399,7 +6516,110 @@
                 "type": "object",
                 "properties": {
                   "assist_info": {
-                    "type": "null"
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "award_content": {
+                          "type": "string"
+                        },
+                        "face": {
+                          "type": "string"
+                        },
+                        "is_mystery": {
+                          "type": "boolean"
+                        },
+                        "rank": {
+                          "type": "integer"
+                        },
+                        "uid": {
+                          "type": "integer"
+                        },
+                        "uinfo": {
+                          "type": "object",
+                          "properties": {
+                            "anon": {
+                              "type": "null"
+                            },
+                            "base": {
+                              "type": "object",
+                              "properties": {
+                                "face": {
+                                  "type": "string"
+                                },
+                                "is_mystery": {
+                                  "type": "boolean"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "name_color": {
+                                  "type": "integer"
+                                },
+                                "name_color_str": {
+                                  "type": "string"
+                                },
+                                "official_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "desc": {
+                                      "type": "string"
+                                    },
+                                    "role": {
+                                      "type": "integer"
+                                    },
+                                    "title": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                },
+                                "origin_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "face": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "risk_ctrl_info": {
+                                  "type": "null"
+                                }
+                              }
+                            },
+                            "guard": {
+                              "type": "null"
+                            },
+                            "guard_leader": {
+                              "type": "null"
+                            },
+                            "medal": {
+                              "type": "null"
+                            },
+                            "title": {
+                              "type": "null"
+                            },
+                            "uhead_frame": {
+                              "type": "null"
+                            },
+                            "uid": {
+                              "type": "integer"
+                            },
+                            "wealth": {
+                              "type": "null"
+                            }
+                          }
+                        },
+                        "uname": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   },
                   "best_uname": {
                     "type": "string"
@@ -6449,7 +6669,7 @@
           }
         }
       },
-      "fields_count": 25,
+      "fields_count": 56,
       "typical_values": {
         "cmd": [
           "PK_BATTLE_PROCESS_NEW"
@@ -6512,6 +6732,68 @@
         ],
         "trace_id": [
           "2134659ce577648916074dd44e6a4f47"
+        ],
+        "data.match_info.assist_info[].award_content": [
+          ""
+        ],
+        "data.match_info.assist_info[].face": [
+          "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg"
+        ],
+        "data.match_info.assist_info[].is_mystery": [
+          false
+        ],
+        "data.match_info.assist_info[].rank": [
+          1
+        ],
+        "data.match_info.assist_info[].uid": [
+          95424534
+        ],
+        "data.match_info.assist_info[].uinfo.anon": [],
+        "data.match_info.assist_info[].uinfo.base.face": [
+          "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg"
+        ],
+        "data.match_info.assist_info[].uinfo.base.is_mystery": [
+          false
+        ],
+        "data.match_info.assist_info[].uinfo.base.name": [
+          "有棵星扉"
+        ],
+        "data.match_info.assist_info[].uinfo.base.name_color": [
+          0
+        ],
+        "data.match_info.assist_info[].uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.role": [
+          0
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.match_info.assist_info[].uinfo.base.origin_info.face": [
+          "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg"
+        ],
+        "data.match_info.assist_info[].uinfo.base.origin_info.name": [
+          "有棵星扉"
+        ],
+        "data.match_info.assist_info[].uinfo.base.risk_ctrl_info": [],
+        "data.match_info.assist_info[].uinfo.guard": [],
+        "data.match_info.assist_info[].uinfo.guard_leader": [],
+        "data.match_info.assist_info[].uinfo.medal": [],
+        "data.match_info.assist_info[].uinfo.title": [],
+        "data.match_info.assist_info[].uinfo.uhead_frame": [],
+        "data.match_info.assist_info[].uinfo.uid": [
+          95424534
+        ],
+        "data.match_info.assist_info[].uinfo.wealth": [],
+        "data.match_info.assist_info[].uname": [
+          "有棵星扉"
         ]
       },
       "example": {
@@ -6526,8 +6808,45 @@
             "votes": 1
           },
           "match_info": {
-            "assist_info": null,
-            "best_uname": "",
+            "assist_info": [
+              {
+                "award_content": "",
+                "face": "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg",
+                "is_mystery": false,
+                "rank": 1,
+                "uid": 95424534,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg",
+                    "is_mystery": false,
+                    "name": "有棵星扉",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg",
+                      "name": "有棵星扉"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 95424534,
+                  "wealth": null
+                },
+                "uname": "有棵星扉"
+              }
+            ],
+            "best_uname": "有棵星扉",
             "room_id": 30073189,
             "vision_desc": 0,
             "votes": 0
@@ -6686,7 +7005,110 @@
                 "type": "object",
                 "properties": {
                   "assist_info": {
-                    "type": "null"
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "award_content": {
+                          "type": "string"
+                        },
+                        "face": {
+                          "type": "string"
+                        },
+                        "is_mystery": {
+                          "type": "boolean"
+                        },
+                        "rank": {
+                          "type": "integer"
+                        },
+                        "uid": {
+                          "type": "integer"
+                        },
+                        "uinfo": {
+                          "type": "object",
+                          "properties": {
+                            "anon": {
+                              "type": "null"
+                            },
+                            "base": {
+                              "type": "object",
+                              "properties": {
+                                "face": {
+                                  "type": "string"
+                                },
+                                "is_mystery": {
+                                  "type": "boolean"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "name_color": {
+                                  "type": "integer"
+                                },
+                                "name_color_str": {
+                                  "type": "string"
+                                },
+                                "official_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "desc": {
+                                      "type": "string"
+                                    },
+                                    "role": {
+                                      "type": "integer"
+                                    },
+                                    "title": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                },
+                                "origin_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "face": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "risk_ctrl_info": {
+                                  "type": "null"
+                                }
+                              }
+                            },
+                            "guard": {
+                              "type": "null"
+                            },
+                            "guard_leader": {
+                              "type": "null"
+                            },
+                            "medal": {
+                              "type": "null"
+                            },
+                            "title": {
+                              "type": "null"
+                            },
+                            "uhead_frame": {
+                              "type": "null"
+                            },
+                            "uid": {
+                              "type": "integer"
+                            },
+                            "wealth": {
+                              "type": "null"
+                            }
+                          }
+                        },
+                        "uname": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   },
                   "best_uname": {
                     "type": "string"
@@ -6736,7 +7158,7 @@
           }
         }
       },
-      "fields_count": 56,
+      "fields_count": 87,
       "typical_values": {
         "cmd": [
           "PK_BATTLE_PROCESS"
@@ -6861,6 +7283,68 @@
         "data.init_info.assist_info[].uinfo.wealth": [],
         "data.init_info.assist_info[].uname": [
           "有棵听弦"
+        ],
+        "data.match_info.assist_info[].award_content": [
+          ""
+        ],
+        "data.match_info.assist_info[].face": [
+          "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg"
+        ],
+        "data.match_info.assist_info[].is_mystery": [
+          false
+        ],
+        "data.match_info.assist_info[].rank": [
+          1
+        ],
+        "data.match_info.assist_info[].uid": [
+          95424534
+        ],
+        "data.match_info.assist_info[].uinfo.anon": [],
+        "data.match_info.assist_info[].uinfo.base.face": [
+          "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg"
+        ],
+        "data.match_info.assist_info[].uinfo.base.is_mystery": [
+          false
+        ],
+        "data.match_info.assist_info[].uinfo.base.name": [
+          "有棵星扉"
+        ],
+        "data.match_info.assist_info[].uinfo.base.name_color": [
+          0
+        ],
+        "data.match_info.assist_info[].uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.role": [
+          0
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.match_info.assist_info[].uinfo.base.origin_info.face": [
+          "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg"
+        ],
+        "data.match_info.assist_info[].uinfo.base.origin_info.name": [
+          "有棵星扉"
+        ],
+        "data.match_info.assist_info[].uinfo.base.risk_ctrl_info": [],
+        "data.match_info.assist_info[].uinfo.guard": [],
+        "data.match_info.assist_info[].uinfo.guard_leader": [],
+        "data.match_info.assist_info[].uinfo.medal": [],
+        "data.match_info.assist_info[].uinfo.title": [],
+        "data.match_info.assist_info[].uinfo.uhead_frame": [],
+        "data.match_info.assist_info[].uinfo.uid": [
+          95424534
+        ],
+        "data.match_info.assist_info[].uinfo.wealth": [],
+        "data.match_info.assist_info[].uname": [
+          "有棵星扉"
         ]
       },
       "example": {
@@ -6912,8 +7396,45 @@
             "votes": 1
           },
           "match_info": {
-            "assist_info": null,
-            "best_uname": "",
+            "assist_info": [
+              {
+                "award_content": "",
+                "face": "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg",
+                "is_mystery": false,
+                "rank": 1,
+                "uid": 95424534,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg",
+                    "is_mystery": false,
+                    "name": "有棵星扉",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i0.hdslb.com/bfs/face/9d799bc564006003b351712d43c332a03a360a4a.jpg",
+                      "name": "有棵星扉"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 95424534,
+                  "wealth": null
+                },
+                "uname": "有棵星扉"
+              }
+            ],
+            "best_uname": "有棵星扉",
             "room_id": 30073189,
             "vision_desc": 0,
             "votes": 0
@@ -8579,6 +9100,52 @@
           "battle_sub_type": 0
         }
       }
+    },
+    "WIDGET_BANNER": {
+      "description": "挂件/横幅广告 (WidgetBanner): 直播间右上角或挂件横幅的状态更新与配置。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "integer"
+              },
+              "widget_list": {
+                "type": "object",
+                "properties": {
+                  "3229": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 5,
+      "typical_values": {
+        "cmd": [
+          "WIDGET_BANNER"
+        ],
+        "data.timestamp": [
+          1783581240
+        ],
+        "data.widget_list.3229": []
+      },
+      "example": {
+        "cmd": "WIDGET_BANNER",
+        "data": {
+          "timestamp": 1783581240,
+          "widget_list": {
+            "3229": null
+          }
+        }
+      }
     }
   }
 };
@@ -8616,6 +9183,11 @@
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'event-name';
                 nameSpan.innerText = cmd;
+                if (info.description && info.description.startsWith('自定义/未知事件')) {
+                    nameSpan.classList.add('undocumented');
+                } else {
+                    nameSpan.classList.add('documented');
+                }
 
                 const fieldsBadge = document.createElement('span');
                 fieldsBadge.className = 'event-count';

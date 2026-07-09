@@ -407,6 +407,19 @@ def get_default_html_template() -> str:
             white-space: nowrap;
         }
 
+        .event-name.undocumented {
+            color: #ef4444;
+        }
+
+        .event-name.documented {
+            color: #60a5fa;
+        }
+
+        .event-item.active .event-name.undocumented,
+        .event-item.active .event-name.documented {
+            color: #ffffff;
+        }
+
         .event-count {
             font-size: 0.75rem;
             background-color: rgba(255, 255, 255, 0.15);
@@ -683,6 +696,11 @@ def get_default_html_template() -> str:
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'event-name';
                 nameSpan.innerText = cmd;
+                if (info.description && info.description.startsWith('自定义/未知事件')) {
+                    nameSpan.classList.add('undocumented');
+                } else {
+                    nameSpan.classList.add('documented');
+                }
 
                 const fieldsBadge = document.createElement('span');
                 fieldsBadge.className = 'event-count';
