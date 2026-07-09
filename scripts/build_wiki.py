@@ -140,42 +140,6 @@ def update_proto_fields(event_type: str, example: Any, typical_values: Dict[str,
             else:
                 update_proto_fields(event_type, item, typical_values, path)
 
-def compile_wiki_data(db_path: str) -> Dict[str, Any]:
-    if not os.path.exists(db_path):
-        print(f"Database {db_path} not found.")
-        return {"event_types": {}}
-
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("SELECT event_type, raw_data FROM livechat_events ORDER BY id ASC")
-
-    event_types_data = {}
-    total_events = 0
-
-    for event_type, raw_data_str in cursor.fetchall():
-        total_events += 1
-        try:
-            raw_data = json.loads(raw_data_str)
-        except Exception:
-            continue
-
-        if event_type not in event_types_data:
-            event_types_data[event_type] = {
-                "count": 0,
-                "description": CMD_DESCRIPTIONS.get(event_type, f"自定义/未知事件 ({event_type})"),
-                "typical_vals_raw": {},
-                "example": deep_copy(raw_data)
-            }
-        else:
-            # Deep merge to build a complete example with exactly 1 non-null/non-empty value per field
-            deep_merge(event_types_data[event_type]["example"], raw_data)
-
-        event_types_data[event_type]["count"] += 1
-        # Update schema and typical values
-        infer_schema(raw_data, "", event_types_data[event_type]["typical_vals_raw"])
-
-    conn.close()
-
 def count_schema_fields(schema: Any) -> int:
     if not isinstance(schema, dict):
         return 0
