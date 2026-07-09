@@ -96,7 +96,7 @@ def infer_schema(data: Any, path: str = "", typical_vals: Dict[str, Set[Any]] = 
         else:
             type_name = "string"
 
-        if path:
+        if path is not None:
             if path not in typical_vals:
                 typical_vals[path] = set()
             if data is not None and len(typical_vals[path]) < 1:
