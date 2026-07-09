@@ -654,10 +654,8 @@ def get_default_html_template() -> str:
             const listContainer = document.getElementById('event-list');
             listContainer.innerHTML = '';
 
-            // Sort event types by count descending
-            const sortedCmds = Object.keys(wikiData.event_types).sort((a, b) => {
-                return wikiData.event_types[b].count - wikiData.event_types[a].count;
-            });
+            // Sort event types alphabetically
+            const sortedCmds = Object.keys(wikiData.event_types).sort();
 
             sortedCmds.forEach(cmd => {
                 const info = wikiData.event_types[cmd];
@@ -670,12 +668,7 @@ def get_default_html_template() -> str:
                 nameSpan.className = 'event-name';
                 nameSpan.innerText = cmd;
 
-                const countBadge = document.createElement('span');
-                countBadge.className = 'event-count';
-                countBadge.innerText = info.count;
-
                 item.appendChild(nameSpan);
-                item.appendChild(countBadge);
                 listContainer.appendChild(item);
             });
         }
