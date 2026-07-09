@@ -11,6 +11,7 @@ CMD_DESCRIPTIONS = {
     "SEND_GIFT": "投喂礼物 (SendGift): 观众向主播赠送道具礼物，包含礼物数量、价格、连击等。",
     "COMBO_SEND": "连击礼物投喂 (ComboGift): 连续赠送礼物时的状态更新。",
     "SUPER_CHAT_MESSAGE": "醒目留言 (SuperChat): 付费留言，在直播间顶部保留显示一段时间。",
+    "SUPER_CHAT_MESSAGE_JPN": "醒目留言日文版 (SuperChatJpn): 日本语地区或经过翻译处理的醒目留言通知。",
     "WELCOME": "欢迎进入直播间 (Welcome): 欢迎普通VIP/老爷级别用户进入房间。",
     "WELCOME_GUARD": "欢迎房管进入直播间 (WelcomeGuard): 欢迎拥有房间管理员身份的用户进入房间。",
     "ENTRY_EFFECT": "特殊入场特效 (EntryEffect): 舰长/大航海等高阶用户进入直播间的酷炫进场特效提示。",
@@ -27,7 +28,26 @@ CMD_DESCRIPTIONS = {
     "STOP_LIVE_ROOM_TIPS": "停播提示 (StopLiveTips): 平台或系统下发的关于本场直播结束的提示信息。",
     "CUT_FILTERS": "分流过滤器 (CutFilters): 与直播分流和推流优化策略相关的过滤控制信号。",
     "VIEW": "人气值更新 (PopularityUpdate): 心跳包返回的直播间当前人气数值值更新。",
-    "VERIFICATION_SUCCESSFUL": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。"
+    "VERIFICATION_SUCCESSFUL": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
+    "NOTICE_MSG": "系统公告消息 (SystemNotice): 平台/系统下发的广播或公告通知消息。",
+    "STOP_LIVE_ROOM_LIST": "停止直播间推荐列表 (StopLiveRoomList): 推荐直播间流列表停止加载或刷新通知。",
+    "POPULAR_RANK_CHANGED": "人气排行变动 (PopularRankChanged): 直播间在分区或全站人气榜单中的名次变动提示。",
+    "WATCHED_CHANGE": "累计看过人数更新 (WatchedCountChange): 直播间累计观看用户数/热度的实时数据刷新。",
+    "RANK_CHANGED_V2": "排行榜单更新 V2 (RankChangedV2): 房间排位或各种积分榜单变动的通知 (第二代格式)。",
+    "LIKE_INFO_V3_CLICK": "点赞点击事件 (LikeClick): 观众双击或点击屏幕给主播送赞的交互事件。",
+    "LIKE_INFO_V3_UPDATE": "点赞总量更新 (LikeUpdate): 直播间累计获得赞数的最新总量及特效数据通知。",
+    "ROOM_CHANGE": "直播间设置变更 (RoomSettingsChange): 直播间分区、标题、推流设置等属性修改的系统通知。",
+    "PK_BATTLE_PRE": "大乱斗准备阶段 (PKBattlePre): 直播 PK/大乱斗的准备阶段，包含对手信息与阶段计时。",
+    "PK_BATTLE_PRE_NEW": "大乱斗准备阶段新版 (PKBattlePreNew): 新版 PK/大乱斗准备对决的配置和状态更新。",
+    "PK_BATTLE_START": "大乱斗开始 (PKBattleStart): 直播间 PK 战拉开序幕，包含对决双方基础数据与计时器。",
+    "PK_BATTLE_START_NEW": "大乱斗开始新版 (PKBattleStartNew): 新版直播间 PK 对决正式启动通知。",
+    "PK_BATTLE_PROCESS": "大乱斗进程更新 (PKBattleProcess): PK 战过程中双方分数、进度条和当前胜负势头的更新变动。",
+    "PK_BATTLE_PROCESS_NEW": "大乱斗进程更新新版 (PKBattleProcessNew): 新版 PK 对决实时数值、双方比分与辅助排行榜更新。",
+    "PK_BATTLE_END": "大乱斗结束 (PKBattleEnd): PK 战结束，判定胜平负结果并公示。",
+    "PK_BATTLE_PUNISH_END": "大乱斗惩罚结束 (PKPunishEnd): PK 战之后的互动惩罚/惩罚展示阶段截止通知。",
+    "COMMON_NOTICE_DANMAKU": "公共通知弹幕 (CommonNoticeDanmaku): 系统针对特定场景下发的常态化弹幕风格提示通知。",
+    "DM_INTERACTION": "弹幕游戏/互动事件 (DanmakuInteraction): 弹幕小游戏或投票等交互道具的进展更新通知。",
+    "WIDGET_GIFT_STAR_PROCESS_V2": "礼物之星进程 V2 (WidgetGiftStarV2): 房间集赞/礼物达成目标任务的实时进度条数据更新。"
 }
 
 # Helper to infer JSON schema

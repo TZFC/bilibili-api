@@ -378,9 +378,9 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 30,
-  "total_fields": 1169,
-  "last_updated": "2026-07-09 00:14:18",
+  "total_types": 31,
+  "total_fields": 1210,
+  "last_updated": "2026-07-09 00:22:20",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -1211,6 +1211,18 @@
                           },
                           "name_color_str": {
                             "type": "string"
+                          },
+                          "account_info": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "official_info": {
+                            "type": "object",
+                            "properties": {}
                           }
                         }
                       },
@@ -1348,6 +1360,9 @@
                   },
                   "privilege_type": {
                     "type": "integer"
+                  },
+                  "core_user_type": {
+                    "type": "integer"
                   }
                 }
               },
@@ -1358,7 +1373,7 @@
           }
         }
       },
-      "fields_count": 64,
+      "fields_count": 68,
       "typical_values": {
         "cmd": [
           "INTERACT_WORD_V2"
@@ -1515,6 +1530,12 @@
         ],
         "data.pb_decoded.user_info.wealth.dm_icon_key": [
           "ChronosWealth_4.png"
+        ],
+        "data.pb_decoded.core_user_type": [
+          5
+        ],
+        "data.pb_decoded.user_info.base.account_info.name": [
+          "心如明镜照红尘"
         ]
       },
       "example": {
@@ -1540,7 +1561,11 @@
               "base": {
                 "name": "Swrin",
                 "face": "https://i1.hdslb.com/bfs/face/9f382adc5c3b81ddd0f5db94eaf1a5f10a12f444.jpg",
-                "name_color_str": "#00D1F1"
+                "name_color_str": "#00D1F1",
+                "account_info": {
+                  "name": "心如明镜照红尘"
+                },
+                "official_info": {}
               },
               "wealth": {
                 "level": 2,
@@ -1588,14 +1613,15 @@
               "is_lighted": 1,
               "guard_level": 3
             },
-            "privilege_type": 3
+            "privilege_type": 3,
+            "core_user_type": 5
           },
           "pb_decode_message": "success"
         }
       }
     },
     "NOTICE_MSG": {
-      "description": "自定义/未知事件 (NOTICE_MSG)",
+      "description": "系统公告消息 (SystemNotice): 平台/系统下发的广播或公告通知消息。",
       "schema": {
         "type": "object",
         "properties": {
@@ -1851,7 +1877,7 @@
       }
     },
     "STOP_LIVE_ROOM_LIST": {
-      "description": "自定义/未知事件 (STOP_LIVE_ROOM_LIST)",
+      "description": "停止直播间推荐列表 (StopLiveRoomList): 推荐直播间流列表停止加载或刷新通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -2002,7 +2028,17 @@
             1909416296,
             1726551234,
             1843680166,
-            32383428
+            32383428,
+            5335599,
+            1917331637,
+            21693397,
+            22435405,
+            31075588,
+            1786330362,
+            1922175058,
+            340811,
+            7586835,
+            23631037
           ]
         }
       }
@@ -2811,7 +2847,7 @@
       }
     },
     "SUPER_CHAT_MESSAGE_JPN": {
-      "description": "自定义/未知事件 (SUPER_CHAT_MESSAGE_JPN)",
+      "description": "醒目留言日文版 (SuperChatJpn): 日本语地区或经过翻译处理的醒目留言通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -3535,7 +3571,7 @@
       }
     },
     "POPULAR_RANK_CHANGED": {
-      "description": "自定义/未知事件 (POPULAR_RANK_CHANGED)",
+      "description": "人气排行变动 (PopularRankChanged): 直播间在分区或全站人气榜单中的名次变动提示。",
       "schema": {
         "type": "object",
         "properties": {
@@ -3635,7 +3671,7 @@
       }
     },
     "WATCHED_CHANGE": {
-      "description": "自定义/未知事件 (WATCHED_CHANGE)",
+      "description": "累计看过人数更新 (WatchedCountChange): 直播间累计观看用户数/热度的实时数据刷新。",
       "schema": {
         "type": "object",
         "properties": {
@@ -3683,7 +3719,7 @@
       }
     },
     "RANK_CHANGED_V2": {
-      "description": "自定义/未知事件 (RANK_CHANGED_V2)",
+      "description": "排行榜单更新 V2 (RankChangedV2): 房间排位或各种积分榜单变动的通知 (第二代格式)。",
       "schema": {
         "type": "object",
         "properties": {
@@ -4389,7 +4425,7 @@
       }
     },
     "LIKE_INFO_V3_CLICK": {
-      "description": "自定义/未知事件 (LIKE_INFO_V3_CLICK)",
+      "description": "点赞点击事件 (LikeClick): 观众双击或点击屏幕给主播送赞的交互事件。",
       "schema": {
         "type": "object",
         "properties": {
@@ -6369,7 +6405,7 @@
       }
     },
     "ROOM_CHANGE": {
-      "description": "自定义/未知事件 (ROOM_CHANGE)",
+      "description": "直播间设置变更 (RoomSettingsChange): 直播间分区、标题、推流设置等属性修改的系统通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -6445,7 +6481,7 @@
       }
     },
     "LIKE_INFO_V3_UPDATE": {
-      "description": "自定义/未知事件 (LIKE_INFO_V3_UPDATE)",
+      "description": "点赞总量更新 (LikeUpdate): 直播间累计获得赞数的最新总量及特效数据通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -6479,7 +6515,7 @@
       }
     },
     "PK_BATTLE_PROCESS_NEW": {
-      "description": "自定义/未知事件 (PK_BATTLE_PROCESS_NEW)",
+      "description": "大乱斗进程更新新版 (PKBattleProcessNew): 新版 PK 对决实时数值、双方比分与辅助排行榜更新。",
       "schema": {
         "type": "object",
         "properties": {
@@ -6496,7 +6532,110 @@
                 "type": "object",
                 "properties": {
                   "assist_info": {
-                    "type": "null"
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "award_content": {
+                          "type": "string"
+                        },
+                        "face": {
+                          "type": "string"
+                        },
+                        "is_mystery": {
+                          "type": "boolean"
+                        },
+                        "rank": {
+                          "type": "integer"
+                        },
+                        "uid": {
+                          "type": "integer"
+                        },
+                        "uinfo": {
+                          "type": "object",
+                          "properties": {
+                            "anon": {
+                              "type": "null"
+                            },
+                            "base": {
+                              "type": "object",
+                              "properties": {
+                                "face": {
+                                  "type": "string"
+                                },
+                                "is_mystery": {
+                                  "type": "boolean"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "name_color": {
+                                  "type": "integer"
+                                },
+                                "name_color_str": {
+                                  "type": "string"
+                                },
+                                "official_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "desc": {
+                                      "type": "string"
+                                    },
+                                    "role": {
+                                      "type": "integer"
+                                    },
+                                    "title": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                },
+                                "origin_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "face": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "risk_ctrl_info": {
+                                  "type": "null"
+                                }
+                              }
+                            },
+                            "guard": {
+                              "type": "null"
+                            },
+                            "guard_leader": {
+                              "type": "null"
+                            },
+                            "medal": {
+                              "type": "null"
+                            },
+                            "title": {
+                              "type": "null"
+                            },
+                            "uhead_frame": {
+                              "type": "null"
+                            },
+                            "uid": {
+                              "type": "integer"
+                            },
+                            "wealth": {
+                              "type": "null"
+                            }
+                          }
+                        },
+                        "uname": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   },
                   "best_uname": {
                     "type": "string"
@@ -6669,7 +6808,7 @@
           }
         }
       },
-      "fields_count": 56,
+      "fields_count": 87,
       "typical_values": {
         "cmd": [
           "PK_BATTLE_PROCESS_NEW"
@@ -6794,6 +6933,68 @@
         "data.match_info.assist_info[].uinfo.wealth": [],
         "data.match_info.assist_info[].uname": [
           "有棵星扉"
+        ],
+        "data.init_info.assist_info[].award_content": [
+          ""
+        ],
+        "data.init_info.assist_info[].face": [
+          "https://i1.hdslb.com/bfs/face/1c4fbecb842ccc860baf60c549a56be4c192efdf.jpg"
+        ],
+        "data.init_info.assist_info[].is_mystery": [
+          false
+        ],
+        "data.init_info.assist_info[].rank": [
+          1
+        ],
+        "data.init_info.assist_info[].uid": [
+          40813282
+        ],
+        "data.init_info.assist_info[].uinfo.anon": [],
+        "data.init_info.assist_info[].uinfo.base.face": [
+          "https://i1.hdslb.com/bfs/face/1c4fbecb842ccc860baf60c549a56be4c192efdf.jpg"
+        ],
+        "data.init_info.assist_info[].uinfo.base.is_mystery": [
+          false
+        ],
+        "data.init_info.assist_info[].uinfo.base.name": [
+          "千里兰甘廿"
+        ],
+        "data.init_info.assist_info[].uinfo.base.name_color": [
+          0
+        ],
+        "data.init_info.assist_info[].uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.role": [
+          0
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.init_info.assist_info[].uinfo.base.origin_info.face": [
+          "https://i1.hdslb.com/bfs/face/1c4fbecb842ccc860baf60c549a56be4c192efdf.jpg"
+        ],
+        "data.init_info.assist_info[].uinfo.base.origin_info.name": [
+          "千里兰甘廿"
+        ],
+        "data.init_info.assist_info[].uinfo.base.risk_ctrl_info": [],
+        "data.init_info.assist_info[].uinfo.guard": [],
+        "data.init_info.assist_info[].uinfo.guard_leader": [],
+        "data.init_info.assist_info[].uinfo.medal": [],
+        "data.init_info.assist_info[].uinfo.title": [],
+        "data.init_info.assist_info[].uinfo.uhead_frame": [],
+        "data.init_info.assist_info[].uinfo.uid": [
+          40813282
+        ],
+        "data.init_info.assist_info[].uinfo.wealth": [],
+        "data.init_info.assist_info[].uname": [
+          "千里兰甘廿"
         ]
       },
       "example": {
@@ -6801,8 +7002,45 @@
         "data": {
           "battle_type": 1,
           "init_info": {
-            "assist_info": null,
-            "best_uname": "",
+            "assist_info": [
+              {
+                "award_content": "",
+                "face": "https://i1.hdslb.com/bfs/face/1c4fbecb842ccc860baf60c549a56be4c192efdf.jpg",
+                "is_mystery": false,
+                "rank": 1,
+                "uid": 40813282,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i1.hdslb.com/bfs/face/1c4fbecb842ccc860baf60c549a56be4c192efdf.jpg",
+                    "is_mystery": false,
+                    "name": "千里兰甘廿",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i1.hdslb.com/bfs/face/1c4fbecb842ccc860baf60c549a56be4c192efdf.jpg",
+                      "name": "千里兰甘廿"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 40813282,
+                  "wealth": null
+                },
+                "uname": "千里兰甘廿"
+              }
+            ],
+            "best_uname": "千里兰甘廿",
             "room_id": 264788,
             "vision_desc": 0,
             "votes": 1
@@ -6844,6 +7082,78 @@
                   "wealth": null
                 },
                 "uname": "有棵星扉"
+              },
+              {
+                "award_content": "",
+                "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                "is_mystery": false,
+                "rank": 2,
+                "uid": 490367624,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                    "is_mystery": false,
+                    "name": "水晶铣锋",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                      "name": "水晶铣锋"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 490367624,
+                  "wealth": null
+                },
+                "uname": "水晶铣锋"
+              },
+              {
+                "award_content": "",
+                "face": "https://i1.hdslb.com/bfs/face/33893e894070b1641ea32e26b491518a58e7479e.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 542879518,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i1.hdslb.com/bfs/face/33893e894070b1641ea32e26b491518a58e7479e.jpg",
+                    "is_mystery": false,
+                    "name": "流剑-析影",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i1.hdslb.com/bfs/face/33893e894070b1641ea32e26b491518a58e7479e.jpg",
+                      "name": "流剑-析影"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 542879518,
+                  "wealth": null
+                },
+                "uname": "流剑-析影"
               }
             ],
             "best_uname": "有棵星扉",
@@ -6865,7 +7175,7 @@
       }
     },
     "PK_BATTLE_PROCESS": {
-      "description": "自定义/未知事件 (PK_BATTLE_PROCESS)",
+      "description": "大乱斗进程更新 (PKBattleProcess): PK 战过程中双方分数、进度条和当前胜负势头的更新变动。",
       "schema": {
         "type": "object",
         "properties": {
@@ -7432,6 +7742,78 @@
                   "wealth": null
                 },
                 "uname": "有棵星扉"
+              },
+              {
+                "award_content": "",
+                "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                "is_mystery": false,
+                "rank": 2,
+                "uid": 490367624,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                    "is_mystery": false,
+                    "name": "水晶铣锋",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                      "name": "水晶铣锋"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 490367624,
+                  "wealth": null
+                },
+                "uname": "水晶铣锋"
+              },
+              {
+                "award_content": "",
+                "face": "https://i1.hdslb.com/bfs/face/33893e894070b1641ea32e26b491518a58e7479e.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 542879518,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i1.hdslb.com/bfs/face/33893e894070b1641ea32e26b491518a58e7479e.jpg",
+                    "is_mystery": false,
+                    "name": "流剑-析影",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i1.hdslb.com/bfs/face/33893e894070b1641ea32e26b491518a58e7479e.jpg",
+                      "name": "流剑-析影"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 542879518,
+                  "wealth": null
+                },
+                "uname": "流剑-析影"
               }
             ],
             "best_uname": "有棵星扉",
@@ -7453,7 +7835,7 @@
       }
     },
     "COMMON_NOTICE_DANMAKU": {
-      "description": "自定义/未知事件 (COMMON_NOTICE_DANMAKU)",
+      "description": "公共通知弹幕 (CommonNoticeDanmaku): 系统针对特定场景下发的常态化弹幕风格提示通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -7536,7 +7918,7 @@
       }
     },
     "PK_BATTLE_END": {
-      "description": "自定义/未知事件 (PK_BATTLE_END)",
+      "description": "大乱斗结束 (PKBattleEnd): PK 战结束，判定胜平负结果并公示。",
       "schema": {
         "type": "object",
         "properties": {
@@ -8188,7 +8570,7 @@
       }
     },
     "PK_BATTLE_PUNISH_END": {
-      "description": "自定义/未知事件 (PK_BATTLE_PUNISH_END)",
+      "description": "大乱斗惩罚结束 (PKPunishEnd): PK 战之后的互动惩罚/惩罚展示阶段截止通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -8292,7 +8674,7 @@
       }
     },
     "PK_BATTLE_PRE": {
-      "description": "自定义/未知事件 (PK_BATTLE_PRE)",
+      "description": "大乱斗准备阶段 (PKBattlePre): 直播 PK/大乱斗的准备阶段，包含对手信息与阶段计时。",
       "schema": {
         "type": "object",
         "properties": {
@@ -8457,7 +8839,7 @@
       }
     },
     "PK_BATTLE_START": {
-      "description": "自定义/未知事件 (PK_BATTLE_START)",
+      "description": "大乱斗开始 (PKBattleStart): 直播间 PK 战拉开序幕，包含对决双方基础数据与计时器。",
       "schema": {
         "type": "object",
         "properties": {
@@ -8680,7 +9062,7 @@
       }
     },
     "PK_BATTLE_START_NEW": {
-      "description": "自定义/未知事件 (PK_BATTLE_START_NEW)",
+      "description": "大乱斗开始新版 (PKBattleStartNew): 新版直播间 PK 对决正式启动通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -8903,7 +9285,7 @@
       }
     },
     "DM_INTERACTION": {
-      "description": "自定义/未知事件 (DM_INTERACTION)",
+      "description": "弹幕游戏/互动事件 (DanmakuInteraction): 弹幕小游戏或投票等交互道具的进展更新通知。",
       "schema": {
         "type": "object",
         "properties": {
@@ -8965,7 +9347,7 @@
       }
     },
     "PK_BATTLE_PRE_NEW": {
-      "description": "自定义/未知事件 (PK_BATTLE_PRE_NEW)",
+      "description": "大乱斗准备阶段新版 (PKBattlePreNew): 新版 PK/大乱斗准备对决的配置和状态更新。",
       "schema": {
         "type": "object",
         "properties": {
@@ -9144,6 +9526,61 @@
           "widget_list": {
             "3229": null
           }
+        }
+      }
+    },
+    "WIDGET_GIFT_STAR_PROCESS_V2": {
+      "description": "礼物之星进程 V2 (WidgetGiftStarV2): 房间集赞/礼物达成目标任务的实时进度条数据更新。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "cur_num": {
+                "type": "integer"
+              },
+              "total_num": {
+                "type": "integer"
+              },
+              "version": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 6,
+      "typical_values": {
+        "cmd": [
+          "WIDGET_GIFT_STAR_PROCESS_V2"
+        ],
+        "data.name": [
+          "礼物星球"
+        ],
+        "data.cur_num": [
+          0
+        ],
+        "data.total_num": [
+          9
+        ],
+        "data.version": [
+          1783581528017
+        ]
+      },
+      "example": {
+        "cmd": "WIDGET_GIFT_STAR_PROCESS_V2",
+        "data": {
+          "name": "礼物星球",
+          "cur_num": 0,
+          "total_num": 9,
+          "version": 1783581528017
         }
       }
     }
