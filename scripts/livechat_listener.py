@@ -108,7 +108,18 @@ def log_event_to_db(db_path: str, event_type: str, data: Any):
     conn.commit()
     conn.close()
 
+def asyncio_exception_handler(loop, context):
+    exception = context.get('exception')
+    message = context.get('message')
+    print(f"\n[ASYNCIO UNHANDLED ERROR] {message}", file=sys.stderr)
+    if exception:
+        import traceback
+        traceback.print_exception(type(exception), exception, exception.__traceback__, file=sys.stderr)
+
 async def main():
+    loop = asyncio.get_running_loop()
+    loop.set_exception_handler(asyncio_exception_handler)
+
     parser = argparse.ArgumentParser(description="Bilibili Livechat Listener Daemon")
     parser.add_argument('--room_id', type=int, default=23596840, help="Bilibili Live Room ID")
     args = parser.parse_args()
