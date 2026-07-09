@@ -116,6 +116,18 @@ def asyncio_exception_handler(loop, context):
         import traceback
         traceback.print_exception(type(exception), exception, exception.__traceback__, file=sys.stderr)
 
+def run_wiki_compiler_in_background(venv_python):
+    def run_and_reap():
+        try:
+            script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")
+            p = subprocess.Popen([venv_python, script_path])
+            p.wait()
+        except Exception as e:
+            print(f"Failed to launch wiki compiler: {e}", file=sys.stderr)
+
+    import threading
+    threading.Thread(target=run_and_reap, daemon=True).start()
+
 async def main():
     loop = asyncio.get_running_loop()
     loop.set_exception_handler(asyncio_exception_handler)
@@ -174,12 +186,14 @@ async def main():
         )
 
     print(f"Connecting to room_id {room_id}...")
+    from bilibili_api.utils import network
+    network.select_client("aiohttp")
     room = live.LiveDanmaku(room_id, credential=credential)
     import logging
     room.logger.setLevel(logging.ERROR)
 
     # Trigger initial wiki build at startup
-    subprocess.Popen([venv_python, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
+    run_wiki_compiler_in_background(venv_python)
 
     message_counter = 0
 
@@ -225,10 +239,7 @@ async def main():
             else:
                 pass
 
-            try:
-                subprocess.Popen([venv_python, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
-            except Exception as e:
-                print(f"Failed to launch wiki compiler: {e}", file=sys.stderr)
+            run_wiki_compiler_in_background(venv_python)
 
     while True:
         try:
