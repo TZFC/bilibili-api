@@ -119,6 +119,7 @@ def asyncio_exception_handler(loop, context):
 async def main():
     loop = asyncio.get_running_loop()
     loop.set_exception_handler(asyncio_exception_handler)
+    loop.set_debug(False)
 
     venv_python = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".venv314", "Scripts", "python.exe"))
     if not os.path.exists(venv_python):
