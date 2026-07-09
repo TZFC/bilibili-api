@@ -379,8 +379,8 @@
     <script id="wiki-data-placeholder">
         const wikiData = {
   "total_types": 31,
-  "total_fields": 1210,
-  "last_updated": "2026-07-09 00:22:20",
+  "total_fields": 1217,
+  "last_updated": "2026-07-09 00:35:24",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -1077,6 +1077,10 @@
                   "guard": {
                     "level": 3,
                     "expired_str": "2026-09-05 23:59:59"
+                  },
+                  "user_head_frame": {
+                    "id": 1774,
+                    "frame_img": "https://i0.hdslb.com/bfs/live/3bc68207932eabf980cd6a0dd09f4d24f9cc26da.png"
                   }
                 },
                 "guard_level": 3
@@ -1185,14 +1189,28 @@
                   },
                   "contribution_info": {
                     "type": "object",
-                    "properties": {}
+                    "properties": {
+                      "grade": {
+                        "type": "integer"
+                      }
+                    }
                   },
                   "trigger_time": {
                     "type": "integer"
                   },
                   "contribution_info_v2": {
                     "type": "object",
-                    "properties": {}
+                    "properties": {
+                      "grade": {
+                        "type": "integer"
+                      },
+                      "rank_type": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    }
                   },
                   "user_info": {
                     "type": "object",
@@ -1303,6 +1321,17 @@
                             "type": "string"
                           }
                         }
+                      },
+                      "user_head_frame": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "frame_img": {
+                            "type": "string"
+                          }
+                        }
                       }
                     }
                   },
@@ -1373,7 +1402,7 @@
           }
         }
       },
-      "fields_count": 68,
+      "fields_count": 75,
       "typical_values": {
         "cmd": [
           "INTERACT_WORD_V2"
@@ -1536,6 +1565,24 @@
         ],
         "data.pb_decoded.user_info.base.account_info.name": [
           "心如明镜照红尘"
+        ],
+        "data.pb_decoded.contribution_info.grade": [
+          2
+        ],
+        "data.pb_decoded.contribution_info_v2.grade": [
+          1
+        ],
+        "data.pb_decoded.contribution_info_v2.rank_type": [
+          "monthly_rank"
+        ],
+        "data.pb_decoded.contribution_info_v2.text": [
+          "月榜前3用户"
+        ],
+        "data.pb_decoded.user_info.user_head_frame.id": [
+          1775
+        ],
+        "data.pb_decoded.user_info.user_head_frame.frame_img": [
+          "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png"
         ]
       },
       "example": {
@@ -1553,9 +1600,15 @@
             "room_id": 23596840,
             "timestamp": 1783485889,
             "score": 1783485889330,
-            "contribution_info": {},
+            "contribution_info": {
+              "grade": 2
+            },
             "trigger_time": 1783485888243844359,
-            "contribution_info_v2": {},
+            "contribution_info_v2": {
+              "grade": 1,
+              "rank_type": "monthly_rank",
+              "text": "月榜前3用户"
+            },
             "user_info": {
               "uid": 403797664,
               "base": {
@@ -1593,6 +1646,10 @@
                 "is_light": 1,
                 "guard_level": 3,
                 "guard_icon": "https://i0.hdslb.com/bfs/live/48360c8f3b7de8031e86ff1ef4a2dfc0ec2a61c2.png"
+              },
+              "user_head_frame": {
+                "id": 1775,
+                "frame_img": "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png"
               }
             },
             "user_anchor_relation": {
@@ -6168,7 +6225,8 @@
         ],
         "data.blind_gift.original_gift_price": [
           9000
-        ]
+        ],
+        "data.sender_uinfo.medal": []
       },
       "example": {
         "cmd": "SEND_GIFT",
@@ -7038,6 +7096,78 @@
                   "wealth": null
                 },
                 "uname": "千里兰甘廿"
+              },
+              {
+                "award_content": "",
+                "face": "http://i1.hdslb.com/bfs/face/052e96b296a77d0abfd7276654a1012094f9c607.jpg",
+                "is_mystery": false,
+                "rank": 2,
+                "uid": 507913,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "http://i1.hdslb.com/bfs/face/052e96b296a77d0abfd7276654a1012094f9c607.jpg",
+                    "is_mystery": false,
+                    "name": "冬夜听雨",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "http://i1.hdslb.com/bfs/face/052e96b296a77d0abfd7276654a1012094f9c607.jpg",
+                      "name": "冬夜听雨"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 507913,
+                  "wealth": null
+                },
+                "uname": "冬夜听雨"
+              },
+              {
+                "award_content": "",
+                "face": "https://i0.hdslb.com/bfs/face/ecafbdff1b97cd33005b5e371750995fde454ee2.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 1861302759,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i0.hdslb.com/bfs/face/ecafbdff1b97cd33005b5e371750995fde454ee2.jpg",
+                    "is_mystery": false,
+                    "name": "落花梧桐0v0",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i0.hdslb.com/bfs/face/ecafbdff1b97cd33005b5e371750995fde454ee2.jpg",
+                      "name": "落花梧桐0v0"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 1861302759,
+                  "wealth": null
+                },
+                "uname": "落花梧桐0v0"
               }
             ],
             "best_uname": "千里兰甘廿",
@@ -7698,6 +7828,78 @@
                   "wealth": null
                 },
                 "uname": "有棵听弦"
+              },
+              {
+                "award_content": "",
+                "face": "http://i1.hdslb.com/bfs/face/052e96b296a77d0abfd7276654a1012094f9c607.jpg",
+                "is_mystery": false,
+                "rank": 2,
+                "uid": 507913,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "http://i1.hdslb.com/bfs/face/052e96b296a77d0abfd7276654a1012094f9c607.jpg",
+                    "is_mystery": false,
+                    "name": "冬夜听雨",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "http://i1.hdslb.com/bfs/face/052e96b296a77d0abfd7276654a1012094f9c607.jpg",
+                      "name": "冬夜听雨"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 507913,
+                  "wealth": null
+                },
+                "uname": "冬夜听雨"
+              },
+              {
+                "award_content": "",
+                "face": "https://i0.hdslb.com/bfs/face/ecafbdff1b97cd33005b5e371750995fde454ee2.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 1861302759,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i0.hdslb.com/bfs/face/ecafbdff1b97cd33005b5e371750995fde454ee2.jpg",
+                    "is_mystery": false,
+                    "name": "落花梧桐0v0",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i0.hdslb.com/bfs/face/ecafbdff1b97cd33005b5e371750995fde454ee2.jpg",
+                      "name": "落花梧桐0v0"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 1861302759,
+                  "wealth": null
+                },
+                "uname": "落花梧桐0v0"
               }
             ],
             "best_uname": "有棵听弦",
@@ -8505,6 +8707,42 @@
                   "wealth": null
                 },
                 "uname": "有棵听弦"
+              },
+              {
+                "award_content": "",
+                "face": "https://i2.hdslb.com/bfs/face/c2c5eb061b5f26043b5090be232ca3ec6ad58676.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 319243256,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i2.hdslb.com/bfs/face/c2c5eb061b5f26043b5090be232ca3ec6ad58676.jpg",
+                    "is_mystery": false,
+                    "name": "_Racoon_",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i2.hdslb.com/bfs/face/c2c5eb061b5f26043b5090be232ca3ec6ad58676.jpg",
+                      "name": "_Racoon_"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 319243256,
+                  "wealth": null
+                },
+                "uname": "_Racoon_"
               }
             ],
             "best_uname": "有棵星扉",
@@ -8549,6 +8787,78 @@
                   "wealth": null
                 },
                 "uname": "有棵星扉"
+              },
+              {
+                "award_content": "",
+                "face": "https://i0.hdslb.com/bfs/face/746f54e571f46415d15f04c2ae1bde456f5649b0.jpg",
+                "is_mystery": false,
+                "rank": 2,
+                "uid": 53450475,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i0.hdslb.com/bfs/face/746f54e571f46415d15f04c2ae1bde456f5649b0.jpg",
+                    "is_mystery": false,
+                    "name": "故游歌天",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i0.hdslb.com/bfs/face/746f54e571f46415d15f04c2ae1bde456f5649b0.jpg",
+                      "name": "故游歌天"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 53450475,
+                  "wealth": null
+                },
+                "uname": "故游歌天"
+              },
+              {
+                "award_content": "",
+                "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 490367624,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                    "is_mystery": false,
+                    "name": "水晶铣锋",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i2.hdslb.com/bfs/face/3331bbe1136b758e5d56a01d3bce53e1f4a7c59b.jpg",
+                      "name": "水晶铣锋"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 490367624,
+                  "wealth": null
+                },
+                "uname": "水晶铣锋"
               }
             ],
             "best_uname": "有棵星扉",
