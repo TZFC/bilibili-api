@@ -188,6 +188,18 @@ async def main():
     print(f"Connecting to room_id {room_id}...")
     from bilibili_api.utils import network
     network.select_client("curl_cffi")
+
+    # Monkey-patch live.get_client to return aiohttp for WebSocket stability
+    orig_get_client = network.get_client
+    def custom_get_client(*args, **kwargs):
+        old_selected = network.selected_client
+        try:
+            network.selected_client = "aiohttp"
+            return orig_get_client(*args, **kwargs)
+        finally:
+            network.selected_client = old_selected
+    live.get_client = custom_get_client
+
     room = live.LiveDanmaku(room_id, credential=credential)
     import logging
     room.logger.setLevel(logging.ERROR)
