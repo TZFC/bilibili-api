@@ -176,13 +176,72 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
 
     conn.close()
 
+def count_schema_fields(schema: Any) -> int:
+    if not isinstance(schema, dict):
+        return 0
+    t = schema.get("type")
+    if t == "object":
+        props = schema.get("properties", {})
+        total = 0
+        for k, v in props.items():
+            total += 1 + count_schema_fields(v)
+        return total
+    elif t == "heterogeneous_array":
+        items = schema.get("items", {})
+        total = 0
+        for k, v in items.items():
+            total += 1 + count_schema_fields(v)
+        return total
+    elif t == "array":
+        items = schema.get("items", {})
+        return 1 + count_schema_fields(items)
+    return 0
+
+def compile_wiki_data(db_path: str) -> Dict[str, Any]:
+    if not os.path.exists(db_path):
+        print(f"Database {db_path} not found.")
+        return {"event_types": {}}
+
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT event_type, raw_data FROM livechat_events ORDER BY id ASC")
+
+    event_types_data = {}
+    total_events = 0
+
+    for event_type, raw_data_str in cursor.fetchall():
+        total_events += 1
+        try:
+            raw_data = json.loads(raw_data_str)
+        except Exception:
+            continue
+
+        if event_type not in event_types_data:
+            event_types_data[event_type] = {
+                "count": 0,
+                "description": CMD_DESCRIPTIONS.get(event_type, f"自定义/未知事件 ({event_type})"),
+                "typical_vals_raw": {},
+                "example": deep_copy(raw_data)
+            }
+        else:
+            # Deep merge to build a complete example with exactly 1 non-null/non-empty value per field
+            deep_merge(event_types_data[event_type]["example"], raw_data)
+
+        event_types_data[event_type]["count"] += 1
+        # Update schema and typical values
+        infer_schema(raw_data, "", event_types_data[event_type]["typical_vals_raw"])
+
+    conn.close()
+
     # Process final data structure
     compiled = {
-        "total_events": total_events,
+        "total_types": len(event_types_data),
+        "total_fields": 0,
         "last_updated": time.strftime("%Y-%m-%d %H:%M:%S"),
         "event_types": {}
     }
 
+    total_fields = 0
     for event_type, val in event_types_data.items():
         # Convert typical values
         typical_vals_serializable = {}
@@ -193,14 +252,18 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
         update_proto_fields(event_type, val["example"], typical_vals_serializable)
 
         schema = infer_schema(val["example"])
+        event_fields = count_schema_fields(schema)
+        total_fields += event_fields
 
         compiled["event_types"][event_type] = {
             "count": val["count"],
             "description": val["description"],
             "schema": schema,
+            "fields_count": event_fields,
             "typical_values": typical_vals_serializable,
             "example": val["example"]
         }
+    compiled["total_fields"] = total_fields
 
     return compiled
 
@@ -618,7 +681,7 @@ def get_default_html_template() -> str:
                 return;
             }
 
-            document.getElementById('wiki-stats').innerText = `已加载 ${Object.keys(wikiData.event_types).length} 种事件 • 共记录 ${wikiData.total_events} 条包 • 更新于 ${wikiData.last_updated}`;
+            document.getElementById('wiki-stats').innerText = `已加载 ${wikiData.total_types} 种事件 • 共定义 ${wikiData.total_fields} 个协议字段 • 更新于 ${wikiData.last_updated}`;
 
             renderEventList();
         }

@@ -365,29 +365,32 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_events": 229,
-  "last_updated": "2026-07-08 21:33:57",
+  "total_types": 18,
+  "total_fields": 749,
+  "last_updated": "2026-07-08 21:42:16",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
-      "count": 10,
+      "count": 11,
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
       "schema": {
         "type": "null"
       },
+      "fields_count": 0,
       "typical_values": {},
       "example": null
     },
     "VIEW": {
-      "count": 21,
+      "count": 27,
       "description": "人气值更新 (PopularityUpdate): 心跳包返回的直播间当前人气数值值更新。",
       "schema": {
         "type": "integer"
       },
+      "fields_count": 0,
       "typical_values": {},
       "example": 1
     },
     "ONLINE_RANK_COUNT": {
-      "count": 44,
+      "count": 45,
       "description": "高能用户数更新 (OnlineRankCount): 房间在线高能用户总数的实时波动更新。",
       "schema": {
         "type": "object",
@@ -414,6 +417,7 @@
           }
         }
       },
+      "fields_count": 6,
       "typical_values": {
         "cmd": [
           "ONLINE_RANK_COUNT"
@@ -540,6 +544,7 @@
           }
         }
       },
+      "fields_count": 29,
       "typical_values": {
         "cmd": [
           "DANMU_MSG"
@@ -739,7 +744,7 @@
       }
     },
     "ONLINE_RANK_V3": {
-      "count": 17,
+      "count": 18,
       "description": "高能用户榜单更新 (OnlineRankV3): 房间内在线的高能用户排行榜信息，其详细列表数据由 Protobuf 编码。",
       "schema": {
         "type": "object",
@@ -844,6 +849,7 @@
           }
         }
       },
+      "fields_count": 27,
       "typical_values": {
         "cmd": [
           "ONLINE_RANK_V3"
@@ -1283,6 +1289,7 @@
           }
         }
       },
+      "fields_count": 56,
       "typical_values": {
         "cmd": [
           "INTERACT_WORD_V2"
@@ -1486,7 +1493,7 @@
       }
     },
     "NOTICE_MSG": {
-      "count": 4,
+      "count": 5,
       "description": "自定义/未知事件 (NOTICE_MSG)",
       "schema": {
         "type": "object",
@@ -1604,6 +1611,7 @@
           }
         }
       },
+      "fields_count": 35,
       "typical_values": {
         "cmd": [
           "NOTICE_MSG"
@@ -1742,7 +1750,7 @@
       }
     },
     "STOP_LIVE_ROOM_LIST": {
-      "count": 16,
+      "count": 23,
       "description": "自定义/未知事件 (STOP_LIVE_ROOM_LIST)",
       "schema": {
         "type": "object",
@@ -1763,6 +1771,7 @@
           }
         }
       },
+      "fields_count": 4,
       "typical_values": {
         "cmd": [
           "STOP_LIVE_ROOM_LIST"
@@ -1880,7 +1889,20 @@
             1817615215,
             1724154057,
             23370980,
-            25463815
+            25463815,
+            1724155984,
+            1732568600,
+            1764690894,
+            1929358984,
+            23784463,
+            1713826324,
+            1724156002,
+            1741189694,
+            1850498841,
+            1909416296,
+            1726551234,
+            1843680166,
+            32383428
           ]
         }
       }
@@ -2259,6 +2281,7 @@
           }
         }
       },
+      "fields_count": 114,
       "typical_values": {
         "cmd": [
           "SUPER_CHAT_MESSAGE"
@@ -3029,6 +3052,7 @@
           }
         }
       },
+      "fields_count": 103,
       "typical_values": {
         "cmd": [
           "SUPER_CHAT_MESSAGE_JPN"
@@ -3461,6 +3485,7 @@
           }
         }
       },
+      "fields_count": 13,
       "typical_values": {
         "cmd": [
           "POPULAR_RANK_CHANGED"
@@ -3537,6 +3562,7 @@
           }
         }
       },
+      "fields_count": 5,
       "typical_values": {
         "cmd": [
           "WATCHED_CHANGE"
@@ -3609,6 +3635,7 @@
           }
         }
       },
+      "fields_count": 13,
       "typical_values": {
         "cmd": [
           "RANK_CHANGED_V2"
@@ -3947,6 +3974,7 @@
           }
         }
       },
+      "fields_count": 87,
       "typical_values": {
         "cmd": [
           "ENTRY_EFFECT"
@@ -4518,6 +4546,7 @@
           }
         }
       },
+      "fields_count": 76,
       "typical_values": {
         "cmd": [
           "LIKE_INFO_V3_CLICK"
@@ -4823,6 +4852,7 @@
           }
         }
       },
+      "fields_count": 6,
       "typical_values": {
         "cmd": [
           "ROOM_REAL_TIME_MESSAGE_UPDATE"
@@ -5390,6 +5420,7 @@
           }
         }
       },
+      "fields_count": 166,
       "typical_values": {
         "cmd": [
           "SEND_GIFT"
@@ -6015,6 +6046,7 @@
           }
         }
       },
+      "fields_count": 9,
       "typical_values": {
         "cmd": [
           "ROOM_CHANGE"
