@@ -318,30 +318,30 @@
             <!-- Event types injected here -->
         </div>
     </div>
-    
+
     <div class="content" id="content-panel">
         <div class="welcome-screen" id="welcome-panel">
             <h3>协议库文档中心</h3>
             <p>从左侧列表中选择一个事件类型，以浏览它的协议字段结构、典型取值与 JSON 数据样例。</p>
         </div>
-        
+
         <div id="data-panel" style="display: none; height: 100%; flex-direction: column;">
             <div class="content-header">
                 <h2 id="active-cmd-name">CMD_NAME</h2>
                 <div class="description" id="active-cmd-desc">Description of the event command.</div>
             </div>
-            
+
             <div class="content-tabs">
                 <button class="tab-btn active" onclick="switchTab('schema')">协议字段结构</button>
                 <button class="tab-btn" onclick="switchTab('values')">典型字段取值</button>
                 <button class="tab-btn" onclick="switchTab('examples')">JSON 样例数据</button>
             </div>
-            
+
             <div class="tab-content-container">
                 <div class="tab-content active" id="tab-schema">
                     <div id="schema-tree"></div>
                 </div>
-                
+
                 <div class="tab-content" id="tab-values">
                     <table>
                         <thead>
@@ -355,7 +355,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="tab-content" id="tab-examples">
                     <pre><code id="json-example-code"></code></pre>
                 </div>
@@ -377,37 +377,35 @@
                 return;
             }
 
-            document.getElementById('wiki-stats').innerText = `已加载 ${Object.keys(wikiData.event_types).length} 种事件 • 共记录 ${wikiData.total_events} 条包 • 更新于 ${wikiData.last_updated}`;
-            
+            document.getElementById('wiki-stats').innerText = `已加载 ${wikiData.total_types} 种事件 • 共定义 ${wikiData.total_fields} 个协议字段 • 更新于 ${wikiData.last_updated}`;
+
             renderEventList();
         }
 
         function renderEventList() {
             const listContainer = document.getElementById('event-list');
             listContainer.innerHTML = '';
-            
-            // Sort event types by count descending
-            const sortedCmds = Object.keys(wikiData.event_types).sort((a, b) => {
-                return wikiData.event_types[b].count - wikiData.event_types[a].count;
-            });
-            
+
+            // Sort event types alphabetically
+            const sortedCmds = Object.keys(wikiData.event_types).sort();
+
             sortedCmds.forEach(cmd => {
                 const info = wikiData.event_types[cmd];
                 const item = document.createElement('div');
                 item.className = 'event-item';
                 item.id = `item-${cmd}`;
                 item.onclick = () => selectEvent(cmd);
-                
+
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'event-name';
                 nameSpan.innerText = cmd;
-                
-                const countBadge = document.createElement('span');
-                countBadge.className = 'event-count';
-                countBadge.innerText = info.count;
-                
+
+                const fieldsBadge = document.createElement('span');
+                fieldsBadge.className = 'event-count';
+                fieldsBadge.innerText = info.fields_count;
+
                 item.appendChild(nameSpan);
-                item.appendChild(countBadge);
+                item.appendChild(fieldsBadge);
                 listContainer.appendChild(item);
             });
         }
@@ -415,7 +413,7 @@
         function filterEvents() {
             const query = document.getElementById('search-input').value.toLowerCase();
             const items = document.getElementsByClassName('event-item');
-            
+
             for (let i = 0; i < items.length; i++) {
                 const cmd = items[i].id.replace('item-', '');
                 const desc = wikiData.event_types[cmd].description.toLowerCase();
@@ -429,22 +427,22 @@
 
         function selectEvent(cmd) {
             currentCmd = cmd;
-            
+
             // Toggle active classes in list
             const items = document.getElementsByClassName('event-item');
             for (let i = 0; i < items.length; i++) {
                 items[i].classList.remove('active');
             }
             document.getElementById(`item-${cmd}`).classList.add('active');
-            
+
             // Show panels
             document.getElementById('welcome-panel').style.display = 'none';
             document.getElementById('data-panel').style.display = 'flex';
-            
+
             // Fill headers
             document.getElementById('active-cmd-name').innerText = cmd;
             document.getElementById('active-cmd-desc').innerText = wikiData.event_types[cmd].description;
-            
+
             // Render active tab contents
             renderTabContent();
         }
@@ -455,24 +453,24 @@
             for (let i = 0; i < tabs.length; i++) {
                 tabs[i].classList.remove('active');
             }
-            
+
             // Find active tab button
             event.target.classList.add('active');
-            
+
             // Show corresponding content panel
             const contents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < contents.length; i++) {
                 contents[i].classList.remove('active');
             }
             document.getElementById(`tab-${tab}`).classList.add('active');
-            
+
             renderTabContent();
         }
 
         function renderTabContent() {
             if (!currentCmd) return;
             const info = wikiData.event_types[currentCmd];
-            
+
             if (currentTab === 'schema') {
                 const container = document.getElementById('schema-tree');
                 container.innerHTML = '';
@@ -480,7 +478,7 @@
             } else if (currentTab === 'values') {
                 const tbody = document.getElementById('values-table-body');
                 tbody.innerHTML = '';
-                
+
                 // Sort keys alphabetically
                 const paths = Object.keys(info.typical_values).sort();
                 paths.forEach(path => {
@@ -489,7 +487,7 @@
                     tdPath.innerText = path;
                     tdPath.style.fontWeight = '500';
                     tdPath.style.color = '#c084fc';
-                    
+
                     const tdVals = document.createElement('td');
                     info.typical_values[path].forEach(val => {
                         const span = document.createElement('span');
@@ -497,7 +495,7 @@
                         span.innerText = JSON.stringify(val);
                         tdVals.appendChild(span);
                     });
-                    
+
                     tr.appendChild(tdPath);
                     tr.appendChild(tdVals);
                     tbody.appendChild(tr);
@@ -511,22 +509,22 @@
         function buildSchemaNodeHtml(schema, key) {
             const container = document.createElement('div');
             container.className = 'schema-node';
-            
+
             const row = document.createElement('div');
             row.className = 'schema-row';
-            
+
             const keySpan = document.createElement('span');
             keySpan.className = 'key-name';
             keySpan.innerText = key + ':';
-            
+
             const typeBadge = document.createElement('span');
             typeBadge.className = `type-badge type-${schema.type}`;
             typeBadge.innerText = schema.type.replace('_', ' ');
-            
+
             row.appendChild(keySpan);
             row.appendChild(typeBadge);
             container.appendChild(row);
-            
+
             if (schema.type === 'object' && schema.properties) {
                 Object.keys(schema.properties).forEach(propKey => {
                     container.appendChild(buildSchemaNodeHtml(schema.properties[propKey], propKey));
@@ -538,7 +536,7 @@
             } else if (schema.type === 'array' && schema.items) {
                 container.appendChild(buildSchemaNodeHtml(schema.items, '[index]'));
             }
-            
+
             return container;
         }
 

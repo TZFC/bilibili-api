@@ -236,8 +236,25 @@ def update_wiki():
     wiki_out_path = os.path.join('docs', 'wiki.html')
     wiki_data_path = os.path.join('docs', 'wiki_data.json')
 
+    # Load existing wiki data if exists to prevent updating last_updated timestamp unnecessarily
+    old_data = None
+    if os.path.exists(wiki_data_path):
+        try:
+            with open(wiki_data_path, 'r', encoding='utf-8') as f:
+                old_data = json.load(f)
+        except Exception:
+            pass
+
     # Compile
     data = compile_wiki_data(db_path)
+
+    # Compare and preserve last_updated if no actual types, fields, or examples changed
+    if old_data:
+        new_compare = {k: v for k, v in data.items() if k != 'last_updated'}
+        old_compare = {k: v for k, v in old_data.items() if k != 'last_updated'}
+        if json.dumps(new_compare, sort_keys=True) == json.dumps(old_compare, sort_keys=True):
+            data['last_updated'] = old_data.get('last_updated', data['last_updated'])
+
     data_json_str = json.dumps(data, ensure_ascii=False, indent=2)
 
     if not os.path.exists('docs'):
