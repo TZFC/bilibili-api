@@ -8,4 +8,6 @@ if "%ROOM_ID%"=="" set ROOM_ID=23596840
 echo.
 echo Starting listener for room: %ROOM_ID% ...
 .venv314\Scripts\python.exe scripts\livechat_listener.py --room_id=%ROOM_ID%
+echo.
+echo Listener process exited with code %ERRORLEVEL%
 pause
