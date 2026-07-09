@@ -378,9 +378,9 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 31,
-  "total_fields": 1217,
-  "last_updated": "2026-07-09 00:59:00",
+  "total_types": 35,
+  "total_fields": 1431,
+  "last_updated": "2026-07-09 01:18:19",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -4139,7 +4139,18 @@
                     }
                   },
                   "uhead_frame": {
-                    "type": "null"
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "frame_img": {
+                        "type": "string"
+                      },
+                      "frame_dynamic_img": {
+                        "type": "string"
+                      }
+                    }
                   },
                   "guard_leader": {
                     "type": "null"
@@ -4167,7 +4178,7 @@
           }
         }
       },
-      "fields_count": 87,
+      "fields_count": 90,
       "typical_values": {
         "cmd": [
           "ENTRY_EFFECT"
@@ -4388,7 +4399,16 @@
         ],
         "data.uinfo.medal": [],
         "data.wealthy_info": [],
-        "data.wealth_style_info": []
+        "data.wealth_style_info": [],
+        "data.uinfo.uhead_frame.id": [
+          1775
+        ],
+        "data.uinfo.uhead_frame.frame_img": [
+          "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png"
+        ],
+        "data.uinfo.uhead_frame.frame_dynamic_img": [
+          ""
+        ]
       },
       "example": {
         "cmd": "ENTRY_EFFECT",
@@ -4475,7 +4495,11 @@
               "level": 0,
               "expired_str": "2026-07-15 23:59:59"
             },
-            "uhead_frame": null,
+            "uhead_frame": {
+              "id": 1775,
+              "frame_img": "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png",
+              "frame_dynamic_img": ""
+            },
             "guard_leader": null,
             "anon": null
           },
@@ -8066,6 +8090,15 @@
                     },
                     "type": {
                       "type": "integer"
+                    },
+                    "font_color_dark": {
+                      "type": "string"
+                    },
+                    "highlight_font_color": {
+                      "type": "string"
+                    },
+                    "highlight_font_color_dark": {
+                      "type": "string"
                     }
                   }
                 }
@@ -8083,7 +8116,7 @@
           }
         }
       },
-      "fields_count": 10,
+      "fields_count": 13,
       "typical_values": {
         "cmd": [
           "COMMON_NOTICE_DANMAKU"
@@ -8102,6 +8135,15 @@
         ],
         "data.terminals[]": [
           1
+        ],
+        "data.content_segments[].font_color_dark": [
+          "#CCCCCC"
+        ],
+        "data.content_segments[].highlight_font_color": [
+          "#FFC73E"
+        ],
+        "data.content_segments[].highlight_font_color_dark": [
+          "#FFC73E"
         ]
       },
       "example": {
@@ -8111,7 +8153,10 @@
             {
               "font_color": "#FB7299",
               "text": "我方主播暂时领先！兄弟萌注意守塔，保护好我方主播哟～",
-              "type": 1
+              "type": 1,
+              "font_color_dark": "#CCCCCC",
+              "highlight_font_color": "#FFC73E",
+              "highlight_font_color_dark": "#FFC73E"
             }
           ],
           "dmscore": 1008,
@@ -9897,6 +9942,1478 @@
           "cur_num": 0,
           "total_num": 9,
           "version": 1783581528017
+        }
+      }
+    },
+    "GUARD_BUY": {
+      "description": "自定义/未知事件 (GUARD_BUY)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "integer"
+              },
+              "username": {
+                "type": "string"
+              },
+              "guard_level": {
+                "type": "integer"
+              },
+              "num": {
+                "type": "integer"
+              },
+              "price": {
+                "type": "integer"
+              },
+              "gift_id": {
+                "type": "integer"
+              },
+              "gift_name": {
+                "type": "string"
+              },
+              "start_time": {
+                "type": "integer"
+              },
+              "end_time": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 11,
+      "typical_values": {
+        "cmd": [
+          "GUARD_BUY"
+        ],
+        "data.uid": [
+          3494376372177470
+        ],
+        "data.username": [
+          "诚城shiyu也洄雨"
+        ],
+        "data.guard_level": [
+          3
+        ],
+        "data.num": [
+          1
+        ],
+        "data.price": [
+          198000
+        ],
+        "data.gift_id": [
+          10003
+        ],
+        "data.gift_name": [
+          "舰长"
+        ],
+        "data.start_time": [
+          1783584770
+        ],
+        "data.end_time": [
+          1783584770
+        ]
+      },
+      "example": {
+        "cmd": "GUARD_BUY",
+        "data": {
+          "uid": 3494376372177470,
+          "username": "诚城shiyu也洄雨",
+          "guard_level": 3,
+          "num": 1,
+          "price": 198000,
+          "gift_id": 10003,
+          "gift_name": "舰长",
+          "start_time": 1783584770,
+          "end_time": 1783584770
+        }
+      }
+    },
+    "USER_TOAST_MSG": {
+      "description": "自定义/未知事件 (USER_TOAST_MSG)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "anchor_show": {
+                "type": "boolean"
+              },
+              "color": {
+                "type": "string"
+              },
+              "dmscore": {
+                "type": "integer"
+              },
+              "effect_id": {
+                "type": "integer"
+              },
+              "end_time": {
+                "type": "integer"
+              },
+              "face_effect_id": {
+                "type": "integer"
+              },
+              "gift_id": {
+                "type": "integer"
+              },
+              "group_name": {
+                "type": "string"
+              },
+              "group_op_type": {
+                "type": "integer"
+              },
+              "group_role_name": {
+                "type": "string"
+              },
+              "guard_level": {
+                "type": "integer"
+              },
+              "is_group": {
+                "type": "integer"
+              },
+              "is_show": {
+                "type": "integer"
+              },
+              "num": {
+                "type": "integer"
+              },
+              "op_type": {
+                "type": "integer"
+              },
+              "payflow_id": {
+                "type": "string"
+              },
+              "price": {
+                "type": "integer"
+              },
+              "role_name": {
+                "type": "string"
+              },
+              "room_effect_id": {
+                "type": "integer"
+              },
+              "room_gift_effect_id": {
+                "type": "integer"
+              },
+              "room_group_effect_id": {
+                "type": "integer"
+              },
+              "ship_effect_id": {
+                "type": "integer"
+              },
+              "source": {
+                "type": "integer"
+              },
+              "start_time": {
+                "type": "integer"
+              },
+              "svga_block": {
+                "type": "integer"
+              },
+              "target_guard_count": {
+                "type": "integer"
+              },
+              "toast_msg": {
+                "type": "string"
+              },
+              "uid": {
+                "type": "integer"
+              },
+              "unit": {
+                "type": "string"
+              },
+              "user_show": {
+                "type": "boolean"
+              },
+              "username": {
+                "type": "string"
+              }
+            }
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          }
+        }
+      },
+      "fields_count": 37,
+      "typical_values": {
+        "cmd": [
+          "USER_TOAST_MSG"
+        ],
+        "data.anchor_show": [
+          true
+        ],
+        "data.color": [
+          "#00D1F1"
+        ],
+        "data.dmscore": [
+          204
+        ],
+        "data.effect_id": [
+          5846
+        ],
+        "data.end_time": [
+          1783584770
+        ],
+        "data.face_effect_id": [
+          44
+        ],
+        "data.gift_id": [
+          10003
+        ],
+        "data.group_name": [
+          ""
+        ],
+        "data.group_op_type": [
+          0
+        ],
+        "data.group_role_name": [
+          ""
+        ],
+        "data.guard_level": [
+          3
+        ],
+        "data.is_group": [
+          0
+        ],
+        "data.is_show": [
+          0
+        ],
+        "data.num": [
+          1
+        ],
+        "data.op_type": [
+          2
+        ],
+        "data.payflow_id": [
+          "2607091612488782574704576"
+        ],
+        "data.price": [
+          138000
+        ],
+        "data.role_name": [
+          "舰长"
+        ],
+        "data.room_effect_id": [
+          5843
+        ],
+        "data.room_gift_effect_id": [
+          0
+        ],
+        "data.room_group_effect_id": [
+          1337
+        ],
+        "data.ship_effect_id": [
+          5843
+        ],
+        "data.source": [
+          0
+        ],
+        "data.start_time": [
+          1783584770
+        ],
+        "data.svga_block": [
+          0
+        ],
+        "data.target_guard_count": [
+          102
+        ],
+        "data.toast_msg": [
+          "<%诚城shiyu也洄雨%> 在主播有棵里里的直播间续费了舰长，今天是TA陪伴主播的第117天"
+        ],
+        "data.uid": [
+          3494376372177470
+        ],
+        "data.unit": [
+          "月"
+        ],
+        "data.user_show": [
+          true
+        ],
+        "data.username": [
+          "诚城shiyu也洄雨"
+        ],
+        "msg_id": [
+          "99647111504603649:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "send_time": [
+          1783584770946
+        ]
+      },
+      "example": {
+        "cmd": "USER_TOAST_MSG",
+        "data": {
+          "anchor_show": true,
+          "color": "#00D1F1",
+          "dmscore": 204,
+          "effect_id": 5846,
+          "end_time": 1783584770,
+          "face_effect_id": 44,
+          "gift_id": 10003,
+          "group_name": "",
+          "group_op_type": 0,
+          "group_role_name": "",
+          "guard_level": 3,
+          "is_group": 0,
+          "is_show": 0,
+          "num": 1,
+          "op_type": 2,
+          "payflow_id": "2607091612488782574704576",
+          "price": 138000,
+          "role_name": "舰长",
+          "room_effect_id": 5843,
+          "room_gift_effect_id": 0,
+          "room_group_effect_id": 1337,
+          "ship_effect_id": 5843,
+          "source": 0,
+          "start_time": 1783584770,
+          "svga_block": 0,
+          "target_guard_count": 102,
+          "toast_msg": "<%诚城shiyu也洄雨%> 在主播有棵里里的直播间续费了舰长，今天是TA陪伴主播的第117天",
+          "uid": 3494376372177470,
+          "unit": "月",
+          "user_show": true,
+          "username": "诚城shiyu也洄雨"
+        },
+        "msg_id": "99647111504603649:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "send_time": 1783584770946
+      }
+    },
+    "USER_TOAST_MSG_V2": {
+      "description": "自定义/未知事件 (USER_TOAST_MSG_V2)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "effect_info": {
+                "type": "object",
+                "properties": {
+                  "effect_id": {
+                    "type": "integer"
+                  },
+                  "face_effect_id": {
+                    "type": "integer"
+                  },
+                  "room_effect_id": {
+                    "type": "integer"
+                  },
+                  "room_gift_effect_id": {
+                    "type": "integer"
+                  },
+                  "room_group_effect_id": {
+                    "type": "integer"
+                  },
+                  "ship_effect_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "gift_info": {
+                "type": "object",
+                "properties": {
+                  "gift_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "group_guard_info": {
+                "type": "null"
+              },
+              "guard_info": {
+                "type": "object",
+                "properties": {
+                  "end_time": {
+                    "type": "integer"
+                  },
+                  "guard_level": {
+                    "type": "integer"
+                  },
+                  "op_type": {
+                    "type": "integer"
+                  },
+                  "role_name": {
+                    "type": "string"
+                  },
+                  "room_guard_count": {
+                    "type": "integer"
+                  },
+                  "start_time": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "option": {
+                "type": "object",
+                "properties": {
+                  "anchor_show": {
+                    "type": "boolean"
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "is_group": {
+                    "type": "integer"
+                  },
+                  "is_show": {
+                    "type": "integer"
+                  },
+                  "source": {
+                    "type": "integer"
+                  },
+                  "svga_block": {
+                    "type": "integer"
+                  },
+                  "user_show": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "pay_info": {
+                "type": "object",
+                "properties": {
+                  "num": {
+                    "type": "integer"
+                  },
+                  "payflow_id": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "integer"
+                  },
+                  "unit": {
+                    "type": "string"
+                  }
+                }
+              },
+              "receiver_uinfo": {
+                "type": "object",
+                "properties": {
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "face": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "uid": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "sender_uinfo": {
+                "type": "object",
+                "properties": {
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "face": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "uid": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "toast_msg": {
+                "type": "string"
+              }
+            }
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          }
+        }
+      },
+      "fields_count": 47,
+      "typical_values": {
+        "cmd": [
+          "USER_TOAST_MSG_V2"
+        ],
+        "data.effect_info.effect_id": [
+          5846
+        ],
+        "data.effect_info.face_effect_id": [
+          44
+        ],
+        "data.effect_info.room_effect_id": [
+          5843
+        ],
+        "data.effect_info.room_gift_effect_id": [
+          0
+        ],
+        "data.effect_info.room_group_effect_id": [
+          1337
+        ],
+        "data.effect_info.ship_effect_id": [
+          5843
+        ],
+        "data.gift_info.gift_id": [
+          10003
+        ],
+        "data.group_guard_info": [],
+        "data.guard_info.end_time": [
+          1783584770
+        ],
+        "data.guard_info.guard_level": [
+          3
+        ],
+        "data.guard_info.op_type": [
+          2
+        ],
+        "data.guard_info.role_name": [
+          "舰长"
+        ],
+        "data.guard_info.room_guard_count": [
+          102
+        ],
+        "data.guard_info.start_time": [
+          1783584770
+        ],
+        "data.option.anchor_show": [
+          true
+        ],
+        "data.option.color": [
+          "#00D1F1"
+        ],
+        "data.option.is_group": [
+          0
+        ],
+        "data.option.is_show": [
+          0
+        ],
+        "data.option.source": [
+          0
+        ],
+        "data.option.svga_block": [
+          0
+        ],
+        "data.option.user_show": [
+          true
+        ],
+        "data.pay_info.num": [
+          1
+        ],
+        "data.pay_info.payflow_id": [
+          "2607091612488782574704576"
+        ],
+        "data.pay_info.price": [
+          138000
+        ],
+        "data.pay_info.unit": [
+          "月"
+        ],
+        "data.receiver_uinfo.base.face": [
+          "https://i0.hdslb.com/bfs/face/d8d27da7c1ce03bd290b8a915d583ee22fe73348.jpg"
+        ],
+        "data.receiver_uinfo.base.name": [
+          "有棵里里"
+        ],
+        "data.receiver_uinfo.uid": [
+          12939237
+        ],
+        "data.sender_uinfo.base.face": [
+          ""
+        ],
+        "data.sender_uinfo.base.name": [
+          "诚城shiyu也洄雨"
+        ],
+        "data.sender_uinfo.uid": [
+          3494376372177470
+        ],
+        "data.toast_msg": [
+          "<%诚城shiyu也洄雨%> 在主播有棵里里的直播间续费了舰长，今天是TA陪伴主播的第117天"
+        ],
+        "msg_id": [
+          "99647111531889152:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "send_time": [
+          1783584770972
+        ]
+      },
+      "example": {
+        "cmd": "USER_TOAST_MSG_V2",
+        "data": {
+          "effect_info": {
+            "effect_id": 5846,
+            "face_effect_id": 44,
+            "room_effect_id": 5843,
+            "room_gift_effect_id": 0,
+            "room_group_effect_id": 1337,
+            "ship_effect_id": 5843
+          },
+          "gift_info": {
+            "gift_id": 10003
+          },
+          "group_guard_info": null,
+          "guard_info": {
+            "end_time": 1783584770,
+            "guard_level": 3,
+            "op_type": 2,
+            "role_name": "舰长",
+            "room_guard_count": 102,
+            "start_time": 1783584770
+          },
+          "option": {
+            "anchor_show": true,
+            "color": "#00D1F1",
+            "is_group": 0,
+            "is_show": 0,
+            "source": 0,
+            "svga_block": 0,
+            "user_show": true
+          },
+          "pay_info": {
+            "num": 1,
+            "payflow_id": "2607091612488782574704576",
+            "price": 138000,
+            "unit": "月"
+          },
+          "receiver_uinfo": {
+            "base": {
+              "face": "https://i0.hdslb.com/bfs/face/d8d27da7c1ce03bd290b8a915d583ee22fe73348.jpg",
+              "name": "有棵里里"
+            },
+            "uid": 12939237
+          },
+          "sender_uinfo": {
+            "base": {
+              "face": "",
+              "name": "诚城shiyu也洄雨"
+            },
+            "uid": 3494376372177470
+          },
+          "toast_msg": "<%诚城shiyu也洄雨%> 在主播有棵里里的直播间续费了舰长，今天是TA陪伴主播的第117天"
+        },
+        "msg_id": "99647111531889152:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "send_time": 1783584770972
+      }
+    },
+    "COMBO_SEND": {
+      "description": "连击礼物投喂 (ComboGift): 连续赠送礼物时的状态更新。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "batch_combo_id": {
+                "type": "string"
+              },
+              "batch_combo_num": {
+                "type": "integer"
+              },
+              "coin_type": {
+                "type": "string"
+              },
+              "combo_id": {
+                "type": "string"
+              },
+              "combo_num": {
+                "type": "integer"
+              },
+              "combo_total_coin": {
+                "type": "integer"
+              },
+              "dmscore": {
+                "type": "integer"
+              },
+              "gift_id": {
+                "type": "integer"
+              },
+              "gift_info": {
+                "type": "object",
+                "properties": {
+                  "img_basic": {
+                    "type": "string"
+                  },
+                  "webp": {
+                    "type": "string"
+                  }
+                }
+              },
+              "gift_name": {
+                "type": "string"
+              },
+              "gift_num": {
+                "type": "integer"
+              },
+              "group_medal": {
+                "type": "null"
+              },
+              "is_join_receiver": {
+                "type": "boolean"
+              },
+              "is_naming": {
+                "type": "boolean"
+              },
+              "is_show": {
+                "type": "integer"
+              },
+              "medal_info": {
+                "type": "object",
+                "properties": {
+                  "anchor_roomid": {
+                    "type": "integer"
+                  },
+                  "anchor_uname": {
+                    "type": "string"
+                  },
+                  "guard_level": {
+                    "type": "integer"
+                  },
+                  "icon_id": {
+                    "type": "integer"
+                  },
+                  "is_lighted": {
+                    "type": "integer"
+                  },
+                  "medal_color": {
+                    "type": "integer"
+                  },
+                  "medal_color_border": {
+                    "type": "integer"
+                  },
+                  "medal_color_end": {
+                    "type": "integer"
+                  },
+                  "medal_color_start": {
+                    "type": "integer"
+                  },
+                  "medal_level": {
+                    "type": "integer"
+                  },
+                  "medal_name": {
+                    "type": "string"
+                  },
+                  "special": {
+                    "type": "string"
+                  },
+                  "target_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "name_color": {
+                "type": "string"
+              },
+              "r_uname": {
+                "type": "string"
+              },
+              "receive_user_info": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "uname": {
+                    "type": "string"
+                  }
+                }
+              },
+              "receiver_uinfo": {
+                "type": "object",
+                "properties": {
+                  "anon": {
+                    "type": "null"
+                  },
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "face": {
+                        "type": "string"
+                      },
+                      "is_mystery": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "name_color": {
+                        "type": "integer"
+                      },
+                      "name_color_str": {
+                        "type": "string"
+                      },
+                      "official_info": {
+                        "type": "object",
+                        "properties": {
+                          "desc": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "origin_info": {
+                        "type": "object",
+                        "properties": {
+                          "face": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "risk_ctrl_info": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "guard": {
+                    "type": "null"
+                  },
+                  "guard_leader": {
+                    "type": "null"
+                  },
+                  "medal": {
+                    "type": "null"
+                  },
+                  "title": {
+                    "type": "null"
+                  },
+                  "uhead_frame": {
+                    "type": "null"
+                  },
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "wealth": {
+                    "type": "null"
+                  }
+                }
+              },
+              "ruid": {
+                "type": "integer"
+              },
+              "send_master": {
+                "type": "null"
+              },
+              "sender_uinfo": {
+                "type": "object",
+                "properties": {
+                  "anon": {
+                    "type": "null"
+                  },
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "face": {
+                        "type": "string"
+                      },
+                      "is_mystery": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "name_color": {
+                        "type": "integer"
+                      },
+                      "name_color_str": {
+                        "type": "string"
+                      },
+                      "official_info": {
+                        "type": "object",
+                        "properties": {
+                          "desc": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "origin_info": {
+                        "type": "object",
+                        "properties": {
+                          "face": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "risk_ctrl_info": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "guard": {
+                    "type": "null"
+                  },
+                  "guard_leader": {
+                    "type": "null"
+                  },
+                  "medal": {
+                    "type": "object",
+                    "properties": {
+                      "color": {
+                        "type": "integer"
+                      },
+                      "color_border": {
+                        "type": "integer"
+                      },
+                      "color_end": {
+                        "type": "integer"
+                      },
+                      "color_start": {
+                        "type": "integer"
+                      },
+                      "guard_icon": {
+                        "type": "string"
+                      },
+                      "guard_level": {
+                        "type": "integer"
+                      },
+                      "honor_icon": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "is_light": {
+                        "type": "integer"
+                      },
+                      "level": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "ruid": {
+                        "type": "integer"
+                      },
+                      "score": {
+                        "type": "integer"
+                      },
+                      "typ": {
+                        "type": "integer"
+                      },
+                      "user_receive_count": {
+                        "type": "integer"
+                      },
+                      "v2_medal_color_border": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_end": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_level": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_start": {
+                        "type": "string"
+                      },
+                      "v2_medal_color_text": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "title": {
+                    "type": "null"
+                  },
+                  "uhead_frame": {
+                    "type": "null"
+                  },
+                  "uid": {
+                    "type": "integer"
+                  },
+                  "wealth": {
+                    "type": "null"
+                  }
+                }
+              },
+              "total_num": {
+                "type": "integer"
+              },
+              "uid": {
+                "type": "integer"
+              },
+              "uname": {
+                "type": "string"
+              },
+              "wealth_level": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 113,
+      "typical_values": {
+        "cmd": [
+          "COMBO_SEND"
+        ],
+        "data.action": [
+          "投喂"
+        ],
+        "data.batch_combo_id": [
+          "batch:gift:combo_id:1436277572:12939237:33988:1783585090.8771"
+        ],
+        "data.batch_combo_num": [
+          2
+        ],
+        "data.coin_type": [
+          "gold"
+        ],
+        "data.combo_id": [
+          "gift:combo_id:1436277572:12939237:33988:1783585090.8761"
+        ],
+        "data.combo_num": [
+          2
+        ],
+        "data.combo_total_coin": [
+          200
+        ],
+        "data.dmscore": [
+          140
+        ],
+        "data.gift_id": [
+          33988
+        ],
+        "data.gift_info.img_basic": [
+          "https://s1.hdslb.com/bfs/live/7164c955ec0ed7537491d189b821cc68f1bea20d.png"
+        ],
+        "data.gift_info.webp": [
+          "https://i0.hdslb.com/bfs/live/5a2012094bb875a04ea7d036edde3e9c00127ec2.webp"
+        ],
+        "data.gift_name": [
+          "人气票"
+        ],
+        "data.gift_num": [
+          0
+        ],
+        "data.group_medal": [],
+        "data.is_join_receiver": [
+          false
+        ],
+        "data.is_naming": [
+          false
+        ],
+        "data.is_show": [
+          1
+        ],
+        "data.medal_info.anchor_roomid": [
+          0
+        ],
+        "data.medal_info.anchor_uname": [
+          ""
+        ],
+        "data.medal_info.guard_level": [
+          0
+        ],
+        "data.medal_info.icon_id": [
+          0
+        ],
+        "data.medal_info.is_lighted": [
+          1
+        ],
+        "data.medal_info.medal_color": [
+          13081892
+        ],
+        "data.medal_info.medal_color_border": [
+          13081892
+        ],
+        "data.medal_info.medal_color_end": [
+          13081892
+        ],
+        "data.medal_info.medal_color_start": [
+          13081892
+        ],
+        "data.medal_info.medal_level": [
+          19
+        ],
+        "data.medal_info.medal_name": [
+          "里棵生"
+        ],
+        "data.medal_info.special": [
+          ""
+        ],
+        "data.medal_info.target_id": [
+          12939237
+        ],
+        "data.name_color": [
+          ""
+        ],
+        "data.r_uname": [
+          "有棵里里"
+        ],
+        "data.receive_user_info.uid": [
+          12939237
+        ],
+        "data.receive_user_info.uname": [
+          "有棵里里"
+        ],
+        "data.receiver_uinfo.anon": [],
+        "data.receiver_uinfo.base.face": [
+          "https://i0.hdslb.com/bfs/face/d8d27da7c1ce03bd290b8a915d583ee22fe73348.jpg"
+        ],
+        "data.receiver_uinfo.base.is_mystery": [
+          false
+        ],
+        "data.receiver_uinfo.base.name": [
+          "有棵里里"
+        ],
+        "data.receiver_uinfo.base.name_color": [
+          0
+        ],
+        "data.receiver_uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.receiver_uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.receiver_uinfo.base.official_info.role": [
+          7
+        ],
+        "data.receiver_uinfo.base.official_info.title": [
+          "bilibili直播高能主播"
+        ],
+        "data.receiver_uinfo.base.official_info.type": [
+          0
+        ],
+        "data.receiver_uinfo.base.origin_info.face": [
+          "https://i0.hdslb.com/bfs/face/d8d27da7c1ce03bd290b8a915d583ee22fe73348.jpg"
+        ],
+        "data.receiver_uinfo.base.origin_info.name": [
+          "有棵里里"
+        ],
+        "data.receiver_uinfo.base.risk_ctrl_info": [],
+        "data.receiver_uinfo.guard": [],
+        "data.receiver_uinfo.guard_leader": [],
+        "data.receiver_uinfo.medal": [],
+        "data.receiver_uinfo.title": [],
+        "data.receiver_uinfo.uhead_frame": [],
+        "data.receiver_uinfo.uid": [
+          12939237
+        ],
+        "data.receiver_uinfo.wealth": [],
+        "data.ruid": [
+          12939237
+        ],
+        "data.send_master": [],
+        "data.sender_uinfo.anon": [],
+        "data.sender_uinfo.base.face": [
+          "https://i2.hdslb.com/bfs/face/65f73bb9b1b3603aa700e856a577e7d7aeb7ffca.webp"
+        ],
+        "data.sender_uinfo.base.is_mystery": [
+          false
+        ],
+        "data.sender_uinfo.base.name": [
+          "腊寒珏"
+        ],
+        "data.sender_uinfo.base.name_color": [
+          0
+        ],
+        "data.sender_uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.sender_uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.sender_uinfo.base.official_info.role": [
+          0
+        ],
+        "data.sender_uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.sender_uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.sender_uinfo.base.origin_info.face": [
+          "https://i2.hdslb.com/bfs/face/65f73bb9b1b3603aa700e856a577e7d7aeb7ffca.webp"
+        ],
+        "data.sender_uinfo.base.origin_info.name": [
+          "腊寒珏"
+        ],
+        "data.sender_uinfo.base.risk_ctrl_info": [],
+        "data.sender_uinfo.guard": [],
+        "data.sender_uinfo.guard_leader": [],
+        "data.sender_uinfo.medal.color": [
+          13081892
+        ],
+        "data.sender_uinfo.medal.color_border": [
+          13081892
+        ],
+        "data.sender_uinfo.medal.color_end": [
+          13081892
+        ],
+        "data.sender_uinfo.medal.color_start": [
+          13081892
+        ],
+        "data.sender_uinfo.medal.guard_icon": [
+          ""
+        ],
+        "data.sender_uinfo.medal.guard_level": [
+          0
+        ],
+        "data.sender_uinfo.medal.honor_icon": [
+          ""
+        ],
+        "data.sender_uinfo.medal.id": [
+          0
+        ],
+        "data.sender_uinfo.medal.is_light": [
+          1
+        ],
+        "data.sender_uinfo.medal.level": [
+          19
+        ],
+        "data.sender_uinfo.medal.name": [
+          "里棵生"
+        ],
+        "data.sender_uinfo.medal.ruid": [
+          12939237
+        ],
+        "data.sender_uinfo.medal.score": [
+          1321
+        ],
+        "data.sender_uinfo.medal.typ": [
+          0
+        ],
+        "data.sender_uinfo.medal.user_receive_count": [
+          0
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_border": [
+          "#C770A499"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_end": [
+          "#C770A499"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_level": [
+          "#C770A4E6"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_start": [
+          "#C770A499"
+        ],
+        "data.sender_uinfo.medal.v2_medal_color_text": [
+          "#FFFFFF"
+        ],
+        "data.sender_uinfo.title": [],
+        "data.sender_uinfo.uhead_frame": [],
+        "data.sender_uinfo.uid": [
+          1436277572
+        ],
+        "data.sender_uinfo.wealth": [],
+        "data.total_num": [
+          2
+        ],
+        "data.uid": [
+          1436277572
+        ],
+        "data.uname": [
+          "腊寒珏"
+        ],
+        "data.wealth_level": [
+          10
+        ]
+      },
+      "example": {
+        "cmd": "COMBO_SEND",
+        "data": {
+          "action": "投喂",
+          "batch_combo_id": "batch:gift:combo_id:1436277572:12939237:33988:1783585090.8771",
+          "batch_combo_num": 2,
+          "coin_type": "gold",
+          "combo_id": "gift:combo_id:1436277572:12939237:33988:1783585090.8761",
+          "combo_num": 2,
+          "combo_total_coin": 200,
+          "dmscore": 140,
+          "gift_id": 33988,
+          "gift_info": {
+            "img_basic": "https://s1.hdslb.com/bfs/live/7164c955ec0ed7537491d189b821cc68f1bea20d.png",
+            "webp": "https://i0.hdslb.com/bfs/live/5a2012094bb875a04ea7d036edde3e9c00127ec2.webp"
+          },
+          "gift_name": "人气票",
+          "gift_num": 0,
+          "group_medal": null,
+          "is_join_receiver": false,
+          "is_naming": false,
+          "is_show": 1,
+          "medal_info": {
+            "anchor_roomid": 0,
+            "anchor_uname": "",
+            "guard_level": 0,
+            "icon_id": 0,
+            "is_lighted": 1,
+            "medal_color": 13081892,
+            "medal_color_border": 13081892,
+            "medal_color_end": 13081892,
+            "medal_color_start": 13081892,
+            "medal_level": 19,
+            "medal_name": "里棵生",
+            "special": "",
+            "target_id": 12939237
+          },
+          "name_color": "",
+          "r_uname": "有棵里里",
+          "receive_user_info": {
+            "uid": 12939237,
+            "uname": "有棵里里"
+          },
+          "receiver_uinfo": {
+            "anon": null,
+            "base": {
+              "face": "https://i0.hdslb.com/bfs/face/d8d27da7c1ce03bd290b8a915d583ee22fe73348.jpg",
+              "is_mystery": false,
+              "name": "有棵里里",
+              "name_color": 0,
+              "name_color_str": "",
+              "official_info": {
+                "desc": "",
+                "role": 7,
+                "title": "bilibili直播高能主播",
+                "type": 0
+              },
+              "origin_info": {
+                "face": "https://i0.hdslb.com/bfs/face/d8d27da7c1ce03bd290b8a915d583ee22fe73348.jpg",
+                "name": "有棵里里"
+              },
+              "risk_ctrl_info": null
+            },
+            "guard": null,
+            "guard_leader": null,
+            "medal": null,
+            "title": null,
+            "uhead_frame": null,
+            "uid": 12939237,
+            "wealth": null
+          },
+          "ruid": 12939237,
+          "send_master": null,
+          "sender_uinfo": {
+            "anon": null,
+            "base": {
+              "face": "https://i2.hdslb.com/bfs/face/65f73bb9b1b3603aa700e856a577e7d7aeb7ffca.webp",
+              "is_mystery": false,
+              "name": "腊寒珏",
+              "name_color": 0,
+              "name_color_str": "",
+              "official_info": {
+                "desc": "",
+                "role": 0,
+                "title": "",
+                "type": -1
+              },
+              "origin_info": {
+                "face": "https://i2.hdslb.com/bfs/face/65f73bb9b1b3603aa700e856a577e7d7aeb7ffca.webp",
+                "name": "腊寒珏"
+              },
+              "risk_ctrl_info": null
+            },
+            "guard": null,
+            "guard_leader": null,
+            "medal": {
+              "color": 13081892,
+              "color_border": 13081892,
+              "color_end": 13081892,
+              "color_start": 13081892,
+              "guard_icon": "",
+              "guard_level": 0,
+              "honor_icon": "",
+              "id": 0,
+              "is_light": 1,
+              "level": 19,
+              "name": "里棵生",
+              "ruid": 12939237,
+              "score": 1321,
+              "typ": 0,
+              "user_receive_count": 0,
+              "v2_medal_color_border": "#C770A499",
+              "v2_medal_color_end": "#C770A499",
+              "v2_medal_color_level": "#C770A4E6",
+              "v2_medal_color_start": "#C770A499",
+              "v2_medal_color_text": "#FFFFFF"
+            },
+            "title": null,
+            "uhead_frame": null,
+            "uid": 1436277572,
+            "wealth": null
+          },
+          "total_num": 2,
+          "uid": 1436277572,
+          "uname": "腊寒珏",
+          "wealth_level": 10
         }
       }
     }
