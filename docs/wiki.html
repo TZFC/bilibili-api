@@ -365,11 +365,11 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_events": 224,
-  "last_updated": "2026-07-07 23:41:18",
+  "total_events": 229,
+  "last_updated": "2026-07-08 21:33:57",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
-      "count": 9,
+      "count": 10,
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
       "schema": {
         "type": "null"
@@ -378,7 +378,7 @@
       "example": null
     },
     "VIEW": {
-      "count": 20,
+      "count": 21,
       "description": "人气值更新 (PopularityUpdate): 心跳包返回的直播间当前人气数值值更新。",
       "schema": {
         "type": "integer"
@@ -387,7 +387,7 @@
       "example": 1
     },
     "ONLINE_RANK_COUNT": {
-      "count": 43,
+      "count": 44,
       "description": "高能用户数更新 (OnlineRankCount): 房间在线高能用户总数的实时波动更新。",
       "schema": {
         "type": "object",
@@ -739,7 +739,7 @@
       }
     },
     "ONLINE_RANK_V3": {
-      "count": 16,
+      "count": 17,
       "description": "高能用户榜单更新 (OnlineRankV3): 房间内在线的高能用户排行榜信息，其详细列表数据由 Protobuf 编码。",
       "schema": {
         "type": "object",
@@ -818,9 +818,19 @@
                             },
                             "guard": {
                               "type": "object",
-                              "properties": {}
+                              "properties": {
+                                "level": {
+                                  "type": "integer"
+                                },
+                                "expired_str": {
+                                  "type": "string"
+                                }
+                              }
                             }
                           }
+                        },
+                        "guard_level": {
+                          "type": "integer"
                         }
                       }
                     }
@@ -838,7 +848,9 @@
         "cmd": [
           "ONLINE_RANK_V3"
         ],
-        "data.pb": [],
+        "data.pb": [
+          "bilibili_api/data/protos/livechat_events.proto#OnlineRankV3"
+        ],
         "data.pb_decoded.rank_type": [
           11
         ],
@@ -888,7 +900,7 @@
       "example": {
         "cmd": "ONLINE_RANK_V3",
         "data": {
-          "pb": "CgtvbmxpbmVfcmFuaxqUAwjLoae5ARJKaHR0cHM6Ly9pMS5oZHNsYi5jb20vYmZzL2ZhY2UvNWVlMzM3NDAwZTI3ZDgxMjUyMTgxNGYxNzYwMGY4OTk5ZDhlODljNi5qcGcaAzE2MSIM6YCN6YGl5LqR6ZeyKAFCqgIIy6GnuQESnwIKDOmAjemBpeS6kemXshJKaHR0cHM6Ly9pMS5oZHNsYi5jb20vYmZzL2ZhY2UvNWVlMzM3NDAwZTI3ZDgxMjUyMTgxNGYxNzYwMGY4OTk5ZDhlODljNi5qcGcqWgoM6YCN6YGl5LqR6ZeyEkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS81ZWUzMzc0MDBlMjdkODEyNTIxODE0ZjE3NjAwZjg5OTlkOGU4OWM2LmpwZzJaCgzpgI3pgaXkupHpl7ISSmh0dHBzOi8vaTEuaGRzbGIuY29tL2Jmcy9mYWNlLzVlZTMzNzQwMGUyN2Q4MTI1MjE4MTRmMTc2MDBmODk5OWQ4ZTg5YzYuanBnOgsg////////////ATIAGrMDCMfR4QoSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzk3Yzc3ZmEwZTMxYjY4MWRhMjBlNWFhYjYxNmVlOTJmMWE3MjU4Y2YuanBnGgMxMjIiDlJpbmd0b25l5bCP55m9KAIwA0LGAgjH0eEKEqUCCg5SaW5ndG9uZeWwj+eZvRJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvOTdjNzdmYTBlMzFiNjgxZGEyMGU1YWFiNjE2ZWU5MmYxYTcyNThjZi5qcGcqXAoOUmluZ3RvbmXlsI/nmb0SSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzk3Yzc3ZmEwZTMxYjY4MWRhMjBlNWFhYjYxNmVlOTJmMWE3MjU4Y2YuanBnMlwKDlJpbmd0b25l5bCP55m9EkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS85N2M3N2ZhMGUzMWI2ODFkYTIwZTVhYWI2MTZlZTkyZjFhNzI1OGNmLmpwZzoLIP///////////wEyFwgDEhMyMDI2LTA4LTI2IDIzOjU5OjU5GqsDCOX1t6kBEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS80NDA1MmY2NTA2NTZkN2NhZjM2ODE3MWE3ZDY4MmZjY2U1YzdhN2FiLmpwZxoCMjMiEue9keeYvuWwkeW5tOS4nOWwvCgDQrwCCOX1t6kBErECChLnvZHnmL7lsJHlubTkuJzlsLwSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzQ0MDUyZjY1MDY1NmQ3Y2FmMzY4MTcxYTdkNjgyZmNjZTVjN2E3YWIuanBnKmAKEue9keeYvuWwkeW5tOS4nOWwvBJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvNDQwNTJmNjUwNjU2ZDdjYWYzNjgxNzFhN2Q2ODJmY2NlNWM3YTdhYi5qcGcyYAoS572R55i+5bCR5bm05Lic5bC8EkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS80NDA1MmY2NTA2NTZkN2NhZjM2ODE3MWE3ZDY4MmZjY2U1YzdhN2FiLmpwZzoLIP///////////wEyABqRAwjs6/INEkpodHRwczovL2kwLmhkc2xiLmNvbS9iZnMvZmFjZS81ZGIyZmEwMTkyNzRmYmNjYmU3OTM0NTZjYmRhNzYxNmNhYWI1NjczLmpwZxoCMTMiDOaZtOepuuW1kOaciCgEQqkCCOzr8g0SnwIKDOaZtOepuuW1kOaciBJKaHR0cHM6Ly9pMC5oZHNsYi5jb20vYmZzL2ZhY2UvNWRiMmZhMDE5Mjc0ZmJjY2JlNzkzNDU2Y2JkYTc2MTZjYWFiNTY3My5qcGcqWgoM5pm056m65bWQ5pyIEkpodHRwczovL2kwLmhkc2xiLmNvbS9iZnMvZmFjZS81ZGIyZmEwMTkyNzRmYmNjYmU3OTM0NTZjYmRhNzYxNmNhYWI1NjczLmpwZzJaCgzmmbTnqbrltZDmnIgSSmh0dHBzOi8vaTAuaGRzbGIuY29tL2Jmcy9mYWNlLzVkYjJmYTAxOTI3NGZiY2NiZTc5MzQ1NmNiZGE3NjE2Y2FhYjU2NzMuanBnOgsg////////////ATIAGqsDCIWZ+qQBEkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS9kMGNhM2RhYTBiZTMzYzU4OTY0NGM2ODg4YjllMzFjZDZmOWY1YTE3LmpwZxoCMTAiEumTgemUheeCluWwj+Wwj+eZvSgFQrwCCIWZ+qQBErECChLpk4HplIXngpblsI/lsI/nmb0SSmh0dHBzOi8vaTEuaGRzbGIuY29tL2Jmcy9mYWNlL2QwY2EzZGFhMGJlMzNjNTg5NjQ0YzY4ODhiOWUzMWNkNmY5ZjVhMTcuanBnKmAKEumTgemUheeCluWwj+Wwj+eZvRJKaHR0cHM6Ly9pMS5oZHNsYi5jb20vYmZzL2ZhY2UvZDBjYTNkYWEwYmUzM2M1ODk2NDRjNjg4OGI5ZTMxY2Q2ZjlmNWExNy5qcGcyYAoS6ZOB6ZSF54KW5bCP5bCP55m9EkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS9kMGNhM2RhYTBiZTMzYzU4OTY0NGM2ODg4YjllMzFjZDZmOWY1YTE3LmpwZzoLIP///////////wEyABrBAwiegusBEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS8yNDFjZDAxZGI1MWEwNTIwMDZjYWZmZWJlY2Y4Mjg1NWZjMWI1Njg0LmpwZxoBNyIS5Yid6Zuq5Za144Gu56WI44KKKAYwA0LSAgiegusBErECChLliJ3pm6rllrXjga7npYjjgooSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzI0MWNkMDFkYjUxYTA1MjAwNmNhZmZlYmVjZjgyODU1ZmMxYjU2ODQuanBnKmAKEuWInembquWWteOBrueliOOCihJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvMjQxY2QwMWRiNTFhMDUyMDA2Y2FmZmViZWNmODI4NTVmYzFiNTY4NC5qcGcyYAoS5Yid6Zuq5Za144Gu56WI44KKEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS8yNDFjZDAxZGI1MWEwNTIwMDZjYWZmZWJlY2Y4Mjg1NWZjMWI1Njg0LmpwZzoLIP///////////wEyFwgDEhMyMDI3LTA0LTIzIDIzOjU5OjU5GuUDCIL0xwkSSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzc3MTAwNDNlMzc5ZDc3ZTMwMDY4ZGVkNWVjYWU2NGYzNjA5ZWFjM2IuanBnGgE0IhvlhrDmuIXnjonmtIHjga7lpKnlrZDmlrnovrAoBzADQu0CCIL0xwkSzAIKG+WGsOa4heeOiea0geOBruWkqeWtkOaWuei+sBJKaHR0cHM6Ly9pMi5oZHNsYi5jb20vYmZzL2ZhY2UvNzcxMDA0M2UzNzlkNzdlMzAwNjhkZWQ1ZWNhZTY0ZjM2MDllYWMzYi5qcGcqaQob5Yaw5riF546J5rSB44Gu5aSp5a2Q5pa56L6wEkpodHRwczovL2kyLmhkc2xiLmNvbS9iZnMvZmFjZS83NzEwMDQzZTM3OWQ3N2UzMDA2OGRlZDVlY2FlNjRmMzYwOWVhYzNiLmpwZzJpChvlhrDmuIXnjonmtIHjga7lpKnlrZDmlrnovrASSmh0dHBzOi8vaTIuaGRzbGIuY29tL2Jmcy9mYWNlLzc3MTAwNDNlMzc5ZDc3ZTMwMDY4ZGVkNWVjYWU2NGYzNjA5ZWFjM2IuanBnOgsg////////////ATIXCAMSEzIwMjktMTItMDggMjM6NTk6NTk=",
+          "pb": "bilibili_api.live.parse_online_rank_v3",
           "pb_decoded": {
             "rank_type": 11,
             "online_list": [
@@ -911,8 +923,12 @@
                     },
                     "official_info": {}
                   },
-                  "guard": {}
-                }
+                  "guard": {
+                    "level": 3,
+                    "expired_str": "2029-12-08 23:59:59"
+                  }
+                },
+                "guard_level": 3
               },
               {
                 "uid": 22571207,
@@ -959,8 +975,12 @@
                     },
                     "official_info": {}
                   },
-                  "guard": {}
-                }
+                  "guard": {
+                    "level": 3,
+                    "expired_str": "2029-12-08 23:59:59"
+                  }
+                },
+                "guard_level": 3
               },
               {
                 "uid": 29144556,
@@ -981,8 +1001,12 @@
                     },
                     "official_info": {}
                   },
-                  "guard": {}
-                }
+                  "guard": {
+                    "level": 3,
+                    "expired_str": "2029-12-08 23:59:59"
+                  }
+                },
+                "guard_level": 3
               },
               {
                 "uid": 345934981,
@@ -1148,6 +1172,56 @@
                       "guard": {
                         "type": "object",
                         "properties": {}
+                      },
+                      "medal": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "level": {
+                            "type": "integer"
+                          },
+                          "color_start": {
+                            "type": "integer"
+                          },
+                          "color_end": {
+                            "type": "integer"
+                          },
+                          "color_border": {
+                            "type": "integer"
+                          },
+                          "color": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "ruid": {
+                            "type": "integer"
+                          },
+                          "score": {
+                            "type": "integer"
+                          },
+                          "v2_medal_color_start": {
+                            "type": "string"
+                          },
+                          "v2_medal_color_end": {
+                            "type": "string"
+                          },
+                          "v2_medal_color_border": {
+                            "type": "string"
+                          },
+                          "v2_medal_color_text": {
+                            "type": "string"
+                          },
+                          "v2_medal_color_level": {
+                            "type": "string"
+                          },
+                          "is_light": {
+                            "type": "integer"
+                          }
+                        }
                       }
                     }
                   },
@@ -1161,6 +1235,41 @@
                         "type": "string"
                       },
                       "tail_type": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "fans_medal_info": {
+                    "type": "object",
+                    "properties": {
+                      "target_id": {
+                        "type": "integer"
+                      },
+                      "medal_level": {
+                        "type": "integer"
+                      },
+                      "medal_name": {
+                        "type": "string"
+                      },
+                      "medal_color": {
+                        "type": "integer"
+                      },
+                      "medal_color_start": {
+                        "type": "integer"
+                      },
+                      "medal_color_end": {
+                        "type": "integer"
+                      },
+                      "medal_color_border": {
+                        "type": "integer"
+                      },
+                      "anchor_roomid": {
+                        "type": "integer"
+                      },
+                      "score": {
+                        "type": "integer"
+                      },
+                      "is_lighted": {
                         "type": "integer"
                       }
                     }
@@ -1181,7 +1290,9 @@
         "data.dmscore": [
           3
         ],
-        "data.pb": [],
+        "data.pb": [
+          "bilibili_api/data/protos/livechat_events.proto#InteractWordV2"
+        ],
         "data.pb_decoded.uid": [
           403797664
         ],
@@ -1310,7 +1421,7 @@
         "cmd": "INTERACT_WORD_V2",
         "data": {
           "dmscore": 3,
-          "pb": "CKDtxcABEgVTd3JpbiIBASgBMKieoAs4wau30gZAsvargPQzYgB4h4rJ9fTejeAYmgEAsgFhCKDtxcABElMKBVN3cmluEkpodHRwczovL2kxLmhkc2xiLmNvbS9iZnMvZmFjZS85ZjM4MmFkYzVjM2I4MWRkZDBmNWRiOTRlYWYxYTVmMTBhMTJmNDQ0LmpwZyICCAIyALoBegpKaHR0cHM6Ly9pMC5oZHNsYi5jb20vYmZzL2xpdmUvYmI4ODczNDU1OGM2MzgzYTRjZmI1ZmExNmM5NzQ5ZDUyOTBkOTVlOC5wbmcSKuabvue7j+a0u+i3g+i/h++8jOi/keacn+S4juS9oOS6kuWKqOi+g+WwkRgEwgEA",
+          "pb": "bilibili_api.live.parse_interact_word_v2",
           "pb_decoded": {
             "uid": 403797664,
             "uname": "Swrin",
@@ -1333,12 +1444,41 @@
               "wealth": {
                 "level": 2
               },
-              "guard": {}
+              "guard": {},
+              "medal": {
+                "name": "沐马",
+                "level": 9,
+                "color_start": 12632256,
+                "color_end": 12632256,
+                "color_border": 12632256,
+                "color": 9272486,
+                "id": 542552,
+                "ruid": 36265198,
+                "score": 135,
+                "v2_medal_color_start": "#919298CC",
+                "v2_medal_color_end": "#919298CC",
+                "v2_medal_color_border": "#919298CC",
+                "v2_medal_color_text": "#FFFFFF",
+                "v2_medal_color_level": "#919298E6",
+                "is_light": 1
+              }
             },
             "user_anchor_relation": {
               "tail_icon": "https://i0.hdslb.com/bfs/live/bb88734558c6383a4cfb5fa16c9749d5290d95e8.png",
               "tail_guide_text": "曾经活跃过，近期与你互动较少",
               "tail_type": 4
+            },
+            "fans_medal_info": {
+              "target_id": 36265198,
+              "medal_level": 9,
+              "medal_name": "沐马",
+              "medal_color": 9272486,
+              "medal_color_start": 12632256,
+              "medal_color_end": 12632256,
+              "medal_color_border": 12632256,
+              "anchor_roomid": 23596840,
+              "score": 135,
+              "is_lighted": 1
             }
           },
           "pb_decode_message": "success"
@@ -1566,9 +1706,9 @@
         "name": "五灵威力跑马灯",
         "full": {
           "head_icon": "https://i0.hdslb.com/bfs/live/fdaf4f7ca7109bb714a4fb8d45ee78d402523a0b.webp",
-          "tail_icon": "",
+          "tail_icon": "https://i0.hdslb.com/bfs/live/822da481fdaba986d738db5d8fd469ffa95a8fa1.webp",
           "head_icon_fa": "https://i0.hdslb.com/bfs/live/939f221beb57e7962ba41a740b85d40b09e729ba.png",
-          "tail_icon_fa": "",
+          "tail_icon_fa": "https://i0.hdslb.com/bfs/live/7d7af6107ef808438e6c3b4db0c7868bf78e5172.png",
           "head_icon_fan": 39,
           "tail_icon_fan": 4,
           "background": "#ef8e0e",
@@ -1704,7 +1844,43 @@
             2439446,
             27903656,
             27947286,
-            1827737253
+            1827737253,
+            1605093,
+            1724159305,
+            1777482908,
+            1811335414,
+            1901582860,
+            1909418685,
+            30711052,
+            1724159988,
+            27725620,
+            30779052,
+            12195174,
+            1724152845,
+            1726556988,
+            23651264,
+            1726553222,
+            31117661,
+            1772509518,
+            1914116332,
+            1724153590,
+            1929630055,
+            1726557015,
+            1732563810,
+            1856653074,
+            1909417485,
+            27860091,
+            7042851,
+            1700654948,
+            1724770041,
+            1779353917,
+            25237665,
+            32585173,
+            1724152350,
+            1817615215,
+            1724154057,
+            23370980,
+            25463815
           ]
         }
       }
@@ -2456,7 +2632,7 @@
               "risk_ctrl_info": null
             },
             "guard": {
-              "expired_str": "",
+              "expired_str": "2029-12-08 23:59:59",
               "level": 0
             },
             "guard_leader": null,
@@ -2465,7 +2641,7 @@
               "color_border": 398668,
               "color_end": 6850801,
               "color_start": 398668,
-              "guard_icon": "",
+              "guard_icon": "https://i0.hdslb.com/bfs/live/48360c8f3b7de8031e86ff1ef4a2dfc0ec2a61c2.png",
               "guard_level": 0,
               "honor_icon": "",
               "id": 0,
@@ -2492,7 +2668,7 @@
           },
           "user_info": {
             "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-            "face_frame": "",
+            "face_frame": "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png",
             "guard_level": 0,
             "is_main_vip": 0,
             "is_svip": 0,
@@ -3128,7 +3304,7 @@
           "message": "这是一个亿",
           "message_jpn": "これは億です",
           "is_ranked": 0,
-          "background_image": "",
+          "background_image": "https://i0.hdslb.com/bfs/live/8552fe0bbcdea2bc1c72911c015f858f4b32f7f7.png",
           "background_color": "#EDF5FF",
           "background_icon": "",
           "background_price_color": "#7497CD",
@@ -3153,7 +3329,7 @@
           "user_info": {
             "uname": "被卷傻了的烈小焰",
             "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
-            "face_frame": "",
+            "face_frame": "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png",
             "name_color": "#666666",
             "guard_level": 0,
             "user_level": 11,
@@ -3211,7 +3387,7 @@
               "ruid": 36265198,
               "guard_level": 0,
               "score": 16754,
-              "guard_icon": "",
+              "guard_icon": "https://i0.hdslb.com/bfs/live/48360c8f3b7de8031e86ff1ef4a2dfc0ec2a61c2.png",
               "honor_icon": "",
               "v2_medal_color_start": "#3FB4F699",
               "v2_medal_color_end": "#3FB4F699",
@@ -3227,7 +3403,7 @@
             },
             "guard": {
               "level": 0,
-              "expired_str": ""
+              "expired_str": "2029-12-08 23:59:59"
             },
             "uhead_frame": null,
             "guard_leader": null,
@@ -5799,6 +5975,82 @@
           "uid": 20052482,
           "uname": "冰清玉洁の天子方辰",
           "wealth_level": 50
+        }
+      }
+    },
+    "ROOM_CHANGE": {
+      "count": 1,
+      "description": "自定义/未知事件 (ROOM_CHANGE)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "area_id": {
+                "type": "integer"
+              },
+              "parent_area_id": {
+                "type": "integer"
+              },
+              "area_name": {
+                "type": "string"
+              },
+              "parent_area_name": {
+                "type": "string"
+              },
+              "live_key": {
+                "type": "string"
+              },
+              "sub_session_key": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "typical_values": {
+        "cmd": [
+          "ROOM_CHANGE"
+        ],
+        "data.title": [
+          "~零·紅蝶~ Day 2 ~"
+        ],
+        "data.area_id": [
+          744
+        ],
+        "data.parent_area_id": [
+          9
+        ],
+        "data.area_name": [
+          "虚拟Singer"
+        ],
+        "data.parent_area_name": [
+          "虚拟主播"
+        ],
+        "data.live_key": [
+          "0"
+        ],
+        "data.sub_session_key": [
+          ""
+        ]
+      },
+      "example": {
+        "cmd": "ROOM_CHANGE",
+        "data": {
+          "title": "~零·紅蝶~ Day 2 ~",
+          "area_id": 744,
+          "parent_area_id": 9,
+          "area_name": "虚拟Singer",
+          "parent_area_name": "虚拟主播",
+          "live_key": "0",
+          "sub_session_key": ""
         }
       }
     }

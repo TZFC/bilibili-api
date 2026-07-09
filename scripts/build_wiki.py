@@ -87,6 +87,59 @@ def infer_schema(data: Any, path: str = "", typical_vals: Dict[str, Set[Any]] = 
 
         return {"type": type_name}
 
+# Registry of reverse-engineered protobuf fields: (event_type, field_path) -> {parser, proto}
+PROTO_PARSERS = {
+    ("INTERACT_WORD_V2", "data.pb"): {
+        "parser": "bilibili_api.live.parse_interact_word_v2",
+        "proto": "bilibili_api/data/protos/livechat_events.proto#InteractWordV2"
+    },
+    ("ONLINE_RANK_V3", "data.pb"): {
+        "parser": "bilibili_api.live.parse_online_rank_v3",
+        "proto": "bilibili_api/data/protos/livechat_events.proto#OnlineRankV3"
+    }
+}
+
+def deep_copy(obj: Any) -> Any:
+    return json.loads(json.dumps(obj))
+
+def deep_merge(dict1: Any, dict2: Any) -> Any:
+    if not isinstance(dict1, dict) or not isinstance(dict2, dict):
+        return dict1
+    for k, v in dict2.items():
+        if k not in dict1 or dict1[k] is None or dict1[k] == "" or dict1[k] == [] or dict1[k] == {}:
+            dict1[k] = deep_copy(v)
+        elif isinstance(dict1[k], dict) and isinstance(v, dict):
+            deep_merge(dict1[k], v)
+        elif isinstance(dict1[k], list) and isinstance(v, list):
+            for idx in range(min(len(dict1[k]), len(v))):
+                if isinstance(dict1[k][idx], (dict, list)) and isinstance(v[idx], (dict, list)):
+                    deep_merge(dict1[k][idx], v[idx])
+                elif dict1[k][idx] is None or dict1[k][idx] == "":
+                    dict1[k][idx] = deep_copy(v[idx])
+            if len(v) > len(dict1[k]):
+                dict1[k].extend(deep_copy(v[len(dict1[k]):]))
+    return dict1
+
+def update_proto_fields(event_type: str, example: Any, typical_values: Dict[str, Any], current_path: str = ""):
+    if isinstance(example, dict):
+        for k, v in list(example.items()):
+            path = f"{current_path}.{k}" if current_path else k
+            if (event_type, path) in PROTO_PARSERS:
+                parser_info = PROTO_PARSERS[(event_type, path)]
+                example[k] = parser_info["parser"]
+                typical_values[path] = [parser_info["proto"]]
+            else:
+                update_proto_fields(event_type, v, typical_values, path)
+    elif isinstance(example, list):
+        for idx, item in enumerate(example):
+            path = f"{current_path}.{idx}"
+            if (event_type, path) in PROTO_PARSERS:
+                parser_info = PROTO_PARSERS[(event_type, path)]
+                example[idx] = parser_info["parser"]
+                typical_values[path] = [parser_info["proto"]]
+            else:
+                update_proto_fields(event_type, item, typical_values, path)
+
 def compile_wiki_data(db_path: str) -> Dict[str, Any]:
     if not os.path.exists(db_path):
         print(f"Database {db_path} not found.")
@@ -110,9 +163,12 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
             event_types_data[event_type] = {
                 "count": 0,
                 "description": CMD_DESCRIPTIONS.get(event_type, f"自定义/未知事件 ({event_type})"),
-                "typical_vals_raw": {},  # Set internally
-                "example": raw_data
+                "typical_vals_raw": {},
+                "example": deep_copy(raw_data)
             }
+        else:
+            # Deep merge to build a complete example with exactly 1 non-null/non-empty value per field
+            deep_merge(event_types_data[event_type]["example"], raw_data)
 
         event_types_data[event_type]["count"] += 1
         # Update schema and typical values
@@ -128,10 +184,13 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
     }
 
     for event_type, val in event_types_data.items():
-        # Convert schema
+        # Convert typical values
         typical_vals_serializable = {}
         for path, values in val["typical_vals_raw"].items():
             typical_vals_serializable[path] = list(values)
+
+        # Annotate any registered proto fields in the example and typical values
+        update_proto_fields(event_type, val["example"], typical_vals_serializable)
 
         schema = infer_schema(val["example"])
 
@@ -149,6 +208,7 @@ def update_wiki():
     db_path = 'livechat_events.db'
     wiki_template_path = os.path.join('docs', 'wiki_template.html')
     wiki_out_path = os.path.join('docs', 'wiki.html')
+    wiki_data_path = os.path.join('docs', 'wiki_data.json')
 
     # Compile
     data = compile_wiki_data(db_path)
@@ -156,6 +216,10 @@ def update_wiki():
 
     if not os.path.exists('docs'):
         os.makedirs('docs')
+
+    # Write docs/wiki_data.json
+    with open(wiki_data_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
     # Read template if exists, otherwise use standard template string
     if os.path.exists(wiki_template_path):
@@ -172,7 +236,7 @@ def update_wiki():
     with open(wiki_out_path, 'w', encoding='utf-8') as f:
         f.write(output)
 
-    print(f"Successfully compiled wiki to {wiki_out_path} with {len(data['event_types'])} event types.")
+    print(f"Successfully compiled wiki to {wiki_out_path} and {wiki_data_path} with {len(data['event_types'])} event types.")
 
 def get_default_html_template() -> str:
     return """<!DOCTYPE html>
