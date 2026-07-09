@@ -269,11 +269,13 @@ def update_wiki():
     data = compile_wiki_data(db_path)
 
     # Compare and preserve last_updated if no actual types, fields, or examples changed
+    has_changed = True
     if old_data:
         new_compare = {k: v for k, v in data.items() if k != 'last_updated'}
         old_compare = {k: v for k, v in old_data.items() if k != 'last_updated'}
         if json.dumps(new_compare, sort_keys=True) == json.dumps(old_compare, sort_keys=True):
             data['last_updated'] = old_data.get('last_updated', data['last_updated'])
+            has_changed = False
 
     data_json_str = json.dumps(data, ensure_ascii=False, indent=2)
 
@@ -299,7 +301,8 @@ def update_wiki():
     with open(wiki_out_path, 'w', encoding='utf-8') as f:
         f.write(output)
 
-    print(f"Successfully compiled wiki to {wiki_out_path} and {wiki_data_path} with {len(data['event_types'])} event types.")
+    if has_changed:
+        print(f"[WIKI UPDATE] Wiki updated with new fields/types. Total: {len(data['event_types'])} event types, {data['total_fields']} fields.")
 
 def get_default_html_template() -> str:
     return """<!DOCTYPE html>

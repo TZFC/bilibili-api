@@ -174,6 +174,8 @@ async def main():
 
     print(f"Connecting to room_id {room_id}...")
     room = live.LiveDanmaku(room_id, credential=credential)
+    import logging
+    room.logger.setLevel(logging.ERROR)
 
     # Trigger initial wiki build at startup
     subprocess.Popen([venv_python, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
@@ -185,7 +187,6 @@ async def main():
         nonlocal message_counter
         event_type = event.get("type", "UNKNOWN")
         event_data = event.get("data")
-        print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Received event: {event_type}")
 
         # Log to SQLite
         try:
@@ -221,7 +222,7 @@ async def main():
                 seen_event_types.add(event_type)
                 print(f"New event type discovered: {event_type}! Rebuilding wiki...")
             else:
-                print("Periodic wiki rebuild (every 50 messages)...")
+                pass
 
             try:
                 subprocess.Popen([venv_python, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
