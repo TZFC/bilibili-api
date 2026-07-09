@@ -1530,6 +1530,9 @@ class LiveDanmaku(AsyncEvent):
                         self.logger.error("出现错误")
                         break
                     if flag == BiliWsMsgType.BINARY:
+                        if len(data) < 16:
+                            self.logger.debug(f"收到太短的二进制数据 (忽略): {data}")
+                            continue
                         self.logger.debug(f"收到原始数据：{data}")
                         await self.__handle_data(data)
                     elif flag == BiliWsMsgType.CLOSING:
