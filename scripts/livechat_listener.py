@@ -120,6 +120,10 @@ async def main():
     loop = asyncio.get_running_loop()
     loop.set_exception_handler(asyncio_exception_handler)
 
+    venv_python = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".venv314", "Scripts", "python.exe"))
+    if not os.path.exists(venv_python):
+        venv_python = sys.executable
+
     parser = argparse.ArgumentParser(description="Bilibili Livechat Listener Daemon")
     parser.add_argument('--room_id', type=int, default=23596840, help="Bilibili Live Room ID")
     args = parser.parse_args()
@@ -172,7 +176,7 @@ async def main():
     room = live.LiveDanmaku(room_id, credential=credential)
 
     # Trigger initial wiki build at startup
-    subprocess.Popen([sys.executable, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
+    subprocess.Popen([venv_python, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
 
     message_counter = 0
 
@@ -220,7 +224,7 @@ async def main():
                 print("Periodic wiki rebuild (every 50 messages)...")
 
             try:
-                subprocess.Popen([sys.executable, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
+                subprocess.Popen([venv_python, os.path.join(os.path.abspath(os.path.dirname(__file__)), "build_wiki.py")])
             except Exception as e:
                 print(f"Failed to launch wiki compiler: {e}", file=sys.stderr)
 
