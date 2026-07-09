@@ -133,7 +133,7 @@ async def main():
     loop.set_exception_handler(asyncio_exception_handler)
     loop.set_debug(False)
 
-    venv_python = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".venv314", "Scripts", "python.exe"))
+    venv_python = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".venv313", "Scripts", "python.exe"))
     if not os.path.exists(venv_python):
         venv_python = sys.executable
 
@@ -187,7 +187,7 @@ async def main():
 
     print(f"Connecting to room_id {room_id}...")
     from bilibili_api.utils import network
-    network.select_client("aiohttp")
+    network.select_client("curl_cffi")
     room = live.LiveDanmaku(room_id, credential=credential)
     import logging
     room.logger.setLevel(logging.ERROR)
