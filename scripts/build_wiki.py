@@ -250,6 +250,29 @@ def compile_wiki_data(db_path: str) -> Dict[str, Any]:
 
     return compiled
 
+def get_schema_paths_and_types(schema, prefix="") -> dict:
+    if not isinstance(schema, dict) or "type" not in schema:
+        return {}
+    
+    t = schema["type"]
+    res = {}
+    if prefix:
+        res[prefix] = t
+    
+    if t == "object" and "properties" in schema:
+        for k, v in schema["properties"].items():
+            sub_prefix = f"{prefix}.{k}" if prefix else k
+            res.update(get_schema_paths_and_types(v, sub_prefix))
+    elif t == "heterogeneous_array" and "items" in schema:
+        for k, v in schema["items"].items():
+            sub_prefix = f"{prefix}.{k}" if prefix else k
+            res.update(get_schema_paths_and_types(v, sub_prefix))
+    elif t == "array" and "items" in schema:
+        sub_prefix = f"{prefix}[]" if prefix else "[]"
+        res.update(get_schema_paths_and_types(schema["items"], sub_prefix))
+        
+    return res
+
 def update_wiki():
     db_path = 'livechat_events.db'
     wiki_template_path = os.path.join('docs', 'wiki_template.html')
@@ -267,6 +290,29 @@ def update_wiki():
 
     # Compile
     data = compile_wiki_data(db_path)
+
+    # Filter out non-meaningful changes from event_types if old_data is present
+    if old_data and "event_types" in old_data:
+        for event_type, val in list(data["event_types"].items()):
+            if event_type in old_data["event_types"]:
+                old_ev = old_data["event_types"][event_type]
+                old_paths = get_schema_paths_and_types(old_ev.get("schema", {}))
+                new_paths = get_schema_paths_and_types(val.get("schema", {}))
+                
+                # Check for meaningful changes: new fields or null -> concrete type promotions
+                has_new_fields = any(path not in old_paths for path in new_paths)
+                has_type_promotions = any(
+                    old_paths[path] == "null" and new_type != "null"
+                    for path, new_type in new_paths.items()
+                    if path in old_paths
+                )
+                
+                if not has_new_fields and not has_type_promotions:
+                    # Revert to old event data to ignore non-meaningful changes (e.g. example value changes, longer lists)
+                    data["event_types"][event_type] = old_ev
+        
+        # Re-calculate total fields after filtering
+        data["total_fields"] = sum(ev["fields_count"] for ev in data["event_types"].values())
 
     # Compare and preserve last_updated if no actual types, fields, or examples changed
     has_changed = True
