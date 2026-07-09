@@ -36,3 +36,6 @@ env.sh
 livechat_events.db
 # Virtual environment
 .venv314/
+# Logs
+listener.log
+to_be_reverse_engineered.log
