@@ -365,9 +365,9 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 28,
-  "total_fields": 1070,
-  "last_updated": "2026-07-09 00:12:37",
+  "total_types": 29,
+  "total_fields": 1088,
+  "last_updated": "2026-07-09 00:12:57",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -8440,6 +8440,143 @@
           "id": 176651996516352,
           "status": 4,
           "type": 105
+        }
+      }
+    },
+    "PK_BATTLE_PRE_NEW": {
+      "description": "自定义/未知事件 (PK_BATTLE_PRE_NEW)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "pk_id": {
+            "type": "integer"
+          },
+          "pk_status": {
+            "type": "integer"
+          },
+          "status_msg": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "is_followed": {
+                "type": "integer"
+              },
+              "uname": {
+                "type": "string"
+              },
+              "face": {
+                "type": "string"
+              },
+              "uid": {
+                "type": "integer"
+              },
+              "room_id": {
+                "type": "integer"
+              },
+              "season_id": {
+                "type": "integer"
+              },
+              "pre_timer": {
+                "type": "integer"
+              },
+              "pk_votes_name": {
+                "type": "string"
+              },
+              "end_win_task": {
+                "type": "null"
+              },
+              "battle_type": {
+                "type": "integer"
+              },
+              "match_type": {
+                "type": "integer"
+              },
+              "battle_sub_type": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 18,
+      "typical_values": {
+        "cmd": [
+          "PK_BATTLE_PRE_NEW"
+        ],
+        "pk_id": [
+          397674173
+        ],
+        "pk_status": [
+          101
+        ],
+        "status_msg": [
+          ""
+        ],
+        "timestamp": [
+          1783581174
+        ],
+        "data.is_followed": [
+          0
+        ],
+        "data.uname": [
+          "枝念杳杳"
+        ],
+        "data.face": [
+          "https://i0.hdslb.com/bfs/face/70f10febd32790adab20a414a5e8dde10d0ef2f8.jpg"
+        ],
+        "data.uid": [
+          3546907779533502
+        ],
+        "data.room_id": [
+          1986464652
+        ],
+        "data.season_id": [
+          99
+        ],
+        "data.pre_timer": [
+          10
+        ],
+        "data.pk_votes_name": [
+          "PK值"
+        ],
+        "data.end_win_task": [],
+        "data.battle_type": [
+          1
+        ],
+        "data.match_type": [
+          1
+        ],
+        "data.battle_sub_type": [
+          0
+        ]
+      },
+      "example": {
+        "cmd": "PK_BATTLE_PRE_NEW",
+        "pk_id": 397674173,
+        "pk_status": 101,
+        "status_msg": "",
+        "timestamp": 1783581174,
+        "data": {
+          "is_followed": 0,
+          "uname": "枝念杳杳",
+          "face": "https://i0.hdslb.com/bfs/face/70f10febd32790adab20a414a5e8dde10d0ef2f8.jpg",
+          "uid": 3546907779533502,
+          "room_id": 1986464652,
+          "season_id": 99,
+          "pre_timer": 10,
+          "pk_votes_name": "PK值",
+          "end_win_task": null,
+          "battle_type": 1,
+          "match_type": 1,
+          "battle_sub_type": 0
         }
       }
     }
