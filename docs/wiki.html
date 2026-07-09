@@ -10026,7 +10026,7 @@
                 paths.forEach(path => {
                     const tr = document.createElement('tr');
                     const tdPath = document.createElement('td');
-                    tdPath.innerText = path;
+                    tdPath.innerText = path || '(self)';
                     tdPath.style.fontWeight = '500';
                     tdPath.style.color = '#c084fc';
 
