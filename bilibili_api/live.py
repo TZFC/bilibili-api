@@ -1574,6 +1574,7 @@ class LiveDanmaku(AsyncEvent):
         """
         data = self.__unpack(data)
         self.logger.debug(f"收到信息：{data}")
+        self.__heartbeat_timer = 30.0
 
         for info in data:
             callback_info = {
