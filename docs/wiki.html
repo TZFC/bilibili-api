@@ -378,9 +378,9 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 35,
-  "total_fields": 1431,
-  "last_updated": "2026-07-09 01:18:19",
+  "total_types": 48,
+  "total_fields": 1978,
+  "last_updated": "2026-07-12 11:30:17",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -1398,6 +1398,15 @@
                   },
                   "core_user_type": {
                     "type": "integer"
+                  },
+                  "is_spread": {
+                    "type": "integer"
+                  },
+                  "spread_info": {
+                    "type": "string"
+                  },
+                  "spread_desc": {
+                    "type": "string"
                   }
                 }
               },
@@ -1408,7 +1417,7 @@
           }
         }
       },
-      "fields_count": 75,
+      "fields_count": 78,
       "typical_values": {
         "cmd": [
           "INTERACT_WORD_V2"
@@ -1589,6 +1598,15 @@
         ],
         "data.pb_decoded.user_info.user_head_frame.frame_img": [
           "https://i0.hdslb.com/bfs/live/80f732943cc3367029df65e267960d56736a82ee.png"
+        ],
+        "data.pb_decoded.is_spread": [
+          1
+        ],
+        "data.pb_decoded.spread_info": [
+          "#FF649E"
+        ],
+        "data.pb_decoded.spread_desc": [
+          "流量包推广"
         ]
       },
       "example": {
@@ -1677,7 +1695,10 @@
               "guard_level": 3
             },
             "privilege_type": 3,
-            "core_user_type": 5
+            "core_user_type": 5,
+            "is_spread": 1,
+            "spread_info": "#FF649E",
+            "spread_desc": "流量包推广"
           },
           "pb_decode_message": "success"
         }
@@ -2416,6 +2437,9 @@
                   },
                   "wealth": {
                     "type": "null"
+                  },
+                  "anon": {
+                    "type": "null"
                   }
                 }
               },
@@ -2479,7 +2503,7 @@
           }
         }
       },
-      "fields_count": 114,
+      "fields_count": 115,
       "typical_values": {
         "cmd": [
           "SUPER_CHAT_MESSAGE"
@@ -2778,7 +2802,8 @@
         ],
         "send_time": [
           1783485903482
-        ]
+        ],
+        "data.uinfo.anon": []
       },
       "example": {
         "cmd": "SUPER_CHAT_MESSAGE",
@@ -2885,7 +2910,8 @@
             },
             "uhead_frame": null,
             "uid": 515184453,
-            "wealth": null
+            "wealth": null,
+            "anon": null
           },
           "user_info": {
             "face": "https://i0.hdslb.com/bfs/face/ef9f7c10cbdb825ee8c7d9f4bc06a1ecc34a45c3.jpg",
@@ -3754,10 +3780,19 @@
                 "type": "string"
               }
             }
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "send_time": {
+            "type": "integer"
           }
         }
       },
-      "fields_count": 5,
+      "fields_count": 8,
       "typical_values": {
         "cmd": [
           "WATCHED_CHANGE"
@@ -3770,6 +3805,15 @@
         ],
         "data.text_large": [
           "216人看过"
+        ],
+        "msg_id": [
+          "99813316284678656:10:10"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "send_time": [
+          1783743276176
         ]
       },
       "example": {
@@ -3778,7 +3822,10 @@
           "num": 216,
           "text_small": "216",
           "text_large": "216人看过"
-        }
+        },
+        "msg_id": "99813316284678656:10:10",
+        "p_is_ack": true,
+        "send_time": 1783743276176
       }
     },
     "RANK_CHANGED_V2": {
@@ -5121,7 +5168,15 @@
                 "type": "string"
               },
               "bag_gift": {
-                "type": "null"
+                "type": "object",
+                "properties": {
+                  "price_for_show": {
+                    "type": "integer"
+                  },
+                  "show_price": {
+                    "type": "integer"
+                  }
+                }
               },
               "batch_combo_id": {
                 "type": "string"
@@ -5756,7 +5811,7 @@
           }
         }
       },
-      "fields_count": 203,
+      "fields_count": 205,
       "typical_values": {
         "cmd": [
           "SEND_GIFT"
@@ -6256,7 +6311,13 @@
         "data.blind_gift.original_gift_price": [
           9000
         ],
-        "data.sender_uinfo.medal": []
+        "data.sender_uinfo.medal": [],
+        "data.bag_gift.price_for_show": [
+          100
+        ],
+        "data.bag_gift.show_price": [
+          1
+        ]
       },
       "example": {
         "cmd": "SEND_GIFT",
@@ -6265,7 +6326,10 @@
         },
         "data": {
           "action": "投喂",
-          "bag_gift": null,
+          "bag_gift": {
+            "price_for_show": 100,
+            "show_price": 1
+          },
           "batch_combo_id": "batch:gift:combo_id:3546604843829355:12939237:31164:1783580518.9577",
           "batch_combo_send": {
             "action": "投喂",
@@ -8099,6 +8163,24 @@
                     },
                     "highlight_font_color_dark": {
                       "type": "string"
+                    },
+                    "background_color": {
+                      "type": "null"
+                    },
+                    "background_color_dark": {
+                      "type": "null"
+                    },
+                    "font_bold": {
+                      "type": "boolean"
+                    },
+                    "img_height": {
+                      "type": "integer"
+                    },
+                    "img_url": {
+                      "type": "string"
+                    },
+                    "img_width": {
+                      "type": "integer"
                     }
                   }
                 }
@@ -8111,12 +8193,23 @@
                 "items": {
                   "type": "integer"
                 }
+              },
+              "danmaku_style": {
+                "type": "object",
+                "properties": {
+                  "background_color": {
+                    "type": "null"
+                  },
+                  "background_color_dark": {
+                    "type": "null"
+                  }
+                }
               }
             }
           }
         }
       },
-      "fields_count": 13,
+      "fields_count": 22,
       "typical_values": {
         "cmd": [
           "COMMON_NOTICE_DANMAKU"
@@ -8144,7 +8237,23 @@
         ],
         "data.content_segments[].highlight_font_color_dark": [
           "#FFC73E"
-        ]
+        ],
+        "data.content_segments[].background_color": [],
+        "data.content_segments[].background_color_dark": [],
+        "data.content_segments[].font_bold": [
+          false
+        ],
+        "data.content_segments[].img_height": [
+          0
+        ],
+        "data.content_segments[].img_url": [
+          ""
+        ],
+        "data.content_segments[].img_width": [
+          0
+        ],
+        "data.danmaku_style.background_color": [],
+        "data.danmaku_style.background_color_dark": []
       },
       "example": {
         "cmd": "COMMON_NOTICE_DANMAKU",
@@ -8156,7 +8265,30 @@
               "type": 1,
               "font_color_dark": "#CCCCCC",
               "highlight_font_color": "#FFC73E",
-              "highlight_font_color_dark": "#FFC73E"
+              "highlight_font_color_dark": "#FFC73E",
+              "background_color": null,
+              "background_color_dark": null,
+              "font_bold": false,
+              "img_height": 0,
+              "img_url": "",
+              "img_width": 0
+            },
+            {
+              "background_color": [
+                "#FA729A"
+              ],
+              "background_color_dark": null,
+              "font_bold": false,
+              "font_color": "#FFFFFF",
+              "font_color_dark": "",
+              "highlight_font_color": "",
+              "highlight_font_color_dark": "",
+              "img_height": 0,
+              "img_url": "",
+              "img_width": 0,
+              "text": "点击查看",
+              "type": 3,
+              "uri": "https://live.bilibili.com/activity/live-activity-battle/index.html?app_name=area_stone_template&show_refresh=0&show_close=0&is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,0,0,12,0;2,2,375,100p,0,0,0,0,12,0;3,3,100p,70p,0,0,0,0,12,0;4,2,375,100p,0,0,0,0,12,0;5,3,100p,70p,0,0,0,0,12,0;6,3,100p,70p,0,0,0,0,12,0;7,3,100p,70p,0,0,0,0,12,0;8,3,100p,70p,0,0,0,0,12,0&pc_ui=375,626,17181a,2&room_id=27266338&uid=3493081957534067#/play?config_id=9"
             }
           ],
           "dmscore": 1008,
@@ -8166,7 +8298,11 @@
             3,
             4,
             5
-          ]
+          ],
+          "danmaku_style": {
+            "background_color": null,
+            "background_color_dark": null
+          }
         }
       }
     },
@@ -9524,10 +9660,13 @@
           },
           "timestamp": {
             "type": "integer"
+          },
+          "template_id": {
+            "type": "string"
           }
         }
       },
-      "fields_count": 30,
+      "fields_count": 31,
       "typical_values": {
         "cmd": [
           "PK_BATTLE_START_NEW"
@@ -9606,6 +9745,10 @@
         ],
         "timestamp": [
           1783580825
+        ],
+        "data.final_conf": [],
+        "template_id": [
+          "multi_conn_grid"
         ]
       },
       "example": {
@@ -9642,7 +9785,8 @@
         "pk_id": 397674000,
         "pk_status": 201,
         "send_time": 1783580825919,
-        "timestamp": 1783580825
+        "timestamp": 1783580825,
+        "template_id": "multi_conn_grid"
       }
     },
     "DM_INTERACTION": {
@@ -9767,10 +9911,13 @@
                 "type": "integer"
               }
             }
+          },
+          "template_id": {
+            "type": "string"
           }
         }
       },
-      "fields_count": 18,
+      "fields_count": 19,
       "typical_values": {
         "cmd": [
           "PK_BATTLE_PRE_NEW"
@@ -9820,6 +9967,9 @@
         ],
         "data.battle_sub_type": [
           0
+        ],
+        "template_id": [
+          "multi_conn_grid"
         ]
       },
       "example": {
@@ -9841,7 +9991,8 @@
           "battle_type": 1,
           "match_type": 1,
           "battle_sub_type": 0
-        }
+        },
+        "template_id": "multi_conn_grid"
       }
     },
     "WIDGET_BANNER": {
@@ -9862,6 +10013,95 @@
                 "type": "object",
                 "properties": {
                   "3229": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "cover": {
+                        "type": "string"
+                      },
+                      "web_cover": {
+                        "type": "string"
+                      },
+                      "tip_text": {
+                        "type": "string"
+                      },
+                      "tip_text_color": {
+                        "type": "string"
+                      },
+                      "tip_bottom_color": {
+                        "type": "string"
+                      },
+                      "jump_url": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "stay_time": {
+                        "type": "integer"
+                      },
+                      "site": {
+                        "type": "integer"
+                      },
+                      "platform_in": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "type": {
+                        "type": "integer"
+                      },
+                      "band_id": {
+                        "type": "integer"
+                      },
+                      "sub_key": {
+                        "type": "string"
+                      },
+                      "sub_data": {
+                        "type": "string"
+                      },
+                      "is_add": {
+                        "type": "boolean"
+                      },
+                      "position": {
+                        "type": "integer"
+                      },
+                      "target_url": {
+                        "type": "string"
+                      },
+                      "url_type": {
+                        "type": "integer"
+                      },
+                      "android_jumpurl": {
+                        "type": "string"
+                      },
+                      "ios_jumpurl": {
+                        "type": "string"
+                      },
+                      "android_schameurl": {
+                        "type": "string"
+                      },
+                      "ios_schemaurl": {
+                        "type": "string"
+                      },
+                      "biz_time": {
+                        "type": "integer"
+                      },
+                      "not_merge_tab": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "3209": {
+                    "type": "null"
+                  },
+                  "3235": {
                     "type": "null"
                   }
                 }
@@ -9870,7 +10110,7 @@
           }
         }
       },
-      "fields_count": 5,
+      "fields_count": 34,
       "typical_values": {
         "cmd": [
           "WIDGET_BANNER"
@@ -9878,14 +10118,124 @@
         "data.timestamp": [
           1783581240
         ],
-        "data.widget_list.3229": []
+        "data.widget_list.3229": [],
+        "data.widget_list.3209": [],
+        "data.widget_list.3235": [],
+        "data.widget_list.3229.id": [
+          3229
+        ],
+        "data.widget_list.3229.title": [
+          "家乡代言人"
+        ],
+        "data.widget_list.3229.cover": [
+          ""
+        ],
+        "data.widget_list.3229.web_cover": [
+          ""
+        ],
+        "data.widget_list.3229.tip_text": [
+          ""
+        ],
+        "data.widget_list.3229.tip_text_color": [
+          ""
+        ],
+        "data.widget_list.3229.tip_bottom_color": [
+          ""
+        ],
+        "data.widget_list.3229.jump_url": [],
+        "data.widget_list.3229.url": [
+          ""
+        ],
+        "data.widget_list.3229.stay_time": [
+          5
+        ],
+        "data.widget_list.3229.site": [
+          1
+        ],
+        "data.widget_list.3229.platform_in[]": [
+          "live"
+        ],
+        "data.widget_list.3229.type": [
+          1
+        ],
+        "data.widget_list.3229.band_id": [
+          110363
+        ],
+        "data.widget_list.3229.sub_key": [
+          ""
+        ],
+        "data.widget_list.3229.sub_data": [],
+        "data.widget_list.3229.is_add": [
+          true
+        ],
+        "data.widget_list.3229.position": [
+          0
+        ],
+        "data.widget_list.3229.target_url": [],
+        "data.widget_list.3229.url_type": [
+          0
+        ],
+        "data.widget_list.3229.android_jumpurl": [
+          ""
+        ],
+        "data.widget_list.3229.ios_jumpurl": [
+          ""
+        ],
+        "data.widget_list.3229.android_schameurl": [
+          ""
+        ],
+        "data.widget_list.3229.ios_schemaurl": [
+          ""
+        ],
+        "data.widget_list.3229.biz_time": [
+          1783877272
+        ],
+        "data.widget_list.3229.not_merge_tab": [
+          0
+        ]
       },
       "example": {
         "cmd": "WIDGET_BANNER",
         "data": {
           "timestamp": 1783581240,
           "widget_list": {
-            "3229": null
+            "3229": {
+              "id": 3229,
+              "title": "家乡代言人",
+              "cover": "",
+              "web_cover": "",
+              "tip_text": "",
+              "tip_text_color": "",
+              "tip_bottom_color": "",
+              "jump_url": "https://live.bilibili.com/activity/live-activity-battle/index.html?is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,0,0,12,0;2,2,375,100p,0,0,0,0,12,0;3,3,100p,70p,0,0,0,0,12,0;4,2,375,100p,0,0,0,0,12,0;5,3,100p,70p,0,0,0,0,12,0;6,3,100p,70p,0,0,0,0,12,0;7,3,100p,70p,0,0,0,0,12,0;8,3,100p,70p,0,0,0,0,12,0&pc_ui=375,626,17181a,2&room_id=27266338&uid=3493081957534067&tab_id=pendant&selected_id=3229&source=#/",
+              "url": "",
+              "stay_time": 5,
+              "site": 1,
+              "platform_in": [
+                "live",
+                "blink",
+                "live_link",
+                "web",
+                "pc_link",
+                "link_pre"
+              ],
+              "type": 1,
+              "band_id": 110363,
+              "sub_key": "",
+              "sub_data": "%7B%22anchor_status%22%3A1%2C%22is_black%22%3Afalse%2C%22is_chat_room%22%3Afalse%2C%22team_id%22%3A4%2C%22team_name%22%3A%22%E8%99%9A%E6%8B%9FSingerC%22%2C%22rank%22%3A12%2C%22score%22%3A17453%2C%22diff_type%22%3A3%2C%22diff_score%22%3A4031%2C%22extra%22%3A%22%7B%5C%22act_id%5C%22%3A110363%7D%22%2C%22activity_info%22%3A%7B%22stage%22%3A1%2C%22substage%22%3A1%2C%22round%22%3A1%2C%22status%22%3A1%2C%22act_status%22%3A1%7D%7D",
+              "is_add": true,
+              "position": 0,
+              "target_url": "https://live.bilibili.com/activity/live-activity-battle/index.html?app_name=area_stone_template&show_refresh=0&show_close=0&is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,0,0,12,0;2,2,375,100p,0,0,0,0,12,0;3,3,100p,70p,0,0,0,0,12,0;4,2,375,100p,0,0,0,0,12,0;5,3,100p,70p,0,0,0,0,12,0;6,3,100p,70p,0,0,0,0,12,0;7,3,100p,70p,0,0,0,0,12,0;8,3,100p,70p,0,0,0,0,12,0&pc_ui=375,626,17181a,2&room_id=27266338&uid=3493081957534067#/rank/2",
+              "url_type": 0,
+              "android_jumpurl": "",
+              "ios_jumpurl": "",
+              "android_schameurl": "",
+              "ios_schemaurl": "",
+              "biz_time": 1783877272,
+              "not_merge_tab": 0
+            },
+            "3209": null,
+            "3235": null
           }
         }
       }
@@ -11414,6 +11764,4129 @@
           "uid": 1436277572,
           "uname": "腊寒珏",
           "wealth_level": 10
+        }
+      }
+    },
+    "FLOW_REWARD_CARD": {
+      "description": "自定义/未知事件 (FLOW_REWARD_CARD)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "anchor_face": {
+                "type": "string"
+              },
+              "anchor_icon_url": {
+                "type": "string"
+              },
+              "anchor_name": {
+                "type": "string"
+              },
+              "biz_type": {
+                "type": "integer"
+              },
+              "button_text": {
+                "type": "string"
+              },
+              "cover": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "expire_time": {
+                "type": "integer"
+              },
+              "label_url": {
+                "type": "string"
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "room_id": {
+                "type": "integer"
+              },
+              "route": {
+                "type": "string"
+              },
+              "ruid": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 15,
+      "typical_values": {
+        "cmd": [
+          "FLOW_REWARD_CARD"
+        ],
+        "data.anchor_face": [
+          "https://i0.hdslb.com/bfs/face/972ca385420685ae24ea4641f0ebc76ee06ece90.jpg"
+        ],
+        "data.anchor_icon_url": [
+          "http://i0.hdslb.com/bfs/live/bbd2718cbce091d39f72b01ecc762b7542e292a7.png"
+        ],
+        "data.anchor_name": [
+          "艾什_Ash_Halibel"
+        ],
+        "data.biz_type": [
+          2
+        ],
+        "data.button_text": [
+          "去围观"
+        ],
+        "data.cover": [
+          "https://i0.hdslb.com/bfs/live/new_room_cover/7806d0c55db99b682eb451c7ec64c7f0d758f11f.jpg"
+        ],
+        "data.description": [
+          "【灰烬之灵】出道四周年纪念"
+        ],
+        "data.expire_time": [
+          10
+        ],
+        "data.label_url": [
+          "http://i0.hdslb.com/bfs/live/96aa77878c4d3f8bf2ed59fb3ae2b2980ac48887.png"
+        ],
+        "data.rank": [
+          1
+        ],
+        "data.room_id": [
+          24946274
+        ],
+        "data.route": [
+          "https://live.bilibili.com/24946274?popular_rank=1&user_from=2&jump_from=28039&live_from=28039"
+        ],
+        "data.ruid": [
+          1372675026
+        ]
+      },
+      "example": {
+        "cmd": "FLOW_REWARD_CARD",
+        "data": {
+          "anchor_face": "https://i0.hdslb.com/bfs/face/972ca385420685ae24ea4641f0ebc76ee06ece90.jpg",
+          "anchor_icon_url": "http://i0.hdslb.com/bfs/live/bbd2718cbce091d39f72b01ecc762b7542e292a7.png",
+          "anchor_name": "艾什_Ash_Halibel",
+          "biz_type": 2,
+          "button_text": "去围观",
+          "cover": "https://i0.hdslb.com/bfs/live/new_room_cover/7806d0c55db99b682eb451c7ec64c7f0d758f11f.jpg",
+          "description": "【灰烬之灵】出道四周年纪念",
+          "expire_time": 10,
+          "label_url": "http://i0.hdslb.com/bfs/live/96aa77878c4d3f8bf2ed59fb3ae2b2980ac48887.png",
+          "rank": 1,
+          "room_id": 24946274,
+          "route": "https://live.bilibili.com/24946274?popular_rank=1&user_from=2&jump_from=28039&live_from=28039",
+          "ruid": 1372675026
+        }
+      }
+    },
+    "VOICE_JOIN_ROOM_COUNT_INFO": {
+      "description": "自定义/未知事件 (VOICE_JOIN_ROOM_COUNT_INFO)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "apply_count": {
+                "type": "integer"
+              },
+              "cmd": {
+                "type": "string"
+              },
+              "notify_count": {
+                "type": "integer"
+              },
+              "red_point": {
+                "type": "integer"
+              },
+              "room_id": {
+                "type": "integer"
+              },
+              "room_status": {
+                "type": "integer"
+              },
+              "root_status": {
+                "type": "integer"
+              }
+            }
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "room_id": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          }
+        }
+      },
+      "fields_count": 14,
+      "typical_values": {
+        "cmd": [
+          "VOICE_JOIN_ROOM_COUNT_INFO"
+        ],
+        "data.apply_count": [
+          0
+        ],
+        "data.cmd": [
+          ""
+        ],
+        "data.notify_count": [
+          0
+        ],
+        "data.red_point": [
+          0
+        ],
+        "data.room_id": [
+          23808442
+        ],
+        "data.room_status": [
+          1
+        ],
+        "data.root_status": [
+          1
+        ],
+        "msg_id": [
+          "99726296476597760:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "room_id": [
+          23808442
+        ],
+        "send_time": [
+          1783660287620
+        ]
+      },
+      "example": {
+        "cmd": "VOICE_JOIN_ROOM_COUNT_INFO",
+        "data": {
+          "apply_count": 0,
+          "cmd": "",
+          "notify_count": 0,
+          "red_point": 0,
+          "room_id": 23808442,
+          "room_status": 1,
+          "root_status": 1
+        },
+        "msg_id": "99726296476597760:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "room_id": 23808442,
+        "send_time": 1783660287620
+      }
+    },
+    "PREPARING": {
+      "description": "下播/准备中 (Preparing): 主播切断推流下播，系统提示进入准备中状态。",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "roomid": {
+            "type": "string"
+          },
+          "round": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          }
+        }
+      },
+      "fields_count": 7,
+      "typical_values": {
+        "cmd": [
+          "PREPARING"
+        ],
+        "msg_id": [
+          "99726296417901056:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "roomid": [
+          "23808442"
+        ],
+        "round": [
+          1
+        ],
+        "send_time": [
+          1783660287564
+        ]
+      },
+      "example": {
+        "cmd": "PREPARING",
+        "msg_id": "99726296417901056:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "roomid": "23808442",
+        "round": 1,
+        "send_time": 1783660287564
+      }
+    },
+    "RANK_CHANGED": {
+      "description": "自定义/未知事件 (RANK_CHANGED)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "integer"
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "countdown": {
+                "type": "integer"
+              },
+              "timestamp": {
+                "type": "integer"
+              },
+              "url": {
+                "type": "string"
+              },
+              "on_rank_name_by_type": {
+                "type": "string"
+              },
+              "rank_name_by_type": {
+                "type": "string"
+              },
+              "url_by_type": {
+                "type": "string"
+              },
+              "rank_by_type": {
+                "type": "integer"
+              },
+              "rank_type": {
+                "type": "integer"
+              },
+              "sub_rank_type": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 13,
+      "typical_values": {
+        "cmd": [
+          "RANK_CHANGED"
+        ],
+        "data.uid": [
+          1394160176
+        ],
+        "data.rank": [
+          0
+        ],
+        "data.countdown": [
+          0
+        ],
+        "data.timestamp": [
+          1783660287
+        ],
+        "data.url": [
+          ""
+        ],
+        "data.on_rank_name_by_type": [
+          "热门榜"
+        ],
+        "data.rank_name_by_type": [
+          "热门榜"
+        ],
+        "data.url_by_type": [],
+        "data.rank_by_type": [
+          0
+        ],
+        "data.rank_type": [
+          3
+        ],
+        "data.sub_rank_type": [
+          0
+        ]
+      },
+      "example": {
+        "cmd": "RANK_CHANGED",
+        "data": {
+          "uid": 1394160176,
+          "rank": 0,
+          "countdown": 0,
+          "timestamp": 1783660287,
+          "url": "",
+          "on_rank_name_by_type": "热门榜",
+          "rank_name_by_type": "热门榜",
+          "url_by_type": "https://live.bilibili.com/p/html/live-app-hotrank/index.html?is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,30,100,12;2,2,375,100p,0,0,30,100,0;3,3,100p,70p,0,0,30,100,12;4,2,375,100p,0,0,30,100,0;5,3,100p,70p,0,0,30,100,0;6,3,100p,70p,0,0,30,100,0;7,3,100p,70p,0,0,30,100,0;8,3,100p,70p,0,0,30,100,0&pc_ui=338,465,f4eefa,0&redirect=v2&rank=hot&anchorId=1394160176&rank_type=1",
+          "rank_by_type": 0,
+          "rank_type": 3,
+          "sub_rank_type": 0
+        }
+      }
+    },
+    "VOICE_JOIN_LIST": {
+      "description": "自定义/未知事件 (VOICE_JOIN_LIST)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "apply_count": {
+                "type": "integer"
+              },
+              "category": {
+                "type": "integer"
+              },
+              "cmd": {
+                "type": "string"
+              },
+              "red_point": {
+                "type": "integer"
+              },
+              "refresh": {
+                "type": "integer"
+              },
+              "room_id": {
+                "type": "integer"
+              }
+            }
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "room_id": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          }
+        }
+      },
+      "fields_count": 13,
+      "typical_values": {
+        "cmd": [
+          "VOICE_JOIN_LIST"
+        ],
+        "data.apply_count": [
+          0
+        ],
+        "data.category": [
+          1
+        ],
+        "data.cmd": [
+          ""
+        ],
+        "data.red_point": [
+          1
+        ],
+        "data.refresh": [
+          1
+        ],
+        "data.room_id": [
+          23808442
+        ],
+        "msg_id": [
+          "99726296474500096:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "room_id": [
+          23808442
+        ],
+        "send_time": [
+          1783660287618
+        ]
+      },
+      "example": {
+        "cmd": "VOICE_JOIN_LIST",
+        "data": {
+          "apply_count": 0,
+          "category": 1,
+          "cmd": "",
+          "red_point": 1,
+          "refresh": 1,
+          "room_id": 23808442
+        },
+        "msg_id": "99726296474500096:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "room_id": 23808442,
+        "send_time": 1783660287618
+      }
+    },
+    "PK_INFO": {
+      "description": "自定义/未知事件 (PK_INFO)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "audience_open": {
+                "type": "boolean"
+              },
+              "invite_pk_resp": {
+                "type": "null"
+              },
+              "members": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "assist_info": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "award_content": {
+                            "type": "string"
+                          },
+                          "face": {
+                            "type": "string"
+                          },
+                          "is_mystery": {
+                            "type": "boolean"
+                          },
+                          "rank": {
+                            "type": "integer"
+                          },
+                          "uid": {
+                            "type": "integer"
+                          },
+                          "uname": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "battle_level": {
+                      "type": "object",
+                      "properties": {
+                        "icon": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "capsules": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "animation_text": {
+                            "type": "string"
+                          },
+                          "biz_style_type": {
+                            "type": "integer"
+                          },
+                          "blink_event_type": {
+                            "type": "integer"
+                          },
+                          "capsule_type": {
+                            "type": "integer"
+                          },
+                          "end_time": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "integer"
+                          },
+                          "show_terminal": {
+                            "type": "integer"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "toast": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "capsules_v2": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "animation_text": {
+                            "type": "string"
+                          },
+                          "biz_style_type": {
+                            "type": "integer"
+                          },
+                          "blink_event_type": {
+                            "type": "integer"
+                          },
+                          "capsule_type": {
+                            "type": "integer"
+                          },
+                          "end_time": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "integer"
+                          },
+                          "show_terminal": {
+                            "type": "integer"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "toast": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "date_streak": {
+                      "type": "integer"
+                    },
+                    "face": {
+                      "type": "string"
+                    },
+                    "golds": {
+                      "type": "integer"
+                    },
+                    "group_id": {
+                      "type": "integer"
+                    },
+                    "is_follow": {
+                      "type": "integer"
+                    },
+                    "is_latest_streak": {
+                      "type": "boolean"
+                    },
+                    "is_winner": {
+                      "type": "integer"
+                    },
+                    "order": {
+                      "type": "integer"
+                    },
+                    "pk_cards": {
+                      "type": "null"
+                    },
+                    "pk_multiple_status": {
+                      "type": "integer"
+                    },
+                    "play": {
+                      "type": "null"
+                    },
+                    "power": {
+                      "type": "string"
+                    },
+                    "rank": {
+                      "type": "integer"
+                    },
+                    "rank_v2": {
+                      "type": "integer"
+                    },
+                    "room_id": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "uid": {
+                      "type": "integer"
+                    },
+                    "uname": {
+                      "type": "string"
+                    },
+                    "votes": {
+                      "type": "integer"
+                    },
+                    "votes_text": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "mill_timestamp": {
+                "type": "integer"
+              },
+              "pk_basic": {
+                "type": "object",
+                "properties": {
+                  "biz_session_id": {
+                    "type": "string"
+                  },
+                  "end_time": {
+                    "type": "integer"
+                  },
+                  "init_id": {
+                    "type": "integer"
+                  },
+                  "init_uid": {
+                    "type": "integer"
+                  },
+                  "main_page": {
+                    "type": "string"
+                  },
+                  "muti_pk_type": {
+                    "type": "integer"
+                  },
+                  "pk_id": {
+                    "type": "integer"
+                  },
+                  "punish_end_time": {
+                    "type": "integer"
+                  },
+                  "punish_text": {
+                    "type": "string"
+                  },
+                  "satellite_info": {
+                    "type": "null"
+                  },
+                  "score_mode": {
+                    "type": "integer"
+                  },
+                  "season_id": {
+                    "type": "integer"
+                  },
+                  "sprint_duration": {
+                    "type": "integer"
+                  },
+                  "start_time": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "type": "integer"
+                  },
+                  "status_msg": {
+                    "type": "string"
+                  },
+                  "sub_type": {
+                    "type": "integer"
+                  },
+                  "template_id": {
+                    "type": "string"
+                  },
+                  "top_bar": {
+                    "type": "object",
+                    "properties": {
+                      "battle_url": {
+                        "type": "string"
+                      },
+                      "desc_pics": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "rule_url": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "pk_group": {
+                "type": "null"
+              },
+              "pk_match_info": {
+                "type": "null"
+              },
+              "pk_play": {
+                "type": "object",
+                "properties": {
+                  "dm_conf": {
+                    "type": "object",
+                    "properties": {
+                      "bg_color": {
+                        "type": "string"
+                      },
+                      "font_color": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "escape": {
+                    "type": "null"
+                  },
+                  "final_conf": {
+                    "type": "null"
+                  },
+                  "pk_score_multiple_play": {
+                    "type": "null"
+                  },
+                  "pre_duration": {
+                    "type": "integer"
+                  },
+                  "show_streak": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "timestamp": {
+                "type": "integer"
+              }
+            }
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          }
+        }
+      },
+      "fields_count": 105,
+      "typical_values": {
+        "cmd": [
+          "PK_INFO"
+        ],
+        "data.audience_open": [
+          false
+        ],
+        "data.invite_pk_resp": [],
+        "data.members[].battle_level.icon": [
+          "https://i0.hdslb.com/bfs/live/77b12f45964aa540b3eb1425e5fc2dcfefe67959.png"
+        ],
+        "data.members[].battle_level.url": [],
+        "data.members[].capsules": [],
+        "data.members[].capsules_v2": [],
+        "data.members[].date_streak": [
+          0
+        ],
+        "data.members[].face": [
+          "https://i2.hdslb.com/bfs/face/edb5211f1d2676670d48e3a95ef7bdf73c351831.jpg"
+        ],
+        "data.members[].golds": [
+          0
+        ],
+        "data.members[].group_id": [
+          0
+        ],
+        "data.members[].is_follow": [
+          0
+        ],
+        "data.members[].is_latest_streak": [
+          false
+        ],
+        "data.members[].is_winner": [
+          0
+        ],
+        "data.members[].order": [
+          0
+        ],
+        "data.members[].pk_cards": [],
+        "data.members[].pk_multiple_status": [
+          0
+        ],
+        "data.members[].play": [],
+        "data.members[].power": [
+          ""
+        ],
+        "data.members[].rank": [
+          1
+        ],
+        "data.members[].rank_v2": [
+          0
+        ],
+        "data.members[].room_id": [
+          27266338
+        ],
+        "data.members[].status": [
+          0
+        ],
+        "data.members[].uid": [
+          3493081957534067
+        ],
+        "data.members[].uname": [
+          "弥绘貘貘"
+        ],
+        "data.members[].votes": [
+          0
+        ],
+        "data.members[].votes_text": [
+          "0"
+        ],
+        "data.mill_timestamp": [
+          1783877370188
+        ],
+        "data.pk_basic.biz_session_id": [
+          "17838773647903493081957534067"
+        ],
+        "data.pk_basic.end_time": [
+          1783877680
+        ],
+        "data.pk_basic.init_id": [
+          27266338
+        ],
+        "data.pk_basic.init_uid": [
+          3493081957534067
+        ],
+        "data.pk_basic.main_page": [],
+        "data.pk_basic.muti_pk_type": [
+          4
+        ],
+        "data.pk_basic.pk_id": [
+          397814881
+        ],
+        "data.pk_basic.punish_end_time": [
+          1783877740
+        ],
+        "data.pk_basic.punish_text": [
+          "惩罚"
+        ],
+        "data.pk_basic.satellite_info": [],
+        "data.pk_basic.score_mode": [
+          0
+        ],
+        "data.pk_basic.season_id": [
+          99
+        ],
+        "data.pk_basic.sprint_duration": [
+          10
+        ],
+        "data.pk_basic.start_time": [
+          1783877370
+        ],
+        "data.pk_basic.status": [
+          101
+        ],
+        "data.pk_basic.status_msg": [
+          ""
+        ],
+        "data.pk_basic.sub_type": [
+          5
+        ],
+        "data.pk_basic.template_id": [
+          "multi_conn_grid"
+        ],
+        "data.pk_basic.top_bar.battle_url": [],
+        "data.pk_basic.top_bar.desc_pics[]": [
+          "https://i0.hdslb.com/bfs/live/9b83deca6ed8853ff1abb89e919e2346f0dc7e1d.png"
+        ],
+        "data.pk_basic.top_bar.rule_url": [
+          ""
+        ],
+        "data.pk_basic.type": [
+          6
+        ],
+        "data.pk_group": [],
+        "data.pk_match_info": [],
+        "data.pk_play.dm_conf.bg_color": [
+          "#72C5E2"
+        ],
+        "data.pk_play.dm_conf.font_color": [
+          "#FFE10B"
+        ],
+        "data.pk_play.escape": [],
+        "data.pk_play.final_conf": [],
+        "data.pk_play.pk_score_multiple_play": [],
+        "data.pk_play.pre_duration": [
+          10
+        ],
+        "data.pk_play.show_streak": [
+          false
+        ],
+        "data.timestamp": [
+          1783877370
+        ],
+        "msg_id": [
+          "99953924047405568:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "send_time": [
+          1783877370188
+        ],
+        "data.members[].capsules[].animation_text": [
+          "首次送礼 <%2倍%> PK值加成"
+        ],
+        "data.members[].capsules[].biz_style_type": [
+          0
+        ],
+        "data.members[].capsules[].blink_event_type": [
+          0
+        ],
+        "data.members[].capsules[].capsule_type": [
+          1
+        ],
+        "data.members[].capsules[].end_time": [
+          1783877410
+        ],
+        "data.members[].capsules[].id": [
+          ""
+        ],
+        "data.members[].capsules[].progress": [
+          0
+        ],
+        "data.members[].capsules[].show_terminal": [
+          0
+        ],
+        "data.members[].capsules[].text": [
+          "首次送礼翻倍中"
+        ],
+        "data.members[].capsules[].toast": [
+          ""
+        ],
+        "data.members[].capsules[].url": [
+          "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+        ],
+        "data.members[].assist_info[].award_content": [
+          ""
+        ],
+        "data.members[].assist_info[].face": [
+          "https://i0.hdslb.com/bfs/face/53907d2aa347e4dab03ad7782ae2b10c06787187.jpg"
+        ],
+        "data.members[].assist_info[].is_mystery": [
+          false
+        ],
+        "data.members[].assist_info[].rank": [
+          1
+        ],
+        "data.members[].assist_info[].uid": [
+          123908769
+        ],
+        "data.members[].assist_info[].uname": [
+          "鱼_________"
+        ],
+        "data.members[].capsules_v2[].animation_text": [
+          ""
+        ],
+        "data.members[].capsules_v2[].biz_style_type": [
+          1
+        ],
+        "data.members[].capsules_v2[].blink_event_type": [
+          0
+        ],
+        "data.members[].capsules_v2[].capsule_type": [
+          5
+        ],
+        "data.members[].capsules_v2[].end_time": [
+          0
+        ],
+        "data.members[].capsules_v2[].id": [
+          "1"
+        ],
+        "data.members[].capsules_v2[].progress": [
+          0
+        ],
+        "data.members[].capsules_v2[].show_terminal": [
+          0
+        ],
+        "data.members[].capsules_v2[].text": [
+          "完成挑战获得<%2倍%>PK值"
+        ],
+        "data.members[].capsules_v2[].toast": [
+          ""
+        ],
+        "data.members[].capsules_v2[].url": [
+          ""
+        ]
+      },
+      "example": {
+        "cmd": "PK_INFO",
+        "data": {
+          "audience_open": false,
+          "invite_pk_resp": null,
+          "members": [
+            {
+              "assist_info": [
+                {
+                  "award_content": "",
+                  "face": "https://i0.hdslb.com/bfs/face/53907d2aa347e4dab03ad7782ae2b10c06787187.jpg",
+                  "is_mystery": false,
+                  "rank": 1,
+                  "uid": 123908769,
+                  "uname": "鱼_________"
+                },
+                {
+                  "award_content": "",
+                  "face": "https://i1.hdslb.com/bfs/face/a56daa519feea20e56f09db789d8d613588b9df6.jpg",
+                  "is_mystery": false,
+                  "rank": 2,
+                  "uid": 3546890329131244,
+                  "uname": "貘居流浪的小翠煮猪神"
+                },
+                {
+                  "award_content": "",
+                  "face": "https://i2.hdslb.com/bfs/face/27969e1e0d3a8eb738955aa2fe361666584a62ea.jpg",
+                  "is_mystery": false,
+                  "rank": 3,
+                  "uid": 101711996,
+                  "uname": "弥绘铃酒"
+                }
+              ],
+              "battle_level": {
+                "icon": "https://i0.hdslb.com/bfs/live/77b12f45964aa540b3eb1425e5fc2dcfefe67959.png",
+                "url": "https://live.bilibili.com/activity/live-activity-battle/index.html?room_id=27266338&uid=3493081957534067&show_refresh=0&show_close=0&app_name=chaos&is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,0,0,12,0;2,2,375,100p,0,0,0,0,12,0;3,3,100p,70p,0,0,0,0,12,0;4,2,375,100p,0,0,0,0,12,0;5,3,100p,70p,0,0,0,0,12,0;6,3,100p,70p,0,0,0,0,12,0;7,3,100p,70p,0,0,0,0,12,0;8,3,100p,70p,0,0,0,0,12,0&pc_ui=375,600,0,2&with_menu=0"
+              },
+              "capsules": [
+                {
+                  "animation_text": "首次送礼 <%2倍%> PK值加成",
+                  "biz_style_type": 0,
+                  "blink_event_type": 0,
+                  "capsule_type": 1,
+                  "end_time": 1783877410,
+                  "id": "",
+                  "progress": 0,
+                  "show_terminal": 0,
+                  "text": "首次送礼翻倍中",
+                  "toast": "",
+                  "url": "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+                }
+              ],
+              "capsules_v2": [
+                {
+                  "animation_text": "",
+                  "biz_style_type": 1,
+                  "blink_event_type": 0,
+                  "capsule_type": 5,
+                  "end_time": 0,
+                  "id": "1",
+                  "progress": 0,
+                  "show_terminal": 0,
+                  "text": "完成挑战获得<%2倍%>PK值",
+                  "toast": "",
+                  "url": "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+                },
+                {
+                  "animation_text": "",
+                  "biz_style_type": 4,
+                  "blink_event_type": 0,
+                  "capsule_type": 4,
+                  "end_time": 1783877560,
+                  "id": "2",
+                  "progress": 0,
+                  "show_terminal": 0,
+                  "text": "差1人翻倍",
+                  "toast": "",
+                  "url": "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+                },
+                {
+                  "animation_text": "",
+                  "biz_style_type": 6,
+                  "blink_event_type": 0,
+                  "capsule_type": 4,
+                  "end_time": 1783877560,
+                  "id": "4",
+                  "progress": 0,
+                  "show_terminal": 0,
+                  "text": "即将2倍加成",
+                  "toast": "",
+                  "url": "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+                }
+              ],
+              "date_streak": 0,
+              "face": "https://i2.hdslb.com/bfs/face/edb5211f1d2676670d48e3a95ef7bdf73c351831.jpg",
+              "golds": 0,
+              "group_id": 0,
+              "is_follow": 0,
+              "is_latest_streak": false,
+              "is_winner": 0,
+              "order": 0,
+              "pk_cards": null,
+              "pk_multiple_status": 0,
+              "play": null,
+              "power": "",
+              "rank": 1,
+              "rank_v2": 0,
+              "room_id": 27266338,
+              "status": 0,
+              "uid": 3493081957534067,
+              "uname": "弥绘貘貘",
+              "votes": 0,
+              "votes_text": "0"
+            },
+            {
+              "assist_info": [],
+              "battle_level": {
+                "icon": "https://i0.hdslb.com/bfs/live/77b12f45964aa540b3eb1425e5fc2dcfefe67959.png",
+                "url": "https://live.bilibili.com/activity/live-activity-battle/index.html?room_id=30526675&uid=3537114887097069&show_refresh=0&show_close=0&app_name=chaos&is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,0,0,12,0;2,2,375,100p,0,0,0,0,12,0;3,3,100p,70p,0,0,0,0,12,0;4,2,375,100p,0,0,0,0,12,0;5,3,100p,70p,0,0,0,0,12,0;6,3,100p,70p,0,0,0,0,12,0;7,3,100p,70p,0,0,0,0,12,0;8,3,100p,70p,0,0,0,0,12,0&pc_ui=375,600,0,2&with_menu=0"
+              },
+              "capsules": [
+                {
+                  "animation_text": "首次送礼 <%2倍%> PK值加成",
+                  "biz_style_type": 0,
+                  "blink_event_type": 0,
+                  "capsule_type": 1,
+                  "end_time": 1783877410,
+                  "id": "",
+                  "progress": 0,
+                  "show_terminal": 0,
+                  "text": "首次送礼翻倍中",
+                  "toast": "",
+                  "url": "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+                }
+              ],
+              "capsules_v2": [
+                {
+                  "animation_text": "",
+                  "biz_style_type": 1,
+                  "blink_event_type": 0,
+                  "capsule_type": 5,
+                  "end_time": 0,
+                  "id": "1",
+                  "progress": 0,
+                  "show_terminal": 0,
+                  "text": "完成挑战获得<%2倍%>PK值",
+                  "toast": "",
+                  "url": "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+                },
+                {
+                  "animation_text": "",
+                  "biz_style_type": 4,
+                  "blink_event_type": 0,
+                  "capsule_type": 4,
+                  "end_time": 1783877560,
+                  "id": "2",
+                  "progress": 0,
+                  "show_terminal": 0,
+                  "text": "差10票翻倍",
+                  "toast": "",
+                  "url": "bilibili://live/openRoomPanel/giftPanel?param=%7B%22source_event%22%3A%2242%22%7D"
+                }
+              ],
+              "date_streak": 0,
+              "face": "https://i0.hdslb.com/bfs/face/fabef2a263f5b2dded1529a84c107d17211e87cb.jpg",
+              "golds": 0,
+              "group_id": 0,
+              "is_follow": 1,
+              "is_latest_streak": false,
+              "is_winner": 0,
+              "order": 0,
+              "pk_cards": null,
+              "pk_multiple_status": 0,
+              "play": null,
+              "power": "",
+              "rank": 1,
+              "rank_v2": 0,
+              "room_id": 30526675,
+              "status": 0,
+              "uid": 3537114887097069,
+              "uname": "温柔小茄",
+              "votes": 0,
+              "votes_text": "0"
+            }
+          ],
+          "mill_timestamp": 1783877370188,
+          "pk_basic": {
+            "biz_session_id": "17838773647903493081957534067",
+            "end_time": 1783877680,
+            "init_id": 27266338,
+            "init_uid": 3493081957534067,
+            "main_page": "https://live.bilibili.com/activity/live-activity-battle/index.html?show_refresh=0&show_close=0&app_name=chaos&is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,0,0,12,0;2,2,375,100p,0,0,0,0,12,0;3,3,100p,70p,0,0,0,0,12,0;4,2,375,100p,0,0,0,0,12,0;5,3,100p,70p,0,0,0,0,12,0;6,3,100p,70p,0,0,0,0,12,0;7,3,100p,70p,0,0,0,0,12,0;8,3,100p,70p,0,0,0,0,12,0&pc_ui=375,600,0,2&with_menu=0",
+            "muti_pk_type": 4,
+            "pk_id": 397814881,
+            "punish_end_time": 1783877740,
+            "punish_text": "惩罚",
+            "satellite_info": null,
+            "score_mode": 0,
+            "season_id": 99,
+            "sprint_duration": 10,
+            "start_time": 1783877370,
+            "status": 101,
+            "status_msg": "",
+            "sub_type": 5,
+            "template_id": "multi_conn_grid",
+            "top_bar": {
+              "battle_url": "https://live.bilibili.com/activity/live-activity-battle/index.html?show_refresh=0&show_close=0&app_name=chaos&is_live_half_webview=1&hybrid_rotate_d=1&hybrid_half_ui=1,3,100p,70p,0,0,0,0,12,0;2,2,375,100p,0,0,0,0,12,0;3,3,100p,70p,0,0,0,0,12,0;4,2,375,100p,0,0,0,0,12,0;5,3,100p,70p,0,0,0,0,12,0;6,3,100p,70p,0,0,0,0,12,0;7,3,100p,70p,0,0,0,0,12,0;8,3,100p,70p,0,0,0,0,12,0&with_menu=0",
+              "desc_pics": [
+                "https://i0.hdslb.com/bfs/live/9b83deca6ed8853ff1abb89e919e2346f0dc7e1d.png",
+                "https://i0.hdslb.com/bfs/live/5210d85c5327462751009a269a8b19a4c4bdd7d1.png"
+              ],
+              "rule_url": ""
+            },
+            "type": 6
+          },
+          "pk_group": null,
+          "pk_match_info": null,
+          "pk_play": {
+            "dm_conf": {
+              "bg_color": "#72C5E2",
+              "font_color": "#FFE10B"
+            },
+            "escape": null,
+            "final_conf": null,
+            "pk_score_multiple_play": null,
+            "pre_duration": 10,
+            "show_streak": false
+          },
+          "timestamp": 1783877370
+        },
+        "msg_id": "99953924047405568:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "send_time": 1783877370188
+      }
+    },
+    "UNIVERSAL_EVENT_GIFT_V2": {
+      "description": "自定义/未知事件 (UNIVERSAL_EVENT_GIFT_V2)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "biz_session_id": {
+                "type": "string"
+              },
+              "interact_channel_id": {
+                "type": "string"
+              },
+              "interact_template": {
+                "type": "object",
+                "properties": {
+                  "template_id": {
+                    "type": "string"
+                  },
+                  "show_interact_ui": {
+                    "type": "boolean"
+                  },
+                  "layout_id": {
+                    "type": "string"
+                  },
+                  "layout_version": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "members": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "uid": {
+                      "type": "integer"
+                    },
+                    "uname": {
+                      "type": "string"
+                    },
+                    "face": {
+                      "type": "string"
+                    },
+                    "position": {
+                      "type": "integer"
+                    },
+                    "join_time": {
+                      "type": "integer"
+                    },
+                    "link_id": {
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "integer"
+                    },
+                    "room_id": {
+                      "type": "integer"
+                    },
+                    "fans_num": {
+                      "type": "integer"
+                    },
+                    "display_name": {
+                      "type": "string"
+                    },
+                    "biz_extra_data": {
+                      "type": "object",
+                      "properties": {
+                        "multi_conn": {
+                          "type": "object",
+                          "properties": {
+                            "price": {
+                              "type": "integer"
+                            },
+                            "price_text": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "join_time_ts": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "stream_control": {
+                "type": "null"
+              },
+              "version": {
+                "type": "integer"
+              },
+              "session_status": {
+                "type": "integer"
+              },
+              "business_label": {
+                "type": "string"
+              },
+              "invoking_time": {
+                "type": "integer"
+              },
+              "members_version": {
+                "type": "integer"
+              },
+              "room_status": {
+                "type": "integer"
+              },
+              "system_time_unix": {
+                "type": "integer"
+              },
+              "room_owner": {
+                "type": "integer"
+              },
+              "session_start_at": {
+                "type": "string"
+              },
+              "session_start_at_ts": {
+                "type": "integer"
+              },
+              "room_start_at": {
+                "type": "string"
+              },
+              "room_start_at_ts": {
+                "type": "integer"
+              },
+              "trace_id": {
+                "type": "string"
+              },
+              "biz_extra_data": {
+                "type": "object",
+                "properties": {
+                  "multi_conn": {
+                    "type": "object",
+                    "properties": {
+                      "show_score": {
+                        "type": "integer"
+                      },
+                      "support_full_zoom": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "channel_users": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 46,
+      "typical_values": {
+        "cmd": [
+          "UNIVERSAL_EVENT_GIFT_V2"
+        ],
+        "data.biz_session_id": [
+          "17838773647903493081957534067"
+        ],
+        "data.interact_channel_id": [
+          "4740499003074560"
+        ],
+        "data.interact_template.template_id": [
+          "multi_conn_grid"
+        ],
+        "data.interact_template.show_interact_ui": [
+          false
+        ],
+        "data.interact_template.layout_id": [
+          "left1_right1"
+        ],
+        "data.interact_template.layout_version": [
+          14
+        ],
+        "data.members[].uid": [
+          3493081957534067
+        ],
+        "data.members[].uname": [
+          "弥绘貘貘"
+        ],
+        "data.members[].face": [
+          "https://i2.hdslb.com/bfs/face/edb5211f1d2676670d48e3a95ef7bdf73c351831.jpg"
+        ],
+        "data.members[].position": [
+          0
+        ],
+        "data.members[].join_time": [
+          1783877369
+        ],
+        "data.members[].link_id": [
+          "92043955"
+        ],
+        "data.members[].gender": [
+          0
+        ],
+        "data.members[].room_id": [
+          27266338
+        ],
+        "data.members[].fans_num": [
+          0
+        ],
+        "data.members[].display_name": [
+          "本房主播"
+        ],
+        "data.members[].biz_extra_data.multi_conn.price": [
+          50000
+        ],
+        "data.members[].biz_extra_data.multi_conn.price_text": [
+          "500"
+        ],
+        "data.members[].join_time_ts": [
+          0
+        ],
+        "data.stream_control": [],
+        "data.version": [
+          1783877391192
+        ],
+        "data.session_status": [
+          1
+        ],
+        "data.business_label": [
+          "universal_multi_conn"
+        ],
+        "data.invoking_time": [
+          2
+        ],
+        "data.members_version": [
+          866305647
+        ],
+        "data.room_status": [
+          1
+        ],
+        "data.system_time_unix": [
+          1783877391
+        ],
+        "data.room_owner": [
+          3493081957534067
+        ],
+        "data.session_start_at": [
+          "2026-07-13 01:29:28"
+        ],
+        "data.session_start_at_ts": [
+          23
+        ],
+        "data.room_start_at": [
+          "2026-07-13 01:29:29"
+        ],
+        "data.room_start_at_ts": [
+          22
+        ],
+        "data.trace_id": [
+          "3cba927c551f778e4857755f5c6a53cf"
+        ],
+        "data.biz_extra_data.multi_conn.show_score": [
+          1
+        ],
+        "data.biz_extra_data.multi_conn.support_full_zoom": [
+          2
+        ],
+        "data.channel_users[]": [
+          3493081957534067
+        ]
+      },
+      "example": {
+        "cmd": "UNIVERSAL_EVENT_GIFT_V2",
+        "data": {
+          "biz_session_id": "17838773647903493081957534067",
+          "interact_channel_id": "4740499003074560",
+          "interact_template": {
+            "template_id": "multi_conn_grid",
+            "show_interact_ui": false,
+            "layout_id": "left1_right1",
+            "layout_version": 14
+          },
+          "members": [
+            {
+              "uid": 3493081957534067,
+              "uname": "弥绘貘貘",
+              "face": "https://i2.hdslb.com/bfs/face/edb5211f1d2676670d48e3a95ef7bdf73c351831.jpg",
+              "position": 0,
+              "join_time": 1783877369,
+              "link_id": "92043955",
+              "gender": 0,
+              "room_id": 27266338,
+              "fans_num": 0,
+              "display_name": "本房主播",
+              "biz_extra_data": {
+                "multi_conn": {
+                  "price": 50000,
+                  "price_text": "500"
+                }
+              },
+              "join_time_ts": 0
+            },
+            {
+              "uid": 3537114887097069,
+              "uname": "温柔小茄",
+              "face": "https://i0.hdslb.com/bfs/face/fabef2a263f5b2dded1529a84c107d17211e87cb.jpg",
+              "position": 1,
+              "join_time": 1783877369,
+              "link_id": "92043956",
+              "gender": 0,
+              "room_id": 30526675,
+              "fans_num": 0,
+              "display_name": "温柔小茄",
+              "biz_extra_data": {
+                "multi_conn": {
+                  "price": 0,
+                  "price_text": "0"
+                }
+              },
+              "join_time_ts": 0
+            }
+          ],
+          "stream_control": null,
+          "version": 1783877391192,
+          "session_status": 1,
+          "business_label": "universal_multi_conn",
+          "invoking_time": 2,
+          "members_version": 866305647,
+          "room_status": 1,
+          "system_time_unix": 1783877391,
+          "room_owner": 3493081957534067,
+          "session_start_at": "2026-07-13 01:29:28",
+          "session_start_at_ts": 23,
+          "room_start_at": "2026-07-13 01:29:29",
+          "room_start_at_ts": 22,
+          "trace_id": "3cba927c551f778e4857755f5c6a53cf",
+          "biz_extra_data": {
+            "multi_conn": {
+              "show_score": 1,
+              "support_full_zoom": 2
+            }
+          },
+          "channel_users": [
+            3493081957534067,
+            3537114887097069
+          ]
+        }
+      }
+    },
+    "UNIVERSAL_EVENT_GIFT": {
+      "description": "自定义/未知事件 (UNIVERSAL_EVENT_GIFT)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "room_id": {
+                "type": "integer"
+              },
+              "anchor_uid": {
+                "type": "integer"
+              },
+              "info": {
+                "type": "object",
+                "properties": {
+                  "biz_session_id": {
+                    "type": "string"
+                  },
+                  "interact_channel_id": {
+                    "type": "string"
+                  },
+                  "interact_mode": {
+                    "type": "object",
+                    "properties": {
+                      "interact_mode_type": {
+                        "type": "integer"
+                      },
+                      "join_types": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      },
+                      "invite_timeout": {
+                        "type": "integer"
+                      },
+                      "apply_timeout": {
+                        "type": "integer"
+                      },
+                      "position_mode": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "interact_template": {
+                    "type": "object",
+                    "properties": {
+                      "template_id": {
+                        "type": "string"
+                      },
+                      "is_variable_layout": {
+                        "type": "boolean"
+                      },
+                      "layout_list": {
+                        "type": "null"
+                      },
+                      "show_interact_ui": {
+                        "type": "boolean"
+                      },
+                      "layout_id": {
+                        "type": "string"
+                      },
+                      "layout_data": {
+                        "type": "object",
+                        "properties": {
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          },
+                          "default_cell": {
+                            "type": "object",
+                            "properties": {
+                              "x": {
+                                "type": "integer"
+                              },
+                              "y": {
+                                "type": "integer"
+                              },
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              },
+                              "z_index": {
+                                "type": "integer"
+                              },
+                              "position": {
+                                "type": "integer"
+                              },
+                              "default_open": {
+                                "type": "integer"
+                              },
+                              "mobile_font_size": {
+                                "type": "integer"
+                              },
+                              "mobile_avatar_size": {
+                                "type": "integer"
+                              },
+                              "pc_web_font_size": {
+                                "type": "integer"
+                              },
+                              "pc_web_avatar_size": {
+                                "type": "integer"
+                              },
+                              "can_zoom": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "cells": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "x": {
+                                  "type": "integer"
+                                },
+                                "y": {
+                                  "type": "integer"
+                                },
+                                "width": {
+                                  "type": "integer"
+                                },
+                                "height": {
+                                  "type": "integer"
+                                },
+                                "z_index": {
+                                  "type": "integer"
+                                },
+                                "position": {
+                                  "type": "integer"
+                                },
+                                "default_open": {
+                                  "type": "integer"
+                                },
+                                "mobile_font_size": {
+                                  "type": "integer"
+                                },
+                                "mobile_avatar_size": {
+                                  "type": "integer"
+                                },
+                                "pc_web_font_size": {
+                                  "type": "integer"
+                                },
+                                "pc_web_avatar_size": {
+                                  "type": "integer"
+                                },
+                                "can_zoom": {
+                                  "type": "integer"
+                                }
+                              }
+                            }
+                          },
+                          "rtc_resolution": {
+                            "type": "object",
+                            "properties": {
+                              "vertical_width": {
+                                "type": "integer"
+                              },
+                              "vertical_height": {
+                                "type": "integer"
+                              },
+                              "horizontal_width": {
+                                "type": "integer"
+                              },
+                              "horizontal_height": {
+                                "type": "integer"
+                              },
+                              "code_rate_init": {
+                                "type": "integer"
+                              },
+                              "code_rate_min": {
+                                "type": "integer"
+                              },
+                              "code_rate_max": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "best_area_show_pos": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "interact_connect_type": {
+                    "type": "integer"
+                  },
+                  "interact_max_users": {
+                    "type": "integer"
+                  },
+                  "members": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "integer"
+                        },
+                        "uname": {
+                          "type": "string"
+                        },
+                        "face": {
+                          "type": "string"
+                        },
+                        "position": {
+                          "type": "integer"
+                        },
+                        "join_time": {
+                          "type": "integer"
+                        },
+                        "link_id": {
+                          "type": "string"
+                        },
+                        "gender": {
+                          "type": "integer"
+                        },
+                        "room_id": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "version": {
+                    "type": "integer"
+                  },
+                  "session_status": {
+                    "type": "integer"
+                  },
+                  "multi_conn_info": {
+                    "type": "object",
+                    "properties": {
+                      "scores": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "uid": {
+                              "type": "integer"
+                            },
+                            "price": {
+                              "type": "integer"
+                            },
+                            "price_text": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "room_owner": {
+                        "type": "integer"
+                      },
+                      "show_score": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "business_label": {
+                    "type": "string"
+                  },
+                  "invoking_time": {
+                    "type": "integer"
+                  },
+                  "members_version": {
+                    "type": "integer"
+                  },
+                  "room_status": {
+                    "type": "integer"
+                  },
+                  "system_time_unix": {
+                    "type": "integer"
+                  },
+                  "room_owner": {
+                    "type": "integer"
+                  },
+                  "session_start_at": {
+                    "type": "string"
+                  },
+                  "session_start_at_ts": {
+                    "type": "integer"
+                  },
+                  "room_start_at": {
+                    "type": "string"
+                  },
+                  "room_start_at_ts": {
+                    "type": "integer"
+                  },
+                  "trace_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 92,
+      "typical_values": {
+        "cmd": [
+          "UNIVERSAL_EVENT_GIFT"
+        ],
+        "data.room_id": [
+          27266338
+        ],
+        "data.anchor_uid": [
+          3493081957534067
+        ],
+        "data.info.biz_session_id": [
+          "17838773647903493081957534067"
+        ],
+        "data.info.interact_channel_id": [
+          "4740499003074560"
+        ],
+        "data.info.interact_mode.interact_mode_type": [
+          0
+        ],
+        "data.info.interact_mode.join_types[]": [
+          1
+        ],
+        "data.info.interact_mode.invite_timeout": [
+          30
+        ],
+        "data.info.interact_mode.apply_timeout": [
+          20
+        ],
+        "data.info.interact_mode.position_mode": [
+          0
+        ],
+        "data.info.interact_template.template_id": [
+          "multi_conn_grid"
+        ],
+        "data.info.interact_template.is_variable_layout": [
+          true
+        ],
+        "data.info.interact_template.layout_list": [],
+        "data.info.interact_template.show_interact_ui": [
+          false
+        ],
+        "data.info.interact_template.layout_id": [
+          "left1_right1"
+        ],
+        "data.info.interact_template.layout_data.width": [
+          10
+        ],
+        "data.info.interact_template.layout_data.height": [
+          8
+        ],
+        "data.info.interact_template.layout_data.default_cell.x": [
+          0
+        ],
+        "data.info.interact_template.layout_data.default_cell.y": [
+          0
+        ],
+        "data.info.interact_template.layout_data.default_cell.width": [
+          5
+        ],
+        "data.info.interact_template.layout_data.default_cell.height": [
+          8
+        ],
+        "data.info.interact_template.layout_data.default_cell.z_index": [
+          0
+        ],
+        "data.info.interact_template.layout_data.default_cell.position": [
+          0
+        ],
+        "data.info.interact_template.layout_data.default_cell.default_open": [
+          1
+        ],
+        "data.info.interact_template.layout_data.default_cell.mobile_font_size": [
+          12
+        ],
+        "data.info.interact_template.layout_data.default_cell.mobile_avatar_size": [
+          64
+        ],
+        "data.info.interact_template.layout_data.default_cell.pc_web_font_size": [
+          14
+        ],
+        "data.info.interact_template.layout_data.default_cell.pc_web_avatar_size": [
+          112
+        ],
+        "data.info.interact_template.layout_data.default_cell.can_zoom": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].x": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].y": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].width": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].height": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].z_index": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].position": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].default_open": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].mobile_font_size": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].mobile_avatar_size": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].pc_web_font_size": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].pc_web_avatar_size": [
+          0
+        ],
+        "data.info.interact_template.layout_data.cells[].can_zoom": [
+          0
+        ],
+        "data.info.interact_template.layout_data.rtc_resolution.vertical_width": [
+          720
+        ],
+        "data.info.interact_template.layout_data.rtc_resolution.vertical_height": [
+          1152
+        ],
+        "data.info.interact_template.layout_data.rtc_resolution.horizontal_width": [
+          1000
+        ],
+        "data.info.interact_template.layout_data.rtc_resolution.horizontal_height": [
+          800
+        ],
+        "data.info.interact_template.layout_data.rtc_resolution.code_rate_init": [
+          2000
+        ],
+        "data.info.interact_template.layout_data.rtc_resolution.code_rate_min": [
+          800
+        ],
+        "data.info.interact_template.layout_data.rtc_resolution.code_rate_max": [
+          3000
+        ],
+        "data.info.interact_template.layout_data.best_area_show_pos": [
+          -1
+        ],
+        "data.info.interact_connect_type": [
+          0
+        ],
+        "data.info.interact_max_users": [
+          9
+        ],
+        "data.info.members[].uid": [
+          3493081957534067
+        ],
+        "data.info.members[].uname": [
+          "弥绘貘貘"
+        ],
+        "data.info.members[].face": [
+          "https://i2.hdslb.com/bfs/face/edb5211f1d2676670d48e3a95ef7bdf73c351831.jpg"
+        ],
+        "data.info.members[].position": [
+          0
+        ],
+        "data.info.members[].join_time": [
+          1783877369
+        ],
+        "data.info.members[].link_id": [
+          "92043955"
+        ],
+        "data.info.members[].gender": [
+          0
+        ],
+        "data.info.members[].room_id": [
+          27266338
+        ],
+        "data.info.version": [
+          1783877391199
+        ],
+        "data.info.session_status": [
+          1
+        ],
+        "data.info.multi_conn_info.scores[].uid": [
+          3493081957534067
+        ],
+        "data.info.multi_conn_info.scores[].price": [
+          50000
+        ],
+        "data.info.multi_conn_info.scores[].price_text": [
+          "500"
+        ],
+        "data.info.multi_conn_info.room_owner": [
+          3493081957534067
+        ],
+        "data.info.multi_conn_info.show_score": [
+          1
+        ],
+        "data.info.business_label": [
+          "universal_multi_conn"
+        ],
+        "data.info.invoking_time": [
+          1
+        ],
+        "data.info.members_version": [
+          575289928
+        ],
+        "data.info.room_status": [
+          1
+        ],
+        "data.info.system_time_unix": [
+          1783877391
+        ],
+        "data.info.room_owner": [
+          3493081957534067
+        ],
+        "data.info.session_start_at": [
+          ""
+        ],
+        "data.info.session_start_at_ts": [
+          0
+        ],
+        "data.info.room_start_at": [
+          ""
+        ],
+        "data.info.room_start_at_ts": [
+          0
+        ],
+        "data.info.trace_id": [
+          ""
+        ]
+      },
+      "example": {
+        "cmd": "UNIVERSAL_EVENT_GIFT",
+        "data": {
+          "room_id": 27266338,
+          "anchor_uid": 3493081957534067,
+          "info": {
+            "biz_session_id": "17838773647903493081957534067",
+            "interact_channel_id": "4740499003074560",
+            "interact_mode": {
+              "interact_mode_type": 0,
+              "join_types": [
+                1,
+                2
+              ],
+              "invite_timeout": 30,
+              "apply_timeout": 20,
+              "position_mode": 0
+            },
+            "interact_template": {
+              "template_id": "multi_conn_grid",
+              "is_variable_layout": true,
+              "layout_list": null,
+              "show_interact_ui": false,
+              "layout_id": "left1_right1",
+              "layout_data": {
+                "width": 10,
+                "height": 8,
+                "default_cell": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 5,
+                  "height": 8,
+                  "z_index": 0,
+                  "position": 0,
+                  "default_open": 1,
+                  "mobile_font_size": 12,
+                  "mobile_avatar_size": 64,
+                  "pc_web_font_size": 14,
+                  "pc_web_avatar_size": 112,
+                  "can_zoom": 0
+                },
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "width": 0,
+                    "height": 0,
+                    "z_index": 0,
+                    "position": 0,
+                    "default_open": 0,
+                    "mobile_font_size": 0,
+                    "mobile_avatar_size": 0,
+                    "pc_web_font_size": 0,
+                    "pc_web_avatar_size": 0,
+                    "can_zoom": 0
+                  },
+                  {
+                    "x": 5,
+                    "y": 0,
+                    "width": 0,
+                    "height": 0,
+                    "z_index": 0,
+                    "position": 1,
+                    "default_open": 0,
+                    "mobile_font_size": 0,
+                    "mobile_avatar_size": 0,
+                    "pc_web_font_size": 0,
+                    "pc_web_avatar_size": 0,
+                    "can_zoom": 0
+                  }
+                ],
+                "rtc_resolution": {
+                  "vertical_width": 720,
+                  "vertical_height": 1152,
+                  "horizontal_width": 1000,
+                  "horizontal_height": 800,
+                  "code_rate_init": 2000,
+                  "code_rate_min": 800,
+                  "code_rate_max": 3000
+                },
+                "best_area_show_pos": -1
+              }
+            },
+            "interact_connect_type": 0,
+            "interact_max_users": 9,
+            "members": [
+              {
+                "uid": 3493081957534067,
+                "uname": "弥绘貘貘",
+                "face": "https://i2.hdslb.com/bfs/face/edb5211f1d2676670d48e3a95ef7bdf73c351831.jpg",
+                "position": 0,
+                "join_time": 1783877369,
+                "link_id": "92043955",
+                "gender": 0,
+                "room_id": 27266338
+              },
+              {
+                "uid": 3537114887097069,
+                "uname": "温柔小茄",
+                "face": "https://i0.hdslb.com/bfs/face/fabef2a263f5b2dded1529a84c107d17211e87cb.jpg",
+                "position": 1,
+                "join_time": 1783877369,
+                "link_id": "92043956",
+                "gender": 0,
+                "room_id": 30526675
+              }
+            ],
+            "version": 1783877391199,
+            "session_status": 1,
+            "multi_conn_info": {
+              "scores": [
+                {
+                  "uid": 3493081957534067,
+                  "price": 50000,
+                  "price_text": "500"
+                },
+                {
+                  "uid": 3537114887097069,
+                  "price": 0,
+                  "price_text": "0"
+                }
+              ],
+              "room_owner": 3493081957534067,
+              "show_score": 1
+            },
+            "business_label": "universal_multi_conn",
+            "invoking_time": 1,
+            "members_version": 575289928,
+            "room_status": 1,
+            "system_time_unix": 1783877391,
+            "room_owner": 3493081957534067,
+            "session_start_at": "",
+            "session_start_at_ts": 0,
+            "room_start_at": "",
+            "room_start_at_ts": 0,
+            "trace_id": ""
+          }
+        }
+      }
+    },
+    "PK_BATTLE_SETTLE_NEW": {
+      "description": "自定义/未知事件 (PK_BATTLE_SETTLE_NEW)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "battle_type": {
+                "type": "integer"
+              },
+              "dm_conf": {
+                "type": "object",
+                "properties": {
+                  "bg_color": {
+                    "type": "string"
+                  },
+                  "font_color": {
+                    "type": "string"
+                  }
+                }
+              },
+              "dmscore": {
+                "type": "integer"
+              },
+              "init_info": {
+                "type": "object",
+                "properties": {
+                  "assist_info": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "award_content": {
+                          "type": "string"
+                        },
+                        "face": {
+                          "type": "string"
+                        },
+                        "is_mystery": {
+                          "type": "boolean"
+                        },
+                        "rank": {
+                          "type": "integer"
+                        },
+                        "uid": {
+                          "type": "integer"
+                        },
+                        "uinfo": {
+                          "type": "object",
+                          "properties": {
+                            "anon": {
+                              "type": "null"
+                            },
+                            "base": {
+                              "type": "object",
+                              "properties": {
+                                "face": {
+                                  "type": "string"
+                                },
+                                "is_mystery": {
+                                  "type": "boolean"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "name_color": {
+                                  "type": "integer"
+                                },
+                                "name_color_str": {
+                                  "type": "string"
+                                },
+                                "official_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "desc": {
+                                      "type": "string"
+                                    },
+                                    "role": {
+                                      "type": "integer"
+                                    },
+                                    "title": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                },
+                                "origin_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "face": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "risk_ctrl_info": {
+                                  "type": "null"
+                                }
+                              }
+                            },
+                            "guard": {
+                              "type": "null"
+                            },
+                            "guard_leader": {
+                              "type": "null"
+                            },
+                            "medal": {
+                              "type": "null"
+                            },
+                            "title": {
+                              "type": "null"
+                            },
+                            "uhead_frame": {
+                              "type": "null"
+                            },
+                            "uid": {
+                              "type": "integer"
+                            },
+                            "wealth": {
+                              "type": "null"
+                            }
+                          }
+                        },
+                        "uname": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "result_type": {
+                    "type": "integer"
+                  },
+                  "room_id": {
+                    "type": "integer"
+                  },
+                  "votes": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "match_info": {
+                "type": "object",
+                "properties": {
+                  "assist_info": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "award_content": {
+                          "type": "string"
+                        },
+                        "face": {
+                          "type": "string"
+                        },
+                        "is_mystery": {
+                          "type": "boolean"
+                        },
+                        "rank": {
+                          "type": "integer"
+                        },
+                        "uid": {
+                          "type": "integer"
+                        },
+                        "uinfo": {
+                          "type": "object",
+                          "properties": {
+                            "anon": {
+                              "type": "null"
+                            },
+                            "base": {
+                              "type": "object",
+                              "properties": {
+                                "face": {
+                                  "type": "string"
+                                },
+                                "is_mystery": {
+                                  "type": "boolean"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "name_color": {
+                                  "type": "integer"
+                                },
+                                "name_color_str": {
+                                  "type": "string"
+                                },
+                                "official_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "desc": {
+                                      "type": "string"
+                                    },
+                                    "role": {
+                                      "type": "integer"
+                                    },
+                                    "title": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                },
+                                "origin_info": {
+                                  "type": "object",
+                                  "properties": {
+                                    "face": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "risk_ctrl_info": {
+                                  "type": "null"
+                                }
+                              }
+                            },
+                            "guard": {
+                              "type": "null"
+                            },
+                            "guard_leader": {
+                              "type": "null"
+                            },
+                            "medal": {
+                              "type": "null"
+                            },
+                            "title": {
+                              "type": "null"
+                            },
+                            "uhead_frame": {
+                              "type": "null"
+                            },
+                            "uid": {
+                              "type": "integer"
+                            },
+                            "wealth": {
+                              "type": "null"
+                            }
+                          }
+                        },
+                        "uname": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "result_type": {
+                    "type": "integer"
+                  },
+                  "room_id": {
+                    "type": "integer"
+                  },
+                  "votes": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "pk_id": {
+                "type": "integer"
+              },
+              "pk_status": {
+                "type": "integer"
+              },
+              "punish_end_time": {
+                "type": "integer"
+              },
+              "punish_name": {
+                "type": "string"
+              },
+              "settle_status": {
+                "type": "integer"
+              },
+              "timestamp": {
+                "type": "integer"
+              }
+            }
+          },
+          "msg_id": {
+            "type": "string"
+          },
+          "p_is_ack": {
+            "type": "boolean"
+          },
+          "p_msg_type": {
+            "type": "integer"
+          },
+          "pk_id": {
+            "type": "integer"
+          },
+          "pk_status": {
+            "type": "integer"
+          },
+          "send_time": {
+            "type": "integer"
+          },
+          "template_id": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          }
+        }
+      },
+      "fields_count": 93,
+      "typical_values": {
+        "cmd": [
+          "PK_BATTLE_SETTLE_NEW"
+        ],
+        "data.battle_type": [
+          6
+        ],
+        "data.dm_conf.bg_color": [
+          "#72C5E2"
+        ],
+        "data.dm_conf.font_color": [
+          "#FFE10B"
+        ],
+        "data.dmscore": [
+          1008
+        ],
+        "data.init_info.assist_info[].award_content": [
+          ""
+        ],
+        "data.init_info.assist_info[].face": [
+          "https://i1.hdslb.com/bfs/face/86be7544c421ab015358974703c9a30400ffed60.jpg"
+        ],
+        "data.init_info.assist_info[].is_mystery": [
+          false
+        ],
+        "data.init_info.assist_info[].rank": [
+          1
+        ],
+        "data.init_info.assist_info[].uid": [
+          3706961493232486
+        ],
+        "data.init_info.assist_info[].uinfo.anon": [],
+        "data.init_info.assist_info[].uinfo.base.face": [
+          "https://i1.hdslb.com/bfs/face/86be7544c421ab015358974703c9a30400ffed60.jpg"
+        ],
+        "data.init_info.assist_info[].uinfo.base.is_mystery": [
+          false
+        ],
+        "data.init_info.assist_info[].uinfo.base.name": [
+          "弥绘居居"
+        ],
+        "data.init_info.assist_info[].uinfo.base.name_color": [
+          0
+        ],
+        "data.init_info.assist_info[].uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.role": [
+          0
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.init_info.assist_info[].uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.init_info.assist_info[].uinfo.base.origin_info.face": [
+          "https://i1.hdslb.com/bfs/face/86be7544c421ab015358974703c9a30400ffed60.jpg"
+        ],
+        "data.init_info.assist_info[].uinfo.base.origin_info.name": [
+          "弥绘居居"
+        ],
+        "data.init_info.assist_info[].uinfo.base.risk_ctrl_info": [],
+        "data.init_info.assist_info[].uinfo.guard": [],
+        "data.init_info.assist_info[].uinfo.guard_leader": [],
+        "data.init_info.assist_info[].uinfo.medal": [],
+        "data.init_info.assist_info[].uinfo.title": [],
+        "data.init_info.assist_info[].uinfo.uhead_frame": [],
+        "data.init_info.assist_info[].uinfo.uid": [
+          3706961493232486
+        ],
+        "data.init_info.assist_info[].uinfo.wealth": [],
+        "data.init_info.assist_info[].uname": [
+          "弥绘居居"
+        ],
+        "data.init_info.result_type": [
+          2
+        ],
+        "data.init_info.room_id": [
+          27266338
+        ],
+        "data.init_info.votes": [
+          6101
+        ],
+        "data.match_info.assist_info": [],
+        "data.match_info.result_type": [
+          -1
+        ],
+        "data.match_info.room_id": [
+          30526675
+        ],
+        "data.match_info.votes": [
+          0
+        ],
+        "data.pk_id": [
+          397814881
+        ],
+        "data.pk_status": [
+          401
+        ],
+        "data.punish_end_time": [
+          1783877740
+        ],
+        "data.punish_name": [
+          "惩罚"
+        ],
+        "data.settle_status": [
+          1
+        ],
+        "data.timestamp": [
+          1783877682
+        ],
+        "msg_id": [
+          "99954252004229632:1000:1000"
+        ],
+        "p_is_ack": [
+          true
+        ],
+        "p_msg_type": [
+          1
+        ],
+        "pk_id": [
+          397814881
+        ],
+        "pk_status": [
+          401
+        ],
+        "send_time": [
+          1783877682952
+        ],
+        "template_id": [
+          "multi_conn_grid"
+        ],
+        "timestamp": [
+          1783877682
+        ],
+        "data.match_info.assist_info[].award_content": [
+          ""
+        ],
+        "data.match_info.assist_info[].face": [
+          "https://i2.hdslb.com/bfs/face/f1eb23cb20e3c5dd2b34db88a134f2cffbe68e99.jpg"
+        ],
+        "data.match_info.assist_info[].is_mystery": [
+          false
+        ],
+        "data.match_info.assist_info[].rank": [
+          1
+        ],
+        "data.match_info.assist_info[].uid": [
+          3473897
+        ],
+        "data.match_info.assist_info[].uinfo.anon": [],
+        "data.match_info.assist_info[].uinfo.base.face": [
+          "https://i2.hdslb.com/bfs/face/f1eb23cb20e3c5dd2b34db88a134f2cffbe68e99.jpg"
+        ],
+        "data.match_info.assist_info[].uinfo.base.is_mystery": [
+          false
+        ],
+        "data.match_info.assist_info[].uinfo.base.name": [
+          "New-Gamer"
+        ],
+        "data.match_info.assist_info[].uinfo.base.name_color": [
+          0
+        ],
+        "data.match_info.assist_info[].uinfo.base.name_color_str": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.desc": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.role": [
+          0
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.title": [
+          ""
+        ],
+        "data.match_info.assist_info[].uinfo.base.official_info.type": [
+          -1
+        ],
+        "data.match_info.assist_info[].uinfo.base.origin_info.face": [
+          "https://i2.hdslb.com/bfs/face/f1eb23cb20e3c5dd2b34db88a134f2cffbe68e99.jpg"
+        ],
+        "data.match_info.assist_info[].uinfo.base.origin_info.name": [
+          "New-Gamer"
+        ],
+        "data.match_info.assist_info[].uinfo.base.risk_ctrl_info": [],
+        "data.match_info.assist_info[].uinfo.guard": [],
+        "data.match_info.assist_info[].uinfo.guard_leader": [],
+        "data.match_info.assist_info[].uinfo.medal": [],
+        "data.match_info.assist_info[].uinfo.title": [],
+        "data.match_info.assist_info[].uinfo.uhead_frame": [],
+        "data.match_info.assist_info[].uinfo.uid": [
+          3473897
+        ],
+        "data.match_info.assist_info[].uinfo.wealth": [],
+        "data.match_info.assist_info[].uname": [
+          "New-Gamer"
+        ]
+      },
+      "example": {
+        "cmd": "PK_BATTLE_SETTLE_NEW",
+        "data": {
+          "battle_type": 6,
+          "dm_conf": {
+            "bg_color": "#72C5E2",
+            "font_color": "#FFE10B"
+          },
+          "dmscore": 1008,
+          "init_info": {
+            "assist_info": [
+              {
+                "award_content": "",
+                "face": "https://i1.hdslb.com/bfs/face/86be7544c421ab015358974703c9a30400ffed60.jpg",
+                "is_mystery": false,
+                "rank": 1,
+                "uid": 3706961493232486,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i1.hdslb.com/bfs/face/86be7544c421ab015358974703c9a30400ffed60.jpg",
+                    "is_mystery": false,
+                    "name": "弥绘居居",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i1.hdslb.com/bfs/face/86be7544c421ab015358974703c9a30400ffed60.jpg",
+                      "name": "弥绘居居"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 3706961493232486,
+                  "wealth": null
+                },
+                "uname": "弥绘居居"
+              },
+              {
+                "award_content": "",
+                "face": "https://i0.hdslb.com/bfs/face/53907d2aa347e4dab03ad7782ae2b10c06787187.jpg",
+                "is_mystery": false,
+                "rank": 2,
+                "uid": 123908769,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i0.hdslb.com/bfs/face/53907d2aa347e4dab03ad7782ae2b10c06787187.jpg",
+                    "is_mystery": false,
+                    "name": "鱼_________",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i0.hdslb.com/bfs/face/53907d2aa347e4dab03ad7782ae2b10c06787187.jpg",
+                      "name": "鱼_________"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 123908769,
+                  "wealth": null
+                },
+                "uname": "鱼_________"
+              },
+              {
+                "award_content": "",
+                "face": "https://i2.hdslb.com/bfs/face/27969e1e0d3a8eb738955aa2fe361666584a62ea.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 101711996,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i2.hdslb.com/bfs/face/27969e1e0d3a8eb738955aa2fe361666584a62ea.jpg",
+                    "is_mystery": false,
+                    "name": "弥绘铃酒",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i2.hdslb.com/bfs/face/27969e1e0d3a8eb738955aa2fe361666584a62ea.jpg",
+                      "name": "弥绘铃酒"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 101711996,
+                  "wealth": null
+                },
+                "uname": "弥绘铃酒"
+              }
+            ],
+            "result_type": 2,
+            "room_id": 27266338,
+            "votes": 6101
+          },
+          "match_info": {
+            "assist_info": [
+              {
+                "award_content": "",
+                "face": "https://i2.hdslb.com/bfs/face/f1eb23cb20e3c5dd2b34db88a134f2cffbe68e99.jpg",
+                "is_mystery": false,
+                "rank": 1,
+                "uid": 3473897,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i2.hdslb.com/bfs/face/f1eb23cb20e3c5dd2b34db88a134f2cffbe68e99.jpg",
+                    "is_mystery": false,
+                    "name": "New-Gamer",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i2.hdslb.com/bfs/face/f1eb23cb20e3c5dd2b34db88a134f2cffbe68e99.jpg",
+                      "name": "New-Gamer"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 3473897,
+                  "wealth": null
+                },
+                "uname": "New-Gamer"
+              },
+              {
+                "award_content": "",
+                "face": "https://i2.hdslb.com/bfs/face/b0acb33179315c273034899ec57aa5c37f2d814b.jpg",
+                "is_mystery": false,
+                "rank": 2,
+                "uid": 72278756,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i2.hdslb.com/bfs/face/b0acb33179315c273034899ec57aa5c37f2d814b.jpg",
+                    "is_mystery": false,
+                    "name": "_余星",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i2.hdslb.com/bfs/face/b0acb33179315c273034899ec57aa5c37f2d814b.jpg",
+                      "name": "_余星"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 72278756,
+                  "wealth": null
+                },
+                "uname": "_余星"
+              },
+              {
+                "award_content": "",
+                "face": "https://i0.hdslb.com/bfs/face/727d04c48022573d8545b937a95a1bb977f7549b.jpg",
+                "is_mystery": false,
+                "rank": 3,
+                "uid": 34894275,
+                "uinfo": {
+                  "anon": null,
+                  "base": {
+                    "face": "https://i0.hdslb.com/bfs/face/727d04c48022573d8545b937a95a1bb977f7549b.jpg",
+                    "is_mystery": false,
+                    "name": "账号已㹥稍",
+                    "name_color": 0,
+                    "name_color_str": "",
+                    "official_info": {
+                      "desc": "",
+                      "role": 0,
+                      "title": "",
+                      "type": -1
+                    },
+                    "origin_info": {
+                      "face": "https://i0.hdslb.com/bfs/face/727d04c48022573d8545b937a95a1bb977f7549b.jpg",
+                      "name": "账号已㹥稍"
+                    },
+                    "risk_ctrl_info": null
+                  },
+                  "guard": null,
+                  "guard_leader": null,
+                  "medal": null,
+                  "title": null,
+                  "uhead_frame": null,
+                  "uid": 34894275,
+                  "wealth": null
+                },
+                "uname": "账号已㹥稍"
+              }
+            ],
+            "result_type": -1,
+            "room_id": 30526675,
+            "votes": 0
+          },
+          "pk_id": 397814881,
+          "pk_status": 401,
+          "punish_end_time": 1783877740,
+          "punish_name": "惩罚",
+          "settle_status": 1,
+          "timestamp": 1783877682
+        },
+        "msg_id": "99954252004229632:1000:1000",
+        "p_is_ack": true,
+        "p_msg_type": 1,
+        "pk_id": 397814881,
+        "pk_status": 401,
+        "send_time": 1783877682952,
+        "template_id": "multi_conn_grid",
+        "timestamp": 1783877682
+      }
+    },
+    "PK_WIDGET": {
+      "description": "自定义/未知事件 (PK_WIDGET)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "need_num": {
+                    "type": "integer"
+                  },
+                  "current_num": {
+                    "type": "integer"
+                  },
+                  "icon": {
+                    "type": "string"
+                  },
+                  "reward": {
+                    "type": "string"
+                  },
+                  "task_type": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "title": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "show": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 12,
+      "typical_values": {
+        "cmd": [
+          "PK_WIDGET"
+        ],
+        "data.task.name": [
+          "PK场次"
+        ],
+        "data.task.need_num": [
+          12
+        ],
+        "data.task.current_num": [
+          1
+        ],
+        "data.task.icon": [
+          "https://i0.hdslb.com/bfs/live/2c4e31c69ced39a4f5e6e93d36ce5af28bf0d77a.png"
+        ],
+        "data.task.reward": [
+          "大乱斗段位分+30分"
+        ],
+        "data.task.task_type": [
+          2
+        ],
+        "data.title": [
+          ""
+        ],
+        "data.text": [
+          ""
+        ],
+        "data.show": [
+          true
+        ]
+      },
+      "example": {
+        "cmd": "PK_WIDGET",
+        "data": {
+          "task": {
+            "name": "PK场次",
+            "need_num": 12,
+            "current_num": 1,
+            "icon": "https://i0.hdslb.com/bfs/live/2c4e31c69ced39a4f5e6e93d36ce5af28bf0d77a.png",
+            "reward": "大乱斗段位分+30分",
+            "task_type": 2
+          },
+          "title": "",
+          "text": "",
+          "show": true
+        }
+      }
+    },
+    "LIVE_ROOM_TOAST_MESSAGE": {
+      "description": "自定义/未知事件 (LIVE_ROOM_TOAST_MESSAGE)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "integer"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 5,
+      "typical_values": {
+        "cmd": [
+          "LIVE_ROOM_TOAST_MESSAGE"
+        ],
+        "timestamp": [
+          1783878188
+        ],
+        "data.timestamp": [
+          1783878188
+        ],
+        "data.message": [
+          "对方主播结束了视频连线"
+        ]
+      },
+      "example": {
+        "cmd": "LIVE_ROOM_TOAST_MESSAGE",
+        "timestamp": 1783878188,
+        "data": {
+          "timestamp": 1783878188,
+          "message": "对方主播结束了视频连线"
+        }
+      }
+    },
+    "GUARD_HONOR_THOUSAND": {
+      "description": "自定义/未知事件 (GUARD_HONOR_THOUSAND)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "add": {
+                "type": "array",
+                "items": {
+                  "type": "any"
+                }
+              },
+              "del": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 6,
+      "typical_values": {
+        "cmd": [
+          "GUARD_HONOR_THOUSAND"
+        ],
+        "data.del[]": [
+          3546724557654138
+        ]
+      },
+      "example": {
+        "cmd": "GUARD_HONOR_THOUSAND",
+        "data": {
+          "add": [],
+          "del": [
+            3546724557654138,
+            3537115310721781,
+            3493273152784750,
+            507316149,
+            503492188,
+            480680646,
+            403107461,
+            267766441,
+            194484313,
+            145149047,
+            108618052,
+            36081646,
+            10850097
+          ]
+        }
+      }
+    },
+    "PLAYURL_RELOAD": {
+      "description": "自定义/未知事件 (PLAYURL_RELOAD)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "room_id": {
+                "type": "integer"
+              },
+              "reload_option": {
+                "type": "object",
+                "properties": {
+                  "reload_stream_name": {
+                    "type": "array",
+                    "items": {
+                      "type": "any"
+                    }
+                  },
+                  "reload_format": {
+                    "type": "array",
+                    "items": {
+                      "type": "any"
+                    }
+                  },
+                  "reload_playurl": {
+                    "type": "object",
+                    "properties": {
+                      "need": {
+                        "type": "boolean"
+                      },
+                      "scatter": {
+                        "type": "integer"
+                      },
+                      "qn": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "fallback": {
+                    "type": "boolean"
+                  },
+                  "scatter": {
+                    "type": "integer"
+                  },
+                  "qn": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "playurl": {
+                "type": "object",
+                "properties": {
+                  "cid": {
+                    "type": "integer"
+                  },
+                  "g_qn_desc": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "qn": {
+                          "type": "integer"
+                        },
+                        "desc": {
+                          "type": "string"
+                        },
+                        "hdr_desc": {
+                          "type": "string"
+                        },
+                        "attr_desc": {
+                          "type": "null"
+                        },
+                        "hdr_type": {
+                          "type": "integer"
+                        },
+                        "media_base_desc": {
+                          "type": "null"
+                        },
+                        "eotf": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "stream": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "protocol_name": {
+                          "type": "string"
+                        },
+                        "format": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "format_name": {
+                                "type": "string"
+                              },
+                              "codec": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "codec_name": {
+                                      "type": "string"
+                                    },
+                                    "current_qn": {
+                                      "type": "integer"
+                                    },
+                                    "accept_qn": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "base_url": {
+                                      "type": "string"
+                                    },
+                                    "url_info": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "any"
+                                      }
+                                    },
+                                    "hdr_qn": {
+                                      "type": "null"
+                                    },
+                                    "dolby_type": {
+                                      "type": "integer"
+                                    },
+                                    "attr_name": {
+                                      "type": "string"
+                                    },
+                                    "hdr_type": {
+                                      "type": "integer"
+                                    },
+                                    "drm": {
+                                      "type": "boolean"
+                                    },
+                                    "drm_key_systems": {
+                                      "type": "null"
+                                    },
+                                    "video_codecs": {
+                                      "type": "object",
+                                      "properties": {
+                                        "base": {
+                                          "type": "string"
+                                        },
+                                        "ext": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "audio_codecs": {
+                                      "type": "object",
+                                      "properties": {
+                                        "base": {
+                                          "type": "string"
+                                        },
+                                        "ext": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "session": {
+                                      "type": "string"
+                                    },
+                                    "is_pushing": {
+                                      "type": "boolean"
+                                    },
+                                    "stream_resource_req": {
+                                      "type": "null"
+                                    },
+                                    "video_color_info": {
+                                      "type": "object",
+                                      "properties": {
+                                        "colorspace": {
+                                          "type": "string"
+                                        },
+                                        "metadata_types": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "media_info": {
+                                      "type": "object",
+                                      "properties": {
+                                        "height": {
+                                          "type": "integer"
+                                        },
+                                        "width": {
+                                          "type": "integer"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "master_url": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "p2p_data": {
+                    "type": "object",
+                    "properties": {
+                      "p2p": {
+                        "type": "boolean"
+                      },
+                      "p2p_type": {
+                        "type": "integer"
+                      },
+                      "m_p2p": {
+                        "type": "boolean"
+                      },
+                      "m_servers": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "dolby_qn": {
+                    "type": "null"
+                  },
+                  "hot": {
+                    "type": "boolean"
+                  },
+                  "hdr_metadata_degrade_desc": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "display_badge": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "fields_count": 77,
+      "typical_values": {
+        "cmd": [
+          "PLAYURL_RELOAD"
+        ],
+        "data.room_id": [
+          27266338
+        ],
+        "data.reload_option.reload_playurl.need": [
+          false
+        ],
+        "data.reload_option.reload_playurl.scatter": [
+          0
+        ],
+        "data.reload_option.reload_playurl.qn": [
+          0
+        ],
+        "data.reload_option.fallback": [
+          false
+        ],
+        "data.reload_option.scatter": [
+          3000
+        ],
+        "data.reload_option.qn": [
+          0
+        ],
+        "data.playurl.cid": [
+          27266338
+        ],
+        "data.playurl.g_qn_desc[].qn": [
+          30000
+        ],
+        "data.playurl.g_qn_desc[].desc": [
+          "杜比"
+        ],
+        "data.playurl.g_qn_desc[].hdr_desc": [
+          ""
+        ],
+        "data.playurl.g_qn_desc[].attr_desc": [],
+        "data.playurl.g_qn_desc[].hdr_type": [
+          0
+        ],
+        "data.playurl.g_qn_desc[].media_base_desc": [],
+        "data.playurl.g_qn_desc[].eotf": [
+          0
+        ],
+        "data.playurl.stream[].protocol_name": [
+          "http_stream"
+        ],
+        "data.playurl.stream[].format[].format_name": [
+          "flv"
+        ],
+        "data.playurl.stream[].format[].codec[].codec_name": [
+          "avc"
+        ],
+        "data.playurl.stream[].format[].codec[].current_qn": [
+          250
+        ],
+        "data.playurl.stream[].format[].codec[].accept_qn[]": [
+          10000
+        ],
+        "data.playurl.stream[].format[].codec[].base_url": [
+          ""
+        ],
+        "data.playurl.stream[].format[].codec[].hdr_qn": [],
+        "data.playurl.stream[].format[].codec[].dolby_type": [
+          0
+        ],
+        "data.playurl.stream[].format[].codec[].attr_name": [
+          ""
+        ],
+        "data.playurl.stream[].format[].codec[].hdr_type": [
+          0
+        ],
+        "data.playurl.stream[].format[].codec[].drm": [
+          false
+        ],
+        "data.playurl.stream[].format[].codec[].drm_key_systems": [],
+        "data.playurl.stream[].format[].codec[].video_codecs.base": [
+          "avc1.4d401f"
+        ],
+        "data.playurl.stream[].format[].codec[].video_codecs.ext[]": [
+          ""
+        ],
+        "data.playurl.stream[].format[].codec[].audio_codecs.base": [
+          "mp4a.40.2"
+        ],
+        "data.playurl.stream[].format[].codec[].audio_codecs.ext[]": [
+          ""
+        ],
+        "data.playurl.stream[].format[].codec[].session": [
+          "live_ye6zp4t8qb_Sk6bXlU_x7sw7"
+        ],
+        "data.playurl.stream[].format[].codec[].is_pushing": [
+          true
+        ],
+        "data.playurl.stream[].format[].codec[].stream_resource_req": [],
+        "data.playurl.stream[].format[].codec[].video_color_info.colorspace": [
+          "bt709"
+        ],
+        "data.playurl.stream[].format[].codec[].video_color_info.metadata_types[]": [
+          "none"
+        ],
+        "data.playurl.stream[].format[].codec[].media_info.height": [
+          720
+        ],
+        "data.playurl.stream[].format[].codec[].media_info.width": [
+          1280
+        ],
+        "data.playurl.stream[].format[].master_url": [
+          ""
+        ],
+        "data.playurl.p2p_data.p2p": [
+          false
+        ],
+        "data.playurl.p2p_data.p2p_type": [
+          0
+        ],
+        "data.playurl.p2p_data.m_p2p": [
+          false
+        ],
+        "data.playurl.p2p_data.m_servers": [],
+        "data.playurl.dolby_qn": [],
+        "data.playurl.hot": [
+          true
+        ],
+        "data.playurl.hdr_metadata_degrade_desc[].type": [
+          "smpte_st2086"
+        ],
+        "data.playurl.hdr_metadata_degrade_desc[].display_badge": [
+          "HDR"
+        ]
+      },
+      "example": {
+        "cmd": "PLAYURL_RELOAD",
+        "data": {
+          "room_id": 27266338,
+          "reload_option": {
+            "reload_stream_name": [],
+            "reload_format": [],
+            "reload_playurl": {
+              "need": false,
+              "scatter": 0,
+              "qn": 0
+            },
+            "fallback": false,
+            "scatter": 3000,
+            "qn": 0
+          },
+          "playurl": {
+            "cid": 27266338,
+            "g_qn_desc": [
+              {
+                "qn": 30000,
+                "desc": "杜比",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": null,
+                "eotf": 0
+              },
+              {
+                "qn": 20000,
+                "desc": "4K",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": null,
+                "eotf": 0
+              },
+              {
+                "qn": 15000,
+                "desc": "2K",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": null,
+                "eotf": 0
+              },
+              {
+                "qn": 10000,
+                "desc": "原画",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": {
+                  "detail_desc": {
+                    "desc": "1080P 原画"
+                  },
+                  "brief_desc": {
+                    "desc": "1080P",
+                    "badge": "原画"
+                  }
+                },
+                "eotf": 0
+              },
+              {
+                "qn": 400,
+                "desc": "蓝光",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": null,
+                "eotf": 0
+              },
+              {
+                "qn": 250,
+                "desc": "超清",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": {
+                  "detail_desc": {
+                    "desc": "720P 超清"
+                  },
+                  "brief_desc": {
+                    "desc": "720P"
+                  }
+                },
+                "eotf": 0
+              },
+              {
+                "qn": 150,
+                "desc": "高清",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": null,
+                "eotf": 0
+              },
+              {
+                "qn": 80,
+                "desc": "流畅",
+                "hdr_desc": "",
+                "attr_desc": null,
+                "hdr_type": 0,
+                "media_base_desc": null,
+                "eotf": 0
+              }
+            ],
+            "stream": [
+              {
+                "protocol_name": "http_stream",
+                "format": [
+                  {
+                    "format_name": "flv",
+                    "codec": [
+                      {
+                        "codec_name": "avc",
+                        "current_qn": 250,
+                        "accept_qn": [
+                          10000,
+                          250
+                        ],
+                        "base_url": "",
+                        "url_info": [],
+                        "hdr_qn": null,
+                        "dolby_type": 0,
+                        "attr_name": "",
+                        "hdr_type": 0,
+                        "drm": false,
+                        "drm_key_systems": null,
+                        "video_codecs": {
+                          "base": "avc1.4d401f",
+                          "ext": [
+                            ""
+                          ]
+                        },
+                        "audio_codecs": {
+                          "base": "mp4a.40.2",
+                          "ext": [
+                            ""
+                          ]
+                        },
+                        "session": "live_ye6zp4t8qb_Sk6bXlU_x7sw7",
+                        "is_pushing": true,
+                        "stream_resource_req": null,
+                        "video_color_info": {
+                          "colorspace": "bt709",
+                          "metadata_types": [
+                            "none"
+                          ]
+                        },
+                        "media_info": {
+                          "height": 720,
+                          "width": 1280
+                        }
+                      },
+                      {
+                        "codec_name": "hevc",
+                        "current_qn": 250,
+                        "accept_qn": [
+                          250
+                        ],
+                        "base_url": "",
+                        "url_info": [],
+                        "hdr_qn": null,
+                        "dolby_type": 0,
+                        "attr_name": "",
+                        "hdr_type": 0,
+                        "drm": false,
+                        "drm_key_systems": null,
+                        "video_codecs": {
+                          "base": "hvc1.1.2.L93"
+                        },
+                        "audio_codecs": {
+                          "base": "mp4a.40.2"
+                        },
+                        "session": "live_ye6zp4t8qb_Sk6bXlU_x7sw7",
+                        "is_pushing": true,
+                        "stream_resource_req": null,
+                        "video_color_info": {
+                          "colorspace": "unspecified",
+                          "metadata_types": [
+                            "none"
+                          ]
+                        },
+                        "media_info": {
+                          "height": 720,
+                          "width": 1280
+                        }
+                      }
+                    ],
+                    "master_url": ""
+                  }
+                ]
+              },
+              {
+                "protocol_name": "http_hls",
+                "format": [
+                  {
+                    "format_name": "ts",
+                    "codec": [
+                      {
+                        "codec_name": "avc",
+                        "current_qn": 250,
+                        "accept_qn": [
+                          10000,
+                          250
+                        ],
+                        "base_url": "",
+                        "url_info": [],
+                        "hdr_qn": null,
+                        "dolby_type": 0,
+                        "attr_name": "",
+                        "hdr_type": 0,
+                        "drm": false,
+                        "drm_key_systems": null,
+                        "video_codecs": {
+                          "base": "avc1.4d401f",
+                          "ext": [
+                            ""
+                          ]
+                        },
+                        "audio_codecs": {
+                          "base": "mp4a.40.2",
+                          "ext": [
+                            ""
+                          ]
+                        },
+                        "session": "live_ye6zp4t8qb_Sk6bXlU_x7sw7",
+                        "is_pushing": true,
+                        "stream_resource_req": null,
+                        "video_color_info": {
+                          "colorspace": "bt709",
+                          "metadata_types": [
+                            "none"
+                          ]
+                        },
+                        "media_info": {
+                          "height": 720,
+                          "width": 1280
+                        }
+                      },
+                      {
+                        "codec_name": "hevc",
+                        "current_qn": 250,
+                        "accept_qn": [
+                          250
+                        ],
+                        "base_url": "",
+                        "url_info": [],
+                        "hdr_qn": null,
+                        "dolby_type": 0,
+                        "attr_name": "",
+                        "hdr_type": 0,
+                        "drm": false,
+                        "drm_key_systems": null,
+                        "video_codecs": {
+                          "base": "hvc1.1.2.L93"
+                        },
+                        "audio_codecs": {
+                          "base": "mp4a.40.2"
+                        },
+                        "session": "live_ye6zp4t8qb_Sk6bXlU_x7sw7",
+                        "is_pushing": true,
+                        "stream_resource_req": null,
+                        "video_color_info": {
+                          "colorspace": "unspecified",
+                          "metadata_types": [
+                            "none"
+                          ]
+                        },
+                        "media_info": {
+                          "height": 720,
+                          "width": 1280
+                        }
+                      }
+                    ],
+                    "master_url": ""
+                  },
+                  {
+                    "format_name": "fmp4",
+                    "codec": [
+                      {
+                        "codec_name": "avc",
+                        "current_qn": 250,
+                        "accept_qn": [
+                          10000,
+                          250
+                        ],
+                        "base_url": "",
+                        "url_info": [],
+                        "hdr_qn": null,
+                        "dolby_type": 0,
+                        "attr_name": "",
+                        "hdr_type": 0,
+                        "drm": false,
+                        "drm_key_systems": null,
+                        "video_codecs": {
+                          "base": "avc1.4d401f",
+                          "ext": [
+                            ""
+                          ]
+                        },
+                        "audio_codecs": {
+                          "base": "mp4a.40.2",
+                          "ext": [
+                            ""
+                          ]
+                        },
+                        "session": "live_ye6zp4t8qb_Sk6bXlU_x7sw7",
+                        "is_pushing": true,
+                        "stream_resource_req": null,
+                        "video_color_info": {
+                          "colorspace": "bt709",
+                          "metadata_types": [
+                            "none"
+                          ]
+                        },
+                        "media_info": {
+                          "height": 720,
+                          "width": 1280
+                        }
+                      },
+                      {
+                        "codec_name": "hevc",
+                        "current_qn": 250,
+                        "accept_qn": [
+                          250
+                        ],
+                        "base_url": "",
+                        "url_info": [],
+                        "hdr_qn": null,
+                        "dolby_type": 0,
+                        "attr_name": "",
+                        "hdr_type": 0,
+                        "drm": false,
+                        "drm_key_systems": null,
+                        "video_codecs": {
+                          "base": "hvc1.1.2.L93"
+                        },
+                        "audio_codecs": {
+                          "base": "mp4a.40.2"
+                        },
+                        "session": "live_ye6zp4t8qb_Sk6bXlU_x7sw7",
+                        "is_pushing": true,
+                        "stream_resource_req": null,
+                        "video_color_info": {
+                          "colorspace": "unspecified",
+                          "metadata_types": [
+                            "none"
+                          ]
+                        },
+                        "media_info": {
+                          "height": 720,
+                          "width": 1280
+                        }
+                      }
+                    ],
+                    "master_url": ""
+                  }
+                ]
+              }
+            ],
+            "p2p_data": {
+              "p2p": false,
+              "p2p_type": 0,
+              "m_p2p": false,
+              "m_servers": null
+            },
+            "dolby_qn": null,
+            "hot": true,
+            "hdr_metadata_degrade_desc": [
+              {
+                "type": "smpte_st2086",
+                "display_badge": "HDR"
+              },
+              {
+                "type": "t_uwa_005_1",
+                "display_badge": "HDR Vivid"
+              },
+              {
+                "type": "smpte_st2094_10",
+                "display_badge": "杜比视界"
+              },
+              {
+                "type": "smpte_st2094_40",
+                "display_badge": "HDR10+"
+              },
+              {
+                "type": "none",
+                "display_badge": "HDR"
+              }
+            ]
+          }
         }
       }
     }
