@@ -378,9 +378,9 @@
 
     <script id="wiki-data-placeholder">
         const wikiData = {
-  "total_types": 48,
-  "total_fields": 1978,
-  "last_updated": "2026-07-12 11:30:17",
+  "total_types": 49,
+  "total_fields": 1981,
+  "last_updated": "2026-07-12 12:02:41",
   "event_types": {
     "VERIFICATION_SUCCESSFUL": {
       "description": "认证成功 (VerificationSuccessful): 弹幕客户端与B站WS弹幕服务器完成鉴权握手并确立连接。",
@@ -15888,6 +15888,40 @@
             ]
           }
         }
+      }
+    },
+    "SHOPPING_CART_SHOW": {
+      "description": "自定义/未知事件 (SHOPPING_CART_SHOW)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "integer"
+              }
+            }
+          },
+          "cmd": {
+            "type": "string"
+          }
+        }
+      },
+      "fields_count": 3,
+      "typical_values": {
+        "data.status": [
+          2
+        ],
+        "cmd": [
+          "SHOPPING_CART_SHOW"
+        ]
+      },
+      "example": {
+        "data": {
+          "status": 2
+        },
+        "cmd": "SHOPPING_CART_SHOW"
       }
     }
   }

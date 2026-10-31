@@ -8,6 +8,7 @@ import json
 import tempfile
 import time
 import base64
+import urllib.parse
 import enum
 
 import os
@@ -487,11 +488,16 @@ class QrCodeLogin:
         """
         if self.__platform == QrCodeLoginChannel.WEB:
             api = API["qrcode"]["web"]["get_events"]
-            params = {"qrcode_key": self.__qr_key}
-            events = (
-                await Api(credential=Credential(), **api).update_params(**params).result
+            params = {"qrcode_key": self.__qr_key, "source": "main-fe-header"}
+            client = get_client()
+            resp = await client.request(
+                method="GET",
+                url=api["url"],
+                params=params,
+                headers={"Referer": "https://www.bilibili.com/"},
             )
-            code = events["code"]
+            resp_json = resp.json()
+            code = resp_json.get("data", {}).get("code")
             if code == 86101:
                 return QrCodeLoginEvents.SCAN
             elif code == 86090:
@@ -499,23 +505,51 @@ class QrCodeLogin:
             elif code == 86038:
                 return QrCodeLoginEvents.TIMEOUT
             else:
-                cred_url = events["url"]
-                ac_time_value = events["refresh_token"]
-                cookies_list = cred_url.split("?")[1].split("&")
-                sessdata = ""
-                bili_jct = ""
-                dedeuserid = ""
-                for cookie in cookies_list:
-                    if cookie[:8] == "SESSDATA":
-                        sessdata = cookie[9:]
-                    if cookie[:8] == "bili_jct":
-                        bili_jct = cookie[9:]
-                    if cookie[:11].upper() == "DEDEUSERID=":
-                        dedeuserid = cookie[11:]
+                data = resp_json.get("data", {})
+                ac_time_value = data.get("refresh_token", "")
+                cookies = dict(resp.cookies)
+
+                # Follow crossDomain ticket URL if present to capture any additional cookies
+                cross_url = data.get("url", "")
+                if cross_url:
+                    try:
+                        cross_resp = await client.request(
+                            method="GET",
+                            url=cross_url,
+                            headers={"Referer": "https://www.bilibili.com/"},
+                        )
+                        cookies.update(cross_resp.cookies)
+                    except Exception:
+                        pass
+
+                sessdata = cookies.get("SESSDATA", "")
+                bili_jct = cookies.get("bili_jct", "")
+                dedeuserid = cookies.get("DedeUserID", "")
+
+                # Fallback: check query string in url if cookies were not in headers
+                if cross_url and ("?" in cross_url) and (not sessdata or not bili_jct or not dedeuserid):
+                    try:
+                        qs = urllib.parse.parse_qs(urllib.parse.urlsplit(cross_url).query)
+                        if not sessdata and "SESSDATA" in qs:
+                            sessdata = qs["SESSDATA"][0]
+                        if not bili_jct and "bili_jct" in qs:
+                            bili_jct = qs["bili_jct"][0]
+                        if not dedeuserid and "DedeUserID" in qs:
+                            dedeuserid = qs["DedeUserID"][0]
+                    except Exception:
+                        pass
+
+                try:
+                    buvid3, buvid4 = await get_buvid()
+                except Exception:
+                    buvid3, buvid4 = None, None
+
                 self.__credential = Credential(
                     sessdata=sessdata,
                     bili_jct=bili_jct,
                     dedeuserid=dedeuserid,
+                    buvid3=buvid3,
+                    buvid4=buvid4,
                     ac_time_value=ac_time_value,
                 )
                 return QrCodeLoginEvents.DONE

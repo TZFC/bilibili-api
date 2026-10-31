@@ -1363,6 +1363,10 @@ class Credential:
         self.bili_jct = new_cred.bili_jct
         self.dedeuserid = new_cred.dedeuserid
         self.ac_time_value = new_cred.ac_time_value
+        if new_cred.buvid3:
+            self.buvid3 = new_cred.buvid3
+        if new_cred.buvid4:
+            self.buvid4 = new_cred.buvid4
 
     @staticmethod
     def from_cookies(cookies: dict = {}) -> "Credential":
@@ -1484,6 +1488,8 @@ async def _refresh_cookies(credential: Credential) -> Credential:
         bili_jct=resp.cookies["bili_jct"],
         dedeuserid=resp.cookies["DedeUserID"],
         ac_time_value=resp.json()["data"]["refresh_token"],
+        buvid3=credential.buvid3,
+        buvid4=credential.buvid4,
     )
     await _confirm_refresh(credential, new_credential)
     return new_credential
