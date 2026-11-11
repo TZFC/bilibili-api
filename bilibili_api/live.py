@@ -27,6 +27,7 @@ from .utils.network import (
 )
 from .utils.AsyncEvent import AsyncEvent
 from .exceptions.LiveException import LiveException
+from .exceptions.ResponseCodeException import ResponseCodeException
 from .utils.BytesReader import BytesReader
 
 API = get_api("live")
@@ -539,7 +540,11 @@ class LiveRoom:
         return await Api(**api, credential=self.credential).update_data(**data).result
 
     async def send_danmaku(
-        self, danmaku: Danmaku, room_id: int = None, reply_mid: int = None
+        self,
+        danmaku: Danmaku,
+        room_id: int = None,
+        reply_mid: int = None,
+        raw: bool = False,
     ) -> dict:
         """
         直播间发送弹幕
@@ -547,7 +552,11 @@ class LiveRoom:
         Args:
             danmaku (Danmaku): 弹幕类
 
+            room_id (int, optional): 真实房间号. Defaults to None.
+
             reply_mid (int, optional): @的 UID. Defaults to None.
+
+            raw (bool, optional): 是否返回完整原始响应（保留顶层 msg/message 字段，如系统/主播吞弹幕标记 'f'/'k'），同时仍校验 code != 0. Defaults to False.
 
         Returns:
             dict: 调用 API 返回的结果
@@ -569,7 +578,23 @@ class LiveRoom:
         }
         if reply_mid:
             data["reply_mid"] = reply_mid
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        req = Api(**api, credential=self.credential).update_data(**data)
+        if not raw:
+            return await req.result
+
+        resp_data = await req.request(raw=True)
+        if isinstance(resp_data, dict):
+            code = resp_data.get("code")
+            if code is None:
+                raise ResponseCodeException(-1, "API 返回数据未含 code 字段", resp_data)
+            if code != 0:
+                msg = resp_data.get("msg")
+                if msg is None:
+                    msg = resp_data.get("message")
+                if msg is None:
+                    msg = "接口未返回错误信息"
+                raise ResponseCodeException(code, msg, resp_data)
+        return resp_data
 
     async def send_emoticon(self, emoticon: Danmaku, room_id: int = None) -> dict:
         """
